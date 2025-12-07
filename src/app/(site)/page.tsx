@@ -32,7 +32,7 @@ export default async function HomePage() {
             <MembershipPlans />
 
             <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-                <DocumentaryGrid documentaries={documentaries} />
+                <DocumentaryGrid documentaries={documentaries} showPagination={false} />
             </Suspense>
         </>
     );

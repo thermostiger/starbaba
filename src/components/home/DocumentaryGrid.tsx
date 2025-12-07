@@ -9,9 +9,10 @@ interface DocumentaryGridProps {
     documentaries: Documentary[];
     currentPage?: number;
     totalPages?: number;
+    showPagination?: boolean;
 }
 
-export default function DocumentaryGrid({ documentaries, currentPage = 1, totalPages = 1 }: DocumentaryGridProps) {
+export default function DocumentaryGrid({ documentaries, currentPage = 1, totalPages = 1, showPagination = true }: DocumentaryGridProps) {
     return (
         <section className="py-12 bg-white">
             <div className="max-w-7xl mx-auto px-4">
@@ -61,32 +62,34 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
                 </div>
 
                 {/* Pagination */}
-                <div className="flex justify-center items-center gap-4 mt-12">
-                    <Button variant="outline" size="icon" disabled={currentPage <= 1} asChild>
-                        <Link href={`/documentary?page=${currentPage - 1}`}>
-                            <ChevronLeft className="h-4 w-4" />
-                        </Link>
-                    </Button>
-
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <Button
-                            key={page}
-                            variant={currentPage === page ? "default" : "outline"}
-                            className={currentPage === page ? "bg-primary hover:bg-primary/90" : ""}
-                            asChild
-                        >
-                            <Link href={`/documentary?page=${page}`}>
-                                {page}
+                {showPagination && (
+                    <div className="flex justify-center items-center gap-4 mt-12">
+                        <Button variant="outline" size="icon" disabled={currentPage <= 1} asChild>
+                            <Link href={`/documentary?page=${currentPage - 1}`}>
+                                <ChevronLeft className="h-4 w-4" />
                             </Link>
                         </Button>
-                    ))}
 
-                    <Button variant="outline" size="icon" disabled={currentPage >= totalPages} asChild>
-                        <Link href={`/documentary?page=${currentPage + 1}`}>
-                            <ChevronRight className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                </div>
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                            <Button
+                                key={page}
+                                variant={currentPage === page ? "default" : "outline"}
+                                className={currentPage === page ? "bg-primary hover:bg-primary/90" : ""}
+                                asChild
+                            >
+                                <Link href={`/documentary?page=${page}`}>
+                                    {page}
+                                </Link>
+                            </Button>
+                        ))}
+
+                        <Button variant="outline" size="icon" disabled={currentPage >= totalPages} asChild>
+                            <Link href={`/documentary?page=${currentPage + 1}`}>
+                                <ChevronRight className="h-4 w-4" />
+                            </Link>
+                        </Button>
+                    </div>
+                )}
             </div>
         </section>
     );

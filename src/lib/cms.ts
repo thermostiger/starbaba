@@ -98,22 +98,29 @@ export async function getHotResources(limit: number = 4): Promise<Resource[]> {
     return MOCK_RESOURCES.slice(0, limit);
 }
 
-export async function getResourcesByStage(stage: string, limit: number = 16): Promise<Resource[]> {
+export async function getResourcesByStage(stage: string, page: number = 1, limit: number = 16): Promise<{ data: Resource[], total: number }> {
     const filtered = MOCK_RESOURCES.filter(r => r.stage === stage);
 
     // Duplicate to fill the limit if needed to simulate more data
+    const totalCount = 100; // Simulate 100 items
     const result = [];
-    if (filtered.length === 0) return [];
 
-    while (result.length < limit) {
-        if (result.length + filtered.length > limit) {
-            result.push(...filtered.slice(0, limit - result.length).map((r, i) => ({ ...r, id: `${r.id}-${result.length + i}` })));
+    // Generate enough items
+    while (result.length < totalCount) {
+        if (result.length + filtered.length > totalCount) {
+            result.push(...filtered.slice(0, totalCount - result.length).map((r, i) => ({ ...r, id: `${r.id}-${result.length + i}` })));
         } else {
             result.push(...filtered.map((r, i) => ({ ...r, id: `${r.id}-${result.length + i}` })));
         }
     }
 
-    return result;
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    return {
+        data: result.slice(start, end),
+        total: totalCount
+    };
 }
 
 export async function getNewResources(limit: number = 16): Promise<Resource[]> {
@@ -197,6 +204,21 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
 }
 
 export async function getResourceById(id: string): Promise<Resource | null> {
+    // First check static mock resources
+    const staticResource = MOCK_RESOURCES.find(r => r.id === id);
+    if (staticResource) return staticResource;
+
+    // Handle generated IDs (e.g., "1-0", "1-0-1")
+    // Extract the base ID (first part before any dash)
+    const baseId = id.split('-')[0];
+    const baseResource = MOCK_RESOURCES.find(r => r.id === baseId);
+    if (baseResource) {
+        return {
+            ...baseResource,
+            id: id, // Keep the requested ID
+        };
+    }
+
     const resources = await getNewResources(100);
     const resource = resources.find(r => r.id === id);
 

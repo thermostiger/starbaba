@@ -1,7 +1,7 @@
 'use client';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay, Pagination, EffectCoverflow } from 'swiper/modules';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { Mail, MessageCircle, QrCode } from 'lucide-react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
 
 interface HeroHotSwiperProps {
     resources: Resource[];
@@ -33,9 +34,19 @@ export default function HeroHotSwiper({ resources }: HeroHotSwiperProps) {
                 </div>
 
                 <Swiper
-                    modules={[Autoplay, Pagination]}
-                    spaceBetween={24}
-                    slidesPerView={1}
+                    modules={[Autoplay, Pagination, EffectCoverflow]}
+                    effect="coverflow"
+                    grabCursor={true}
+                    centeredSlides={true}
+                    slidesPerView="auto"
+                    loop={true}
+                    coverflowEffect={{
+                        rotate: 50,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: false,
+                    }}
                     autoplay={{
                         delay: 3000,
                         disableOnInteraction: false,

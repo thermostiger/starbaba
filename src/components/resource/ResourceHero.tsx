@@ -8,7 +8,7 @@ interface ResourceHeroProps {
 
 export default function ResourceHero({ resource }: ResourceHeroProps) {
     return (
-        <div className="relative bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-16 overflow-hidden">
+        <div className="relative bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-9 overflow-hidden">
             {/* Animated gradient orbs */}
             <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-orange-400/30 to-pink-400/30 rounded-full blur-3xl animate-pulse"></div>
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-400/30 to-purple-400/30 rounded-full blur-3xl animate-pulse delay-1000"></div>

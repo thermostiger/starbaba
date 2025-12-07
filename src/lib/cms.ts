@@ -219,32 +219,83 @@ export async function getResourceById(id: string): Promise<Resource | null> {
         };
     }
 
+    // Check if it's a documentary ID (starts with 'd')
+    if (id.startsWith('d')) {
+        // Extract base documentary ID
+        const docBaseId = id.split('-')[0];
+        const baseDocumentaries = [
+            {
+                id: 'd1',
+                title: 'Planet Earth 地球脉动',
+                subtitle: 'BBC自然纪录片经典之作',
+                coverImage: '/images/planet-earth.jpg',
+                duration: '50分钟',
+                isEnglishAudio: true,
+            },
+            {
+                id: 'd2',
+                title: 'Blue Planet 蓝色星球',
+                subtitle: '探索海洋的奥秘',
+                coverImage: '/images/blue-planet.jpg',
+                duration: '45分钟',
+                isEnglishAudio: true,
+            },
+            {
+                id: 'd3',
+                title: 'Cosmos 宇宙时空之旅',
+                subtitle: '科学启蒙必看',
+                coverImage: '/images/cosmos.jpg',
+                duration: '42分钟',
+                isEnglishAudio: true,
+            },
+            {
+                id: 'd4',
+                title: 'Life 生命',
+                subtitle: 'BBC生物多样性纪录片',
+                coverImage: '/images/life.jpg',
+                duration: '50分钟',
+                isEnglishAudio: true,
+            },
+            {
+                id: 'd5',
+                title: 'Frozen Planet 冰冻星球',
+                subtitle: '极地探险之旅',
+                coverImage: '/images/frozen.jpg',
+                duration: '48分钟',
+                isEnglishAudio: true,
+            },
+            {
+                id: 'd6',
+                title: 'Africa 非洲',
+                subtitle: 'BBC非洲大陆纪录片',
+                coverImage: '/images/africa.jpg',
+                duration: '52分钟',
+                isEnglishAudio: true,
+            },
+        ];
+
+        const documentary = baseDocumentaries.find(d => d.id === docBaseId);
+        if (documentary) {
+            // Convert Documentary to Resource
+            return {
+                id: id,
+                title: documentary.title,
+                description: documentary.subtitle,
+                coverImage: documentary.coverImage,
+                category: '纪录片',
+                stage: '全年龄',
+                price: 39.9,
+                vipPrice: 0,
+                duration: documentary.duration,
+                isEnglishAudio: documentary.isEnglishAudio,
+                content: `<h2>${documentary.title}</h2><p>${documentary.subtitle}</p><p>时长：${documentary.duration}</p>`,
+                createdAt: new Date().toISOString(),
+            };
+        }
+    }
+
     const resources = await getNewResources(100);
     const resource = resources.find(r => r.id === id);
-
-    if (resource) return resource;
-
-    // Check if it's a documentary ID
-    const { data: documentaries } = await getDocumentaries(1, 100);
-    const documentary = documentaries.find(d => d.id === id);
-
-    if (documentary) {
-        // Convert Documentary to Resource
-        return {
-            id: documentary.id,
-            title: documentary.title,
-            description: documentary.subtitle,
-            coverImage: documentary.coverImage,
-            category: '纪录片',
-            stage: '全年龄',
-            price: 39.9,
-            vipPrice: 0,
-            duration: documentary.duration,
-            isEnglishAudio: documentary.isEnglishAudio,
-            content: `<h2>${documentary.title}</h2><p>${documentary.subtitle}</p><p>时长：${documentary.duration}</p>`,
-            createdAt: new Date().toISOString(),
-        };
-    }
 
     return null;
 }

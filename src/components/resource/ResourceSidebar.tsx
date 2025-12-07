@@ -1,8 +1,6 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageCircle, Users } from 'lucide-react';
+import { MessageCircle, Users, CloudDownload } from 'lucide-react';
 import Image from 'next/image';
 import { Resource } from '@/types';
 
@@ -13,30 +11,39 @@ interface ResourceSidebarProps {
 export default function ResourceSidebar({ resource }: ResourceSidebarProps) {
     return (
         <div className="lg:sticky lg:top-24 space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>购买此资源</CardTitle>
+            {/* Resource Info Card */}
+            <Card className="border-t-4 border-t-blue-500 shadow-sm">
+                <CardHeader className="pb-3">
+                    <CardTitle className="text-base flex items-center gap-2">
+                        <CloudDownload className="w-5 h-5 text-blue-500" />
+                        资源信息
+                    </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div>
-                        <div className="text-sm text-muted-foreground mb-1">单买价格</div>
-                        <div className="text-2xl font-bold text-primary">¥{resource.price}</div>
+                    <div className="bg-blue-50/50 p-4 rounded-lg space-y-3">
+                        <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                                <span className="text-gray-600">普通</span>
+                            </div>
+                            <span className="font-bold text-orange-600">¥{resource.price}元</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span className="text-gray-600">年度会员</span>
+                            </div>
+                            <span className="font-bold text-green-600">免费</span>
+                        </div>
                     </div>
 
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
+                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all h-10 text-base font-medium">
                         立即购买
-                    </Button>
-
-                    <div className="text-center text-sm text-muted-foreground">
-                        或
-                    </div>
-
-                    <Button variant="outline" className="w-full">
-                        开通VIP免费获取
                     </Button>
                 </CardContent>
             </Card>
 
+            {/* Contact Cards */}
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base">联系客服</CardTitle>

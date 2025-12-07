@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function TeenPage() {
-    const resources = await getResourcesByStage('青少年', 24);
+    const { data: resources } = await getResourcesByStage('青少年', 1, 24);
 
     return (
         <div className="min-h-screen bg-gray-50">

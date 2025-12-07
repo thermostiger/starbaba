@@ -25,13 +25,14 @@ export default function Header() {
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
     // Mock user for demonstration
-    const user = {
-        name: '星爸会员',
-        id: '888888',
-        avatar: '/avatars/user.png',
-        isVip: true,
-        vipExpireDate: '2025-12-31',
-    };
+    // Mock user for demonstration - set to null to show logged out state
+    const user: {
+        name: string;
+        id: string;
+        avatar: string;
+        isVip: boolean;
+        vipExpireDate: string;
+    } | null = null;
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
@@ -142,10 +143,15 @@ export default function Header() {
                             </HoverCardContent>
                         </HoverCard>
                     ) : (
-                        <Button className="hidden md:flex bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-                            <User className="mr-2 h-4 w-4" />
-                            登录
-                        </Button>
+                        <div className="hidden md:flex items-center gap-2">
+                            <Button variant="ghost" className="text-sm font-medium">
+                                注册
+                            </Button>
+                            <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-sm font-medium">
+                                <User className="mr-2 h-4 w-4" />
+                                登录
+                            </Button>
+                        </div>
                     )}
 
                     {/* Mobile Menu */}

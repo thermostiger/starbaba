@@ -15,7 +15,7 @@ export default async function HomePage() {
     // Fetch data server-side
     const hotResources = await getHotResources(8);
     const newResources = await getNewResources(16);
-    const documentaries = await getDocumentaries(6);
+    const { data: documentaries } = await getDocumentaries(1, 6);
 
     return (
         <>
@@ -34,8 +34,6 @@ export default async function HomePage() {
             <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
                 <DocumentaryGrid documentaries={documentaries} />
             </Suspense>
-
-            <SafetyBannerSwiper />
         </>
     );
 }

@@ -7,8 +7,10 @@ export const metadata = {
     description: 'BBC自然纪录片、科学纪录片，英文原声，适合儿童英语学习',
 };
 
-export default async function DocumentaryPage() {
-    const documentaries = await getDocumentaries(20);
+export default async function DocumentaryPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+    const { page } = await searchParams;
+    const currentPage = Number(page) || 1;
+    const { data: documentaries, total } = await getDocumentaries(currentPage, 12);
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-12">
@@ -20,7 +22,11 @@ export default async function DocumentaryPage() {
             </div>
 
             <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse rounded-lg" />}>
-                <DocumentaryGrid documentaries={documentaries} />
+                <DocumentaryGrid
+                    documentaries={documentaries}
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(total / 12)}
+                />
             </Suspense>
         </div>
     );

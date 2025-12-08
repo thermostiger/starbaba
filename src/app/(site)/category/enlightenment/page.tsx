@@ -22,14 +22,14 @@ export default async function EnlightenmentPage({ searchParams }: { searchParams
             {/* Hero Section - 100px height with gentle colors */}
             <div className="h-[100px] bg-gradient-to-r from-yellow-100 via-orange-100 to-pink-100 flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-orange-600">启蒙英语</h1>
-                    <p className="text-sm text-orange-400 mt-1">快乐启蒙，趣味学习</p>
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">启蒙英语</h1>
+                    <p className="text-sm text-orange-500 mt-1 font-medium">快乐启蒙，趣味学习</p>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="max-w-7xl mx-auto px-4 py-4">
                 <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse rounded-lg" />}>
-                    <div className="mt-8">
+                    <div className="mt-4">
                         <NewResourcesGrid
                             resources={resources}
                             rows={3}

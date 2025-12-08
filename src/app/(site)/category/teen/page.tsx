@@ -22,14 +22,14 @@ export default async function TeenPage({ searchParams }: { searchParams: Promise
             {/* Hero Section - 100px height with mature colors */}
             <div className="h-[100px] bg-gradient-to-r from-blue-100 via-indigo-100 to-violet-100 flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-indigo-600">青少年英语</h1>
-                    <p className="text-sm text-indigo-400 mt-1">进阶提升，拓展视野</p>
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">青少年英语</h1>
+                    <p className="text-sm text-indigo-500 mt-1 font-medium">进阶提升，拓展视野</p>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="max-w-7xl mx-auto px-4 py-4">
                 <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse rounded-lg" />}>
-                    <div className="mt-8">
+                    <div className="mt-4">
                         <NewResourcesGrid
                             resources={resources}
                             rows={3}

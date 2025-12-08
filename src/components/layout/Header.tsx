@@ -40,9 +40,6 @@ export default function Header() {
 
     return (
         <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-            {/* Top accent bar */}
-            <div className="h-1 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500"></div>
-
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
                 {/* Logo with badge style */}
                 <Link href="/" className="flex items-center gap-3 shrink-0 group">
@@ -68,10 +65,10 @@ export default function Header() {
                             key={link.href}
                             href={link.href}
                             className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all ${isActive(link.href)
-                                    ? 'text-orange-600 bg-orange-50'
-                                    : link.highlight
-                                        ? 'text-amber-600 hover:text-amber-700 hover:bg-amber-50'
-                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                                ? 'text-orange-600 bg-orange-50'
+                                : link.highlight
+                                    ? 'text-amber-600 hover:text-amber-700 hover:bg-amber-50'
+                                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                                 }`}
                         >
                             <span className="flex items-center gap-1.5">

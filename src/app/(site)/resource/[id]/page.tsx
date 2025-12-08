@@ -107,7 +107,13 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
                                 <span className="w-1 h-6 bg-blue-500 rounded-full"></span>
                                 相关推荐
                             </h3>
-                            <NewResourcesGrid resources={relatedResources} rows={1} hideHeader={true} />
+                            <NewResourcesGrid
+                                resources={relatedResources}
+                                rows={1}
+                                cardWidth="180px"
+                                cardHeight="230px"
+                                hideHeader={true}
+                            />
                         </div>
                     </div>
                 </div>

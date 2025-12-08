@@ -23,40 +23,46 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
                     {documentaries.map((doc) => (
                         <Link key={doc.id} href={`/resource/${doc.id}`} className="w-full max-w-[250px]">
-                            <Card className="group overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-[250px] flex flex-col">
-                                {/* Top 50%: Image */}
-                                <div className="relative h-1/2 w-full">
-                                    <Image
-                                        src={doc.coverImage}
-                                        alt={doc.title}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
+                            <div className="relative group">
+                                {/* Gradient glow effect */}
+                                <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
 
-                                {/* Bottom 50%: Content */}
-                                <div className="h-1/2 p-4 flex flex-col justify-between bg-white">
-                                    <div>
-                                        <h3 className="font-bold text-base mb-1 group-hover:text-primary transition-colors line-clamp-1">
-                                            {doc.title}
-                                        </h3>
-                                        <p className="text-xs text-muted-foreground line-clamp-2">{doc.subtitle}</p>
+                                {/* Card content */}
+                                <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-[250px] flex flex-col rounded-2xl ring-1 ring-black/5">
+                                    {/* Top 50%: Image */}
+                                    <div className="relative h-1/2 w-full">
+                                        <Image
+                                            src={doc.coverImage}
+                                            alt={doc.title}
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
 
-                                    <div className="flex items-center justify-between text-xs text-muted-foreground mt-2">
-                                        {doc.isEnglishAudio && (
-                                            <div className="flex items-center gap-1 text-primary">
-                                                <Volume2 className="h-3 w-3" />
-                                                <span>英文</span>
+                                    {/* Bottom 50%: Content */}
+                                    <div className="h-1/2 p-4 flex flex-col justify-between bg-white">
+                                        <div>
+                                            <h3 className="font-bold text-base mb-1 group-hover:text-orange-500 transition-colors line-clamp-1">
+                                                {doc.title}
+                                            </h3>
+                                            <p className="text-xs text-muted-foreground line-clamp-2">{doc.subtitle}</p>
+                                        </div>
+
+                                        <div className="flex items-center justify-between text-xs text-muted-foreground mt-2">
+                                            {doc.isEnglishAudio && (
+                                                <div className="flex items-center gap-1 text-orange-500">
+                                                    <Volume2 className="h-3 w-3" />
+                                                    <span>英文</span>
+                                                </div>
+                                            )}
+                                            <div className="flex items-center gap-1">
+                                                <Clock className="h-3 w-3" />
+                                                <span>{doc.duration}</span>
                                             </div>
-                                        )}
-                                        <div className="flex items-center gap-1">
-                                            <Clock className="h-3 w-3" />
-                                            <span>{doc.duration}</span>
                                         </div>
                                     </div>
-                                </div>
-                            </Card>
+                                </Card>
+                            </div>
                         </Link>
                     ))}
                 </div>

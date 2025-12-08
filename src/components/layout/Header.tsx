@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Menu, User, Crown, LogOut, Settings, BookOpen } from 'lucide-react';
+import { Search, Menu, User, Crown, LogOut, Settings, BookOpen, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -39,51 +39,62 @@ export default function Header() {
     const isActive = (path: string) => pathname === path;
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-t-4 border-t-orange-500 shadow-sm">
+        <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+            {/* Top accent bar */}
+            <div className="h-1 bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500"></div>
+
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-                {/* Logo */}
-                <Link href="/" className="flex items-center space-x-2 shrink-0 group">
-                    <div className="text-2xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                {/* Logo with badge style */}
+                <Link href="/" className="flex items-center gap-3 shrink-0 group">
+                    <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-all group-hover:scale-105">
+                        <Sparkles className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="text-xl font-bold bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent">
                         星爸英语
                     </div>
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center space-x-8 shrink-0">
+                <nav className="hidden md:flex items-center space-x-1 shrink-0">
                     {[
                         { href: '/', label: '首页' },
                         { href: '/category/enlightenment', label: '启蒙英语' },
                         { href: '/category/teen', label: '青少年英语' },
                         { href: '/documentary', label: '纪录片' },
-                        { href: '/vip', label: 'VIP', icon: <Crown className="w-4 h-4 mr-1 text-yellow-500" /> },
-                        { href: '/about', label: '关于星爸' },
+                        { href: '/vip', label: 'VIP会员', highlight: true },
+                        { href: '/about', label: '关于' },
                     ].map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`group relative text-sm font-medium transition-colors py-2 ${isActive(link.href) ? 'text-orange-600 font-bold' : 'text-gray-600 hover:text-gray-900'
+                            className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all ${isActive(link.href)
+                                    ? 'text-orange-600 bg-orange-50'
+                                    : link.highlight
+                                        ? 'text-amber-600 hover:text-amber-700 hover:bg-amber-50'
+                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                                 }`}
                         >
-                            <span className="flex items-center">
-                                {link.icon}
+                            <span className="flex items-center gap-1.5">
+                                {link.highlight && <Crown className="w-3.5 h-3.5 text-amber-500" />}
                                 {link.label}
                             </span>
-                            <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 to-red-500 transition-transform duration-300 ease-out origin-left ${isActive(link.href) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                                }`} />
+                            {isActive(link.href) && (
+                                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-gradient-to-r from-orange-400 to-amber-500 rounded-full"></span>
+                            )}
                         </Link>
                     ))}
                 </nav>
 
-                <div className="flex items-center gap-4">
-                    {/* Search Box - Moved to the left of buttons */}
-                    <div className="hidden md:flex items-center justify-end transition-all duration-300 ease-in-out" style={{ width: isSearchExpanded ? '200px' : '40px' }}>
+                <div className="flex items-center gap-3">
+                    {/* Search Box */}
+                    <div className="hidden md:flex items-center">
                         {isSearchExpanded ? (
-                            <div className="relative w-full">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <div className="relative w-56">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                 <Input
                                     type="search"
-                                    placeholder="搜索..."
-                                    className="pl-9 h-9 bg-gray-50 focus:bg-white transition-colors w-full rounded-full border-gray-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+                                    placeholder="搜索资源..."
+                                    className="pl-9 h-9 bg-gray-50 border-gray-200 rounded-full focus:bg-white focus:border-orange-300 focus:ring-2 focus:ring-orange-100 transition-all"
                                     autoFocus
                                     onBlur={() => setIsSearchExpanded(false)}
                                 />
@@ -93,36 +104,36 @@ export default function Header() {
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => setIsSearchExpanded(true)}
-                                className="hover:bg-gray-100 rounded-full text-gray-600"
+                                className="h-9 w-9 rounded-full hover:bg-gray-100 text-gray-600"
                             >
-                                <Search className="h-5 w-5" />
+                                <Search className="h-4 w-4" />
                             </Button>
                         )}
                     </div>
 
                     {/* Right Side Actions */}
-                    <div className="flex items-center space-x-4 shrink-0">
+                    <div className="flex items-center gap-3 shrink-0">
                         {/* User Profile with Hover Card */}
                         {user ? (
                             <HoverCard>
                                 <HoverCardTrigger asChild>
                                     <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-2 ring-offset-2 ring-transparent hover:ring-orange-100 transition-all">
-                                        <Avatar className="h-9 w-9 border border-gray-200">
+                                        <Avatar className="h-9 w-9 border-2 border-orange-200">
                                             <AvatarImage src={user.avatar} alt={user.name} />
-                                            <AvatarFallback>VIP</AvatarFallback>
+                                            <AvatarFallback className="bg-gradient-to-br from-orange-400 to-amber-500 text-white">VIP</AvatarFallback>
                                         </Avatar>
                                     </Button>
                                 </HoverCardTrigger>
                                 <HoverCardContent className="w-80" align="end">
                                     <div className="flex justify-between space-x-4">
-                                        <Avatar className="h-12 w-12">
+                                        <Avatar className="h-12 w-12 border-2 border-orange-200">
                                             <AvatarImage src={user.avatar} />
-                                            <AvatarFallback>VIP</AvatarFallback>
+                                            <AvatarFallback className="bg-gradient-to-br from-orange-400 to-amber-500 text-white">VIP</AvatarFallback>
                                         </Avatar>
                                         <div className="space-y-1 flex-1">
                                             <h4 className="text-sm font-semibold flex items-center">
                                                 {user.name}
-                                                {user.isVip && <Crown className="w-3 h-3 ml-1 text-yellow-500 fill-yellow-500" />}
+                                                {user.isVip && <Crown className="w-3 h-3 ml-1 text-amber-500 fill-amber-500" />}
                                             </h4>
                                             <p className="text-xs text-muted-foreground">
                                                 ID: {user.id}
@@ -133,16 +144,16 @@ export default function Header() {
                                                 </span>
                                             </div>
                                             <div className="grid grid-cols-2 gap-2 mt-4">
-                                                <Button variant="outline" size="sm" className="w-full text-xs">
+                                                <Button variant="outline" size="sm" className="w-full text-xs rounded-lg">
                                                     <BookOpen className="w-3 h-3 mr-1" />
                                                     我的课程
                                                 </Button>
-                                                <Button variant="outline" size="sm" className="w-full text-xs">
+                                                <Button variant="outline" size="sm" className="w-full text-xs rounded-lg">
                                                     <Settings className="w-3 h-3 mr-1" />
                                                     账号设置
                                                 </Button>
                                             </div>
-                                            <Button variant="ghost" size="sm" className="w-full text-xs mt-1 text-red-500 hover:text-red-600 hover:bg-red-50">
+                                            <Button variant="ghost" size="sm" className="w-full text-xs mt-1 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg">
                                                 <LogOut className="w-3 h-3 mr-1" />
                                                 退出登录
                                             </Button>
@@ -151,13 +162,20 @@ export default function Header() {
                                 </HoverCardContent>
                             </HoverCard>
                         ) : (
-                            <div className="hidden md:flex items-center gap-3">
-                                <Button variant="ghost" className="text-sm font-medium hover:text-primary hover:bg-orange-50" asChild>
+                            <div className="hidden md:flex items-center gap-2">
+                                <Button
+                                    variant="ghost"
+                                    className="text-sm font-medium text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-lg"
+                                    asChild
+                                >
                                     <Link href="/register">注册</Link>
                                 </Button>
-                                <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-sm font-medium shadow-md hover:shadow-lg transition-all" asChild>
+                                <Button
+                                    className="bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all rounded-lg"
+                                    asChild
+                                >
                                     <Link href="/login">
-                                        <User className="mr-2 h-4 w-4" />
+                                        <User className="mr-1.5 h-4 w-4" />
                                         登录
                                     </Link>
                                 </Button>
@@ -168,7 +186,7 @@ export default function Header() {
                     {/* Mobile Menu */}
                     <Sheet>
                         <SheetTrigger asChild>
-                            <Button variant="ghost" size="icon" className="md:hidden">
+                            <Button variant="ghost" size="icon" className="md:hidden h-9 w-9 rounded-lg">
                                 <Menu className="h-5 w-5" />
                             </Button>
                         </SheetTrigger>

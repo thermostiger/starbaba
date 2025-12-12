@@ -1,10 +1,13 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function SignInPage() {
+    const handleGoogleSignIn = async () => {
+        window.location.href = '/api/auth/signin/google?callbackUrl=/';
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50 px-4">
             <Card className="w-full max-w-md">
@@ -18,7 +21,7 @@ export default function SignInPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <Button
-                        onClick={() => signIn('google', { callbackUrl: '/' })}
+                        onClick={handleGoogleSignIn}
                         className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
                         size="lg"
                     >

@@ -20,10 +20,22 @@ export const Resources: CollectionConfig = {
             label: '资源标题',
         },
         {
-            name: 'description',
+            name: 'highlights',
             type: 'textarea',
             required: true,
-            label: '资源描述',
+            label: '资源亮点',
+            admin: {
+                description: '资源的主要亮点和特色',
+            },
+        },
+        {
+            name: 'resourceInfo',
+            type: 'textarea',
+            required: false,
+            label: '资源信息',
+            admin: {
+                description: '资源的基本信息介绍',
+            },
         },
         {
             name: 'coverImage',
@@ -34,19 +46,12 @@ export const Resources: CollectionConfig = {
         },
         {
             name: 'category',
-            type: 'select',
+            type: 'text',
             required: true,
             label: '资源类别',
-            options: [
-                { label: '动画', value: '动画' },
-                { label: '绘本', value: '绘本' },
-                { label: '儿歌', value: '儿歌' },
-                { label: '课程', value: '课程' },
-                { label: '听力', value: '听力' },
-                { label: '视频', value: '视频' },
-                { label: '阅读', value: '阅读' },
-                { label: '纪录片', value: '纪录片' },
-            ],
+            admin: {
+                description: '例如：动画、绘本、儿歌、课程等',
+            },
         },
         {
             name: 'stage',
@@ -69,20 +74,13 @@ export const Resources: CollectionConfig = {
             defaultValue: 0,
             min: 0,
         },
+
         {
-            name: 'vipPrice',
-            type: 'number',
-            required: true,
-            label: 'VIP价格（元）',
-            defaultValue: 0,
-            min: 0,
-        },
-        {
-            name: 'duration',
+            name: 'region',
             type: 'text',
-            label: '时长',
+            label: '地区/国家',
             admin: {
-                description: '例如：50分钟',
+                description: '例如：美国、英国、日本',
             },
         },
         {
@@ -94,9 +92,9 @@ export const Resources: CollectionConfig = {
         {
             name: 'content',
             type: 'richText',
-            label: '详细内容',
+            label: '详情介绍',
             admin: {
-                description: '资源的详细介绍内容',
+                description: '资源的详细介绍，支持富文本编辑和图片上传',
             },
         },
         {

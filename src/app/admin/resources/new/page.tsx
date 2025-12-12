@@ -9,12 +9,12 @@ export default function NewResourcePage() {
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
-        category: 'animation',
+        highlights: '',
+        resourceInfo: '',
+        category: '',
         stage: 'enlightenment',
         price: 0,
-        vipPrice: 0,
-        duration: '',
+        region: '',
         isEnglishAudio: false,
         isHot: false,
         content: '',
@@ -64,34 +64,44 @@ export default function NewResourcePage() {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        描述 *
+                        资源亮点 *
                     </label>
                     <textarea
                         required
                         rows={4}
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        value={formData.highlights}
+                        onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="资源的主要亮点和特色..."
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        资源信息
+                    </label>
+                    <textarea
+                        rows={3}
+                        value={formData.resourceInfo}
+                        onChange={(e) => setFormData({ ...formData, resourceInfo: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="资源的基本信息介绍..."
                     />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            分类 *
+                            资源类别 *
                         </label>
-                        <select
+                        <input
+                            type="text"
+                            required
                             value={formData.category}
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        >
-                            <option value="animation">动画</option>
-                            <option value="picture-book">绘本</option>
-                            <option value="song">儿歌</option>
-                            <option value="course">课程</option>
-                            <option value="game">游戏</option>
-                            <option value="other">其他</option>
-                        </select>
+                            placeholder="例如：动画、绘本、儿歌、课程等"
+                        />
                     </div>
 
                     <div>
@@ -111,7 +121,7 @@ export default function NewResourcePage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             价格 (元) *
@@ -128,26 +138,13 @@ export default function NewResourcePage() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            VIP 价格 (元)
-                        </label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            value={formData.vipPrice}
-                            onChange={(e) => setFormData({ ...formData, vipPrice: parseFloat(e.target.value) })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            时长
+                            地区/国家
                         </label>
                         <input
                             type="text"
-                            placeholder="例如: 30分钟"
-                            value={formData.duration}
-                            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                            placeholder="例如：美国、英国、日本"
+                            value={formData.region}
+                            onChange={(e) => setFormData({ ...formData, region: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>
@@ -177,14 +174,14 @@ export default function NewResourcePage() {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        详细内容
+                        详情介绍
                     </label>
                     <textarea
-                        rows={6}
+                        rows={8}
                         value={formData.content}
                         onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="资源的详细介绍..."
+                        placeholder="资源的详细介绍，支持富文本编辑和图片上传（当前为文本模式，后续可升级为富文本编辑器）"
                     />
                 </div>
 

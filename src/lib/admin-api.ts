@@ -16,6 +16,7 @@ class PayloadAPI {
     ): Promise<T> {
         const response = await fetch(`${API_BASE}${endpoint}`, {
             ...options,
+            credentials: 'include', // Include cookies for authentication
             headers: {
                 'Content-Type': 'application/json',
                 ...options?.headers,
@@ -96,11 +97,11 @@ export const payloadAPI = new PayloadAPI()
 
 // Type-safe collection helpers
 export const resourcesAPI = {
-    list: (params?: any) => payloadAPI.find('resources', params),
-    get: (id: string) => payloadAPI.findById('resources', id),
-    create: (data: any) => payloadAPI.create('resources', data),
-    update: (id: string, data: any) => payloadAPI.update('resources', id, data),
-    delete: (id: string) => payloadAPI.delete('resources', id),
+    list: (params?: any) => payloadAPI.find('admin/resources', params),
+    get: (id: string) => payloadAPI.findById('admin/resources', id),
+    create: (data: any) => payloadAPI.create('admin/resources', data),
+    update: (id: string, data: any) => payloadAPI.update('admin/resources', id, data),
+    delete: (id: string) => payloadAPI.delete('admin/resources', id),
 }
 
 export const documentariesAPI = {

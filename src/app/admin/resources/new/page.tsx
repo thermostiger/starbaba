@@ -2,7 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { resourcesAPI, payloadAPI } from '@/lib/admin-api'
+import { resourcesAPI } from '@/lib/admin-api'
+import dynamic from 'next/dynamic'
+
+const TiptapEditor = dynamic(() => import('@/components/TiptapEditor'), { ssr: false })
 
 export default function NewResourcePage() {
     const router = useRouter()
@@ -30,7 +33,45 @@ export default function NewResourcePage() {
 
         try {
             setLoading(true)
-            await resourcesAPI.create(formData)
+
+            // Transform downloadLinks from object to array format for Payload
+            const downloadLinksArray = []
+            if (formData.downloadLinks.baidu) {
+                downloadLinksArray.push({
+                    platform: 'baidu',
+                    url: formData.downloadLinks.baidu,
+                })
+            }
+            if (formData.downloadLinks.aliyun) {
+                downloadLinksArray.push({
+                    platform: 'aliyun',
+                    url: formData.downloadLinks.aliyun,
+                })
+            }
+            if (formData.downloadLinks.quark) {
+                downloadLinksArray.push({
+                    platform: 'quark',
+                    url: formData.downloadLinks.quark,
+                })
+            }
+
+            const payload = {
+                title: formData.title,
+                highlights: formData.highlights,
+                resourceInfo: formData.resourceInfo,
+                category: formData.category,
+                stage: formData.stage,
+                price: formData.price,
+                region: formData.region,
+                isEnglishAudio: formData.isEnglishAudio,
+                isHot: formData.isHot,
+                content: formData.content,
+                downloadLinks: downloadLinksArray,
+            }
+
+            console.log('Creating resource:', payload.title)
+            const result = await resourcesAPI.create(payload)
+            console.log('Resource created successfully')
             alert('创建成功')
             router.push('/admin/resources')
         } catch (error) {
@@ -176,13 +217,13 @@ export default function NewResourcePage() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         详情介绍
                     </label>
-                    <textarea
-                        rows={8}
-                        value={formData.content}
-                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="资源的详细介绍，支持富文本编辑和图片上传（当前为文本模式，后续可升级为富文本编辑器）"
+                    <TiptapEditor
+                        content={formData.content}
+                        onChange={(value) => setFormData({ ...formData, content: value })}
                     />
+                    <p className="text-sm text-gray-500 mt-1">
+                        支持富文本编辑，可以插入图片、链接等
+                    </p>
                 </div>
 
                 <div className="border-t pt-6">

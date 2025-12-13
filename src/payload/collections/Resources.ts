@@ -41,7 +41,7 @@ export const Resources: CollectionConfig = {
             name: 'coverImage',
             type: 'upload',
             relationTo: 'media',
-            required: true,
+            required: false,
             label: '封面图片',
         },
         {

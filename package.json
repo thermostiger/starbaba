@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.948.0",
     "@aws-sdk/lib-storage": "^3.948.0",
     "@payloadcms/db-postgres": "3.0.0-beta.135",
     "@payloadcms/next": "3.0.0-beta.135",
@@ -23,6 +22,12 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/supabase-js": "^2.87.1",
     "@tailwindcss/typography": "^0.5.19",
+    "@tiptap/extension-color": "^3.13.0",
+    "@tiptap/extension-image": "^3.13.0",
+    "@tiptap/extension-link": "^3.13.0",
+    "@tiptap/extension-text-style": "^3.13.0",
+    "@tiptap/react": "^3.13.0",
+    "@tiptap/starter-kit": "^3.13.0",
     "alipay-sdk": "^4.14.0",
     "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.1",
@@ -46,12 +51,14 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.948.0",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "tailwindcss": "^4",

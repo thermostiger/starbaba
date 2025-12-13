@@ -54,16 +54,8 @@ export async function POST(request: NextRequest) {
 
         console.log('Resource created with ID:', resource.id)
 
-        // Insert download links if provided
-        if (data.downloadLinks && data.downloadLinks.length > 0) {
-            for (const link of data.downloadLinks) {
-                await client.query(
-                    `INSERT INTO resource_download_links (resource_id, platform, url, password) 
-                     VALUES ($1, $2, $3, $4)`,
-                    [resource.id, link.platform, link.url, link.password || null]
-                )
-            }
-        }
+        // Skip download links insertion (table doesn't exist yet)
+        // TODO: Create resource_download_links table and uncomment this code
 
         // Commit transaction
         await client.query('COMMIT')

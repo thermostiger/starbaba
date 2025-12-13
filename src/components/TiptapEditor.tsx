@@ -7,6 +7,11 @@ import Link from '@tiptap/extension-link'
 import Image from '@tiptap/extension-image'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
+import Underline from '@tiptap/extension-underline'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
+import TextAlign from '@tiptap/extension-text-align'
+import { FontFamily } from '@tiptap/extension-font-family'
 
 interface TiptapEditorProps {
     content: string
@@ -20,7 +25,11 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
     const editor = useEditor({
         immediatelyRender: false,
         extensions: [
-            StarterKit,
+            StarterKit.configure({
+                heading: {
+                    levels: [1, 2, 3, 4, 5, 6],
+                },
+            }),
             Link.configure({
                 openOnClick: false,
             }),
@@ -30,6 +39,15 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
             }),
             TextStyle,
             Color,
+            Underline,
+            TaskList,
+            TaskItem.configure({
+                nested: true,
+            }),
+            TextAlign.configure({
+                types: ['heading', 'paragraph'],
+            }),
+            FontFamily,
         ],
         content,
         onUpdate: ({ editor }) => {
@@ -150,11 +168,45 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
     return (
         <div className="border border-gray-300 rounded-lg">
             {/* Toolbar */}
-            <div className="border-b border-gray-300 p-2 flex flex-wrap gap-1 bg-gray-50">
+            <div className="border-b border-gray-300 p-2 flex flex-wrap gap-2 bg-gray-50">
+                {/* Heading Selector */}
+                <select
+                    onChange={(e) => {
+                        const value = e.target.value
+                        if (value === 'p') {
+                            editor.chain().focus().setParagraph().run()
+                        } else {
+                            const level = parseInt(value) as 1 | 2 | 3 | 4 | 5 | 6
+                            editor.chain().focus().toggleHeading({ level }).run()
+                        }
+                    }}
+                    className="px-2 py-1 border border-gray-300 rounded text-sm"
+                    value={
+                        editor.isActive('heading', { level: 1 }) ? '1' :
+                            editor.isActive('heading', { level: 2 }) ? '2' :
+                                editor.isActive('heading', { level: 3 }) ? '3' :
+                                    editor.isActive('heading', { level: 4 }) ? '4' :
+                                        editor.isActive('heading', { level: 5 }) ? '5' :
+                                            editor.isActive('heading', { level: 6 }) ? '6' : 'p'
+                    }
+                >
+                    <option value="p">正文</option>
+                    <option value="1">H₁ 一级标题</option>
+                    <option value="2">H₂ 二级标题</option>
+                    <option value="3">H₃ 三级标题</option>
+                    <option value="4">H₄ 四级标题</option>
+                    <option value="5">H₅ 五级标题</option>
+                    <option value="6">H₆ 六级标题</option>
+                </select>
+
+                <div className="w-px h-6 bg-gray-300" />
+
+                {/* Text Styling */}
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().toggleBold().run()}
                     className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('bold') ? 'bg-gray-300' : ''}`}
+                    title="粗体"
                 >
                     <strong>B</strong>
                 </button>
@@ -162,43 +214,37 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                     type="button"
                     onClick={() => editor.chain().focus().toggleItalic().run()}
                     className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('italic') ? 'bg-gray-300' : ''}`}
+                    title="斜体"
                 >
                     <em>I</em>
                 </button>
                 <button
                     type="button"
-                    onClick={() => editor.chain().focus().toggleStrike().run()}
-                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('strike') ? 'bg-gray-300' : ''}`}
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('underline') ? 'bg-gray-300' : ''}`}
+                    title="下划线"
                 >
-                    <s>S</s>
+                    <u>U</u>
                 </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
-                <button
-                    type="button"
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('heading', { level: 1 }) ? 'bg-gray-300' : ''}`}
-                >
-                    H1
-                </button>
-                <button
-                    type="button"
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('heading', { level: 2 }) ? 'bg-gray-300' : ''}`}
-                >
-                    H2
-                </button>
-                <button
-                    type="button"
-                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('heading', { level: 3 }) ? 'bg-gray-300' : ''}`}
-                >
-                    H3
-                </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
+
+                <div className="w-px h-6 bg-gray-300" />
+
+                {/* Text Color */}
+                <input
+                    type="color"
+                    onInput={(e) => editor.chain().focus().setColor((e.target as HTMLInputElement).value).run()}
+                    className="w-8 h-8 rounded cursor-pointer"
+                    title="字体颜色"
+                />
+
+                <div className="w-px h-6 bg-gray-300" />
+
+                {/* Lists */}
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
                     className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('bulletList') ? 'bg-gray-300' : ''}`}
+                    title="无序列表"
                 >
                     • 列表
                 </button>
@@ -206,14 +252,55 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                     type="button"
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
                     className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('orderedList') ? 'bg-gray-300' : ''}`}
+                    title="有序列表"
                 >
                     1. 列表
                 </button>
-                <div className="w-px h-6 bg-gray-300 mx-1" />
+                <button
+                    type="button"
+                    onClick={() => editor.chain().focus().toggleTaskList().run()}
+                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('taskList') ? 'bg-gray-300' : ''}`}
+                    title="任务列表"
+                >
+                    ☐ 任务
+                </button>
+
+                <div className="w-px h-6 bg-gray-300" />
+
+                {/* Text Alignment */}
+                <button
+                    type="button"
+                    onClick={() => editor.chain().focus().setTextAlign('left').run()}
+                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive({ textAlign: 'left' }) ? 'bg-gray-300' : ''}`}
+                    title="左对齐"
+                >
+                    ⬅
+                </button>
+                <button
+                    type="button"
+                    onClick={() => editor.chain().focus().setTextAlign('center').run()}
+                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive({ textAlign: 'center' }) ? 'bg-gray-300' : ''}`}
+                    title="居中对齐"
+                >
+                    ↔
+                </button>
+                <button
+                    type="button"
+                    onClick={() => editor.chain().focus().setTextAlign('right').run()}
+                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive({ textAlign: 'right' }) ? 'bg-gray-300' : ''}`}
+                    title="右对齐"
+                >
+                    ➡
+                </button>
+
+                <div className="w-px h-6 bg-gray-300" />
+
+                {/* Link and Media */}
                 <button
                     type="button"
                     onClick={addLink}
                     className="px-3 py-1 rounded hover:bg-gray-200"
+                    title="插入链接"
                 >
                     🔗 链接
                 </button>
@@ -221,22 +308,24 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                     type="button"
                     onClick={addImage}
                     disabled={uploading}
-                    className="px-3 py-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 rounded hover:bg-gray-200 disabled:opacity-50"
+                    title="插入图片"
                 >
-                    {uploading ? '上传中...' : '📷 上传图片'}
+                    {uploading ? '上传中...' : '🖼️ 图片'}
                 </button>
                 <button
                     type="button"
                     onClick={addVideo}
                     disabled={uploadingVideo}
-                    className="px-3 py-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1 rounded hover:bg-gray-200 disabled:opacity-50"
+                    title="插入视频"
                 >
-                    {uploadingVideo ? '上传中...' : '🎬 上传视频'}
+                    {uploadingVideo ? '上传中...' : '🎬 视频'}
                 </button>
             </div>
 
-            {/* Editor */}
-            <EditorContent editor={editor} className="bg-white" />
+            {/* Editor Content */}
+            <EditorContent editor={editor} />
         </div>
     )
 }

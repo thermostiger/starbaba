@@ -13,12 +13,12 @@ export default function EditResourcePage() {
     const [saving, setSaving] = useState(false)
     const [formData, setFormData] = useState({
         title: '',
-        description: '',
-        category: 'animation',
+        highlights: '',
+        resourceInfo: '',
+        category: '',
         stage: 'enlightenment',
         price: 0,
-        vipPrice: 0,
-        duration: '',
+        region: '',
         isEnglishAudio: false,
         isHot: false,
         content: '',
@@ -36,16 +36,18 @@ export default function EditResourcePage() {
     async function loadResource() {
         try {
             setLoading(true)
+            console.log('Loading resource:', id)
             const response = await resourcesAPI.get(id)
+            console.log('Resource loaded:', response)
             const resource = response.doc
             setFormData({
                 title: resource.title || '',
-                description: resource.description || '',
-                category: resource.category || 'animation',
+                highlights: resource.highlights || '',
+                resourceInfo: resource.resourceInfo || '',
+                category: resource.category || '',
                 stage: resource.stage || 'enlightenment',
                 price: resource.price || 0,
-                vipPrice: resource.vipPrice || 0,
-                duration: resource.duration || '',
+                region: resource.region || '',
                 isEnglishAudio: resource.isEnglishAudio || false,
                 isHot: resource.isHot || false,
                 content: resource.content || '',
@@ -53,7 +55,7 @@ export default function EditResourcePage() {
             })
         } catch (error) {
             console.error('Failed to load resource:', error)
-            alert('加载资源失败')
+            alert('加载资源失败：' + (error as Error).message)
         } finally {
             setLoading(false)
         }
@@ -64,7 +66,34 @@ export default function EditResourcePage() {
 
         try {
             setSaving(true)
-            await resourcesAPI.update(id, formData)
+
+            // Transform downloadLinks to array format
+            const downloadLinksArray = []
+            if (formData.downloadLinks.baidu) {
+                downloadLinksArray.push({
+                    platform: 'baidu',
+                    url: formData.downloadLinks.baidu,
+                })
+            }
+            if (formData.downloadLinks.aliyun) {
+                downloadLinksArray.push({
+                    platform: 'aliyun',
+                    url: formData.downloadLinks.aliyun,
+                })
+            }
+            if (formData.downloadLinks.quark) {
+                downloadLinksArray.push({
+                    platform: 'quark',
+                    url: formData.downloadLinks.quark,
+                })
+            }
+
+            const payload = {
+                ...formData,
+                downloadLinks: downloadLinksArray,
+            }
+
+            await resourcesAPI.update(id, payload)
             alert('保存成功')
             router.push('/admin/resources')
         } catch (error) {
@@ -108,13 +137,25 @@ export default function EditResourcePage() {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        描述 *
+                        资源亮点 *
                     </label>
                     <textarea
                         required
                         rows={4}
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        value={formData.highlights}
+                        onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        资源信息
+                    </label>
+                    <textarea
+                        rows={3}
+                        value={formData.resourceInfo}
+                        onChange={(e) => setFormData({ ...formData, resourceInfo: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                 </div>
@@ -155,7 +196,7 @@ export default function EditResourcePage() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             价格 (元) *
@@ -172,26 +213,13 @@ export default function EditResourcePage() {
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            VIP 价格 (元)
-                        </label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            value={formData.vipPrice}
-                            onChange={(e) => setFormData({ ...formData, vipPrice: parseFloat(e.target.value) })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            时长
+                            地区/国家
                         </label>
                         <input
                             type="text"
-                            placeholder="例如: 30分钟"
-                            value={formData.duration}
-                            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                            placeholder="例如: 美国、英国"
+                            value={formData.region}
+                            onChange={(e) => setFormData({ ...formData, region: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>

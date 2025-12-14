@@ -20,9 +20,6 @@ export default function NewResourcesGrid({ resources, rows = 2, cardWidth, cardH
                 {!hideHeader && (
                     <div className="flex items-center justify-between mb-8">
                         <h2 className="text-3xl font-bold">最新资源</h2>
-                        <Link href="/search" className="text-primary hover:underline">
-                            查看更多 →
-                        </Link>
                     </div>
                 )}
 
@@ -34,29 +31,32 @@ export default function NewResourcesGrid({ resources, rows = 2, cardWidth, cardH
                             className={cardWidth ? "flex-shrink-0" : ""}
                             style={cardWidth ? { width: cardWidth } : undefined}
                         >
-                            <Card className="group overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-full flex flex-col" style={cardHeight ? { height: cardHeight } : undefined}>
-                                <div className="relative w-full" style={{ height: cardHeight ? '65%' : 'auto', aspectRatio: cardHeight ? undefined : '3/4' }}>
-                                    <Image
-                                        src={resource.coverImage}
-                                        alt={resource.title}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                                <CardContent className="p-2 flex-1 flex flex-col justify-between">
-                                    <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                                        {resource.title}
-                                    </h3>
-                                    <div className="flex items-center justify-between mt-1">
-                                        <span className="text-xs text-muted-foreground">{resource.stage}</span>
-                                        {resource.vipPrice === 0 ? (
-                                            <span className="text-xs font-bold text-primary">VIP</span>
-                                        ) : (
-                                            <span className="text-xs font-bold text-primary">¥{resource.price}</span>
-                                        )}
+                            <div className="relative group">
+                                <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
+                                <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-full flex flex-col border-0 shadow-none" style={cardHeight ? { height: cardHeight } : undefined}>
+                                    <div className="relative w-full" style={{ height: cardHeight ? '65%' : 'auto', aspectRatio: cardHeight ? undefined : '3/4' }}>
+                                        <Image
+                                            src={resource.coverImage}
+                                            alt={resource.title}
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
-                                </CardContent>
-                            </Card>
+                                    <CardContent className="p-2 flex-1 flex flex-col justify-between bg-white/95 backdrop-blur-sm">
+                                        <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                                            {resource.title}
+                                        </h3>
+                                        <div className="flex items-center justify-between mt-1">
+                                            <span className="text-xs text-muted-foreground">{resource.stage}</span>
+                                            {resource.vipPrice === 0 ? (
+                                                <span className="text-xs font-bold text-primary">VIP</span>
+                                            ) : (
+                                                <span className="text-xs font-bold text-primary">¥{resource.price}</span>
+                                            )}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
                         </Link>
                     ))}
                 </div>

@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
-import HeroHotSwiper from '@/components/home/HeroHotSwiper';
-import GlobalSearch from '@/components/home/GlobalSearch';
+import HeroHotSection from '@/components/home/HeroHotSection';
+import HeroSection from '@/components/home/HeroSection';
 import NewResourcesGrid from '@/components/home/NewResourcesGrid';
 import MembershipPlans from '@/components/home/MembershipPlans';
 import DocumentaryGrid from '@/components/home/DocumentaryGrid';
@@ -15,15 +15,15 @@ export default async function HomePage() {
     // Fetch data server-side
     const hotResources = await getHotResources(8);
     const newResources = await getNewResources(16);
-    const { data: documentaries } = await getDocumentaries(1, 6);
+    const { data: documentaries } = await getDocumentaries(1, 8);
 
     return (
         <>
-            <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-                <HeroHotSwiper resources={hotResources} />
-            </Suspense>
+            <HeroSection />
 
-            <GlobalSearch />
+            <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
+                <HeroHotSection resources={hotResources} />
+            </Suspense>
 
             <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
                 <NewResourcesGrid resources={newResources} rows={2} />

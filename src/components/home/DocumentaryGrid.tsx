@@ -17,7 +17,7 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
         <section className="py-12 bg-white">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-3xl font-bold">科普纪录片专区</h2>
+                    <h2 className="text-3xl font-bold">科普纪录片</h2>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
@@ -28,7 +28,7 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
                                 <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
 
                                 {/* Card content */}
-                                <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-[250px] flex flex-col rounded-2xl ring-1 ring-black/5">
+                                <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-[250px] flex flex-col rounded-2xl border-0 shadow-none">
                                     {/* Top 50%: Image */}
                                     <div className="relative h-1/2 w-full">
                                         <Image

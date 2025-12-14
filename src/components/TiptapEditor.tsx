@@ -177,7 +177,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                             editor.chain().focus().setParagraph().run()
                         } else {
                             const level = parseInt(value) as 1 | 2 | 3 | 4 | 5 | 6
-                            editor.chain().focus().toggleHeading({ level }).run()
+                            editor.chain().focus().setHeading({ level }).run()
                         }
                     }}
                     className="px-2 py-1 border border-gray-300 rounded text-sm"
@@ -256,14 +256,6 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                 >
                     1. 列表
                 </button>
-                <button
-                    type="button"
-                    onClick={() => editor.chain().focus().toggleTaskList().run()}
-                    className={`px-3 py-1 rounded hover:bg-gray-200 ${editor.isActive('taskList') ? 'bg-gray-300' : ''}`}
-                    title="任务列表"
-                >
-                    ☐ 任务
-                </button>
 
                 <div className="w-px h-6 bg-gray-300" />
 
@@ -295,15 +287,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
 
                 <div className="w-px h-6 bg-gray-300" />
 
-                {/* Link and Media */}
-                <button
-                    type="button"
-                    onClick={addLink}
-                    className="px-3 py-1 rounded hover:bg-gray-200"
-                    title="插入链接"
-                >
-                    🔗 链接
-                </button>
+                {/* Media */}
                 <button
                     type="button"
                     onClick={addImage}

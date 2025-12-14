@@ -16,53 +16,66 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
     return (
         <section className="py-12 bg-white">
             <div className="max-w-7xl mx-auto px-4">
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-3xl font-bold">科普纪录片</h2>
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-purple-100">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-purple-100 rounded-xl">
+                            <span className="text-2xl">🎬</span>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-900">科普纪录片</h2>
+                            <p className="text-sm text-slate-500 mt-1">探索世界的奇妙窗口</p>
+                        </div>
+                    </div>
+                    {!showPagination && (
+                        <Link href="/documentaries" className="text-sm font-medium text-purple-600 hover:text-purple-700 flex items-center gap-1 transition-colors">
+                            查看更多
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                        </Link>
+                    )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {documentaries.map((doc) => (
-                        <Link key={doc.id} href={`/resource/${doc.id}`} className="w-full max-w-[250px]">
-                            <div className="relative group">
-                                {/* Gradient glow effect */}
-                                <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
+                        <Link key={doc.id} href={`/resource/${doc.id}`} className="block group">
+                            <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer h-full flex flex-col border border-purple-100/50 shadow-sm rounded-2xl bg-white">
+                                {/* Top Image Area - 16:9 Aspect Ratio */}
+                                <div className="relative w-full aspect-video">
+                                    <Image
+                                        src={doc.coverImage}
+                                        alt={doc.title}
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                    {/* Play Button Overlay */}
+                                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+                                        <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                                            <svg className="w-5 h-5 text-purple-600 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                        </div>
+                                    </div>
+                                    <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/60 text-white text-[10px] rounded font-medium backdrop-blur-sm">
+                                        {doc.duration}
+                                    </div>
+                                </div>
 
-                                {/* Card content */}
-                                <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer h-[250px] flex flex-col rounded-2xl border-0 shadow-none">
-                                    {/* Top 50%: Image */}
-                                    <div className="relative h-1/2 w-full">
-                                        <Image
-                                            src={doc.coverImage}
-                                            alt={doc.title}
-                                            fill
-                                            className="object-cover"
-                                        />
+                                {/* Content Area */}
+                                <div className="p-4 flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <h3 className="font-bold text-base mb-1 line-clamp-1 group-hover:text-purple-600 transition-colors">
+                                            {doc.title}
+                                        </h3>
+                                        <p className="text-xs text-slate-500 line-clamp-2 mb-3">{doc.subtitle}</p>
                                     </div>
 
-                                    {/* Bottom 50%: Content */}
-                                    <div className="h-1/2 p-4 flex flex-col justify-between bg-white">
-                                        <div>
-                                            <h3 className="font-bold text-base mb-1 group-hover:text-orange-500 transition-colors line-clamp-1">
-                                                {doc.title}
-                                            </h3>
-                                            <p className="text-xs text-muted-foreground line-clamp-2">{doc.subtitle}</p>
-                                        </div>
-
-                                        <div className="flex items-center justify-between text-xs text-muted-foreground mt-2">
+                                    <div className="flex items-center justify-between pt-3 border-t border-slate-50">
+                                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                                             {doc.isEnglishAudio && (
-                                                <div className="flex items-center gap-1 text-orange-500">
-                                                    <Volume2 className="h-3 w-3" />
-                                                    <span>英文</span>
-                                                </div>
+                                                <span className="px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded">英文原声</span>
                                             )}
-                                            <div className="flex items-center gap-1">
-                                                <Clock className="h-3 w-3" />
-                                                <span>{doc.duration}</span>
-                                            </div>
                                         </div>
+                                        {/* Optional: Add rating or views here if available */}
                                     </div>
-                                </Card>
-                            </div>
+                                </div>
+                            </Card>
                         </Link>
                     ))}
                 </div>

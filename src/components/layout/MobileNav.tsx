@@ -10,21 +10,24 @@ export default function MobileNav() {
             <Link href="/" className="text-lg font-medium hover:text-primary transition-colors">
                 首页
             </Link>
-            <Link href="/category/enlightenment" className="text-lg font-medium hover:text-primary transition-colors">
-                启蒙英语
+            <Link href="/young-children" className="text-lg font-medium hover:text-primary transition-colors">
+                幼儿英语
             </Link>
-            <Link href="/category/teen" className="text-lg font-medium hover:text-primary transition-colors">
+            <Link href="/children" className="text-lg font-medium hover:text-primary transition-colors">
+                少儿英语
+            </Link>
+            <Link href="/teenagers" className="text-lg font-medium hover:text-primary transition-colors">
                 青少年英语
             </Link>
-            <Link href="/documentary" className="text-lg font-medium hover:text-primary transition-colors">
-                纪录片
+            <Link href="/documentaries" className="text-lg font-medium hover:text-primary transition-colors">
+                原声科普
             </Link>
             <Link href="/vip" className="text-lg font-medium hover:text-primary transition-colors flex items-center">
                 <Crown className="w-5 h-5 mr-2 text-yellow-500" />
                 VIP会员
             </Link>
             <Link href="/about" className="text-lg font-medium hover:text-primary transition-colors">
-                关于星爸
+                关于
             </Link>
             <div className="pt-8">
                 <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">

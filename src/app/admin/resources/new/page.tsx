@@ -17,6 +17,7 @@ export default function NewResourcePage() {
         highlights: '',
         resourceInfo: '',
         category: '',
+        assignedPage: '',
         price: 0,
         isWeeklyHot: false,
         isNew: false,
@@ -113,6 +114,7 @@ export default function NewResourcePage() {
                 highlights: formData.highlights,
                 resourceInfo: formData.resourceInfo,
                 category: formData.category,
+                assignedPage: formData.assignedPage,
                 price: formData.price,
                 isWeeklyHot: formData.isWeeklyHot,
                 isNew: formData.isNew,
@@ -227,6 +229,24 @@ export default function NewResourcePage() {
                             <option value="青少年英语进阶">青少年英语进阶</option>
                             <option value="科普纪录片">科普纪录片</option>
                             <option value="TED演讲">TED演讲</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            所属页面 *
+                        </label>
+                        <select
+                            required
+                            value={formData.assignedPage}
+                            onChange={(e) => setFormData({ ...formData, assignedPage: e.target.value })}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                            <option value="">请选择所属页面</option>
+                            <option value="幼儿英语">幼儿英语</option>
+                            <option value="少儿英语">少儿英语</option>
+                            <option value="青少年英语">青少年英语</option>
+                            <option value="科普纪录片">科普纪录片</option>
                         </select>
                     </div>
 

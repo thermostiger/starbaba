@@ -24,15 +24,16 @@ export async function POST(request: NextRequest) {
                 highlights,
                 "resourceInfo",
                 category,
-                stage,
+                assigned_page,
                 price,
-                region,
-                "isEnglishAudio",
-                "isHot",
+                "isWeeklyHot",
+                "isNew",
                 content,
+                "coverImage",
+                "resourceUrl",
                 "createdAt",
                 "updatedAt"
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
             RETURNING *
         `
 
@@ -41,12 +42,13 @@ export async function POST(request: NextRequest) {
             data.highlights,
             data.resourceInfo || '',
             data.category,
-            data.stage,
+            data.assignedPage,
             data.price,
-            data.region || '',
-            data.isEnglishAudio || false,
-            data.isHot || false,
+            data.isWeeklyHot || false,
+            data.isNew || false,
             data.content || '',
+            data.coverImage || '',
+            data.resourceUrl || '',
         ]
 
         const result = await client.query(insertQuery, values)
@@ -87,16 +89,27 @@ export async function GET(request: NextRequest) {
         const { searchParams } = new URL(request.url)
         const page = parseInt(searchParams.get('page') || '1')
         const limit = parseInt(searchParams.get('limit') || '10')
+        const assignedPage = searchParams.get('assignedPage')
         const offset = (page - 1) * limit
 
-        const result = await pool.query(
-            `SELECT * FROM resources 
-             ORDER BY "createdAt" DESC 
-             LIMIT $1 OFFSET $2`,
-            [limit, offset]
-        )
+        let query = 'SELECT * FROM resources'
+        let countQuery = 'SELECT COUNT(*) FROM resources'
+        const queryParams: any[] = []
+        const countParams: any[] = []
 
-        const countResult = await pool.query('SELECT COUNT(*) FROM resources')
+        // Add assignedPage filter if provided
+        if (assignedPage) {
+            query += ' WHERE assigned_page = $1'
+            countQuery += ' WHERE assigned_page = $1'
+            queryParams.push(assignedPage)
+            countParams.push(assignedPage)
+        }
+
+        query += ' ORDER BY "createdAt" DESC LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2)
+        queryParams.push(limit, offset)
+
+        const result = await pool.query(query, queryParams)
+        const countResult = await pool.query(countQuery, countParams)
         const totalDocs = parseInt(countResult.rows[0].count)
 
         return NextResponse.json({

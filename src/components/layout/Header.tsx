@@ -55,9 +55,10 @@ export default function Header() {
                 <nav className="hidden md:flex items-center space-x-1 shrink-0">
                     {[
                         { href: '/', label: '首页' },
-                        { href: '/category/enlightenment', label: '启蒙英语' },
-                        { href: '/category/teen', label: '青少年英语' },
-                        { href: '/documentary', label: '纪录片' },
+                        { href: '/young-children', label: '幼儿英语' },
+                        { href: '/children', label: '少儿英语' },
+                        { href: '/teenagers', label: '青少年英语' },
+                        { href: '/documentaries', label: '原声科普' },
                         { href: '/vip', label: 'VIP会员', highlight: true },
                         { href: '/about', label: '关于' },
                     ].map((link) => (

@@ -61,7 +61,7 @@ export default function MembershipPlans() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16 max-w-5xl mx-auto px-4 md:px-0">
                     {PLANS.map((plan) => {
                         const isGold = plan.theme === 'gold';
                         const isDiamond = plan.theme === 'diamond';
@@ -77,7 +77,7 @@ export default function MembershipPlans() {
                             >
                                 {isGold && (
                                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-6 py-1.5 rounded-full text-sm font-bold shadow-lg flex items-center gap-1 whitespace-nowrap">
-                                        <Crown className="w-4 h-4 fill-current" /> 最多家长选择
+                                        <Crown className="w-3 h-3 fill-current" /> 最多家长选择
                                     </div>
                                 )}
                                 {isDiamond && (
@@ -86,16 +86,18 @@ export default function MembershipPlans() {
                                     </div>
                                 )}
 
-                                <CardHeader className={`text-center pt-10 pb-2 ${isGold ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
-                                    <div className="flex justify-center mb-4">
-                                        {plan.theme === 'basic' && <div className="p-3 rounded-full bg-slate-100"><Zap className="w-6 h-6 text-slate-500" /></div>}
-                                        {isGold && <div className="p-3 rounded-full bg-amber-100"><Star className="w-8 h-8 text-amber-500 fill-amber-500" /></div>}
-                                        {isDiamond && <div className="p-3 rounded-full bg-zinc-800 border border-zinc-700"><Gem className="w-8 h-8 text-indigo-400" /></div>}
+                                <CardHeader className={`text-center pt-6 pb-2 ${isGold ? 'bg-gradient-to-b from-amber-50/50 to-transparent' : ''}`}>
+                                    {/* Inline Icon and Name */}
+                                    <div className="flex items-center justify-center gap-2 mb-1">
+                                        {plan.theme === 'basic' && <div className="p-1.5 rounded-full bg-slate-100"><Zap className="w-5 h-5 text-slate-500" /></div>}
+                                        {isGold && <div className="p-1.5 rounded-full bg-amber-100"><Star className="w-6 h-6 text-amber-500 fill-amber-500" /></div>}
+                                        {isDiamond && <div className="p-1.5 rounded-full bg-zinc-800 border border-zinc-700"><Gem className="w-5 h-5 text-indigo-400" /></div>}
+                                        <div className={`text-lg font-bold ${isDiamond ? 'text-zinc-100' : 'text-slate-600'}`}>{plan.name}</div>
                                     </div>
-                                    <div className={`text-lg font-bold ${isDiamond ? 'text-zinc-100' : 'text-slate-600'}`}>{plan.name}</div>
-                                    <div className="mt-2 flex items-baseline justify-center gap-1">
-                                        <span className="text-2xl font-bold">¥</span>
-                                        <span className={`text-5xl font-extrabold tracking-tight ${isGold ? 'text-amber-600' : ''} ${isDiamond ? 'text-white' : 'text-slate-900'}`}>
+
+                                    <div className="flex items-baseline justify-center gap-1">
+                                        <span className="text-xl font-bold">¥</span>
+                                        <span className={`text-4xl font-extrabold tracking-tight ${isGold ? 'text-amber-600' : ''} ${isDiamond ? 'text-white' : 'text-slate-900'}`}>
                                             {plan.price}
                                         </span>
                                         {plan.originalPrice && (
@@ -104,18 +106,18 @@ export default function MembershipPlans() {
                                             </span>
                                         )}
                                     </div>
-                                    <div className={`text-sm mt-2 font-medium ${isDiamond ? 'text-zinc-400' : 'text-slate-500'}`}>
+                                    <div className={`text-sm mt-0.5 font-medium ${isDiamond ? 'text-zinc-400' : 'text-slate-500'}`}>
                                         有效期: {plan.duration}
                                     </div>
                                 </CardHeader>
 
-                                <CardContent className="flex-1 flex flex-col p-8">
-                                    <div className={`h-px w-full mb-8 ${isDiamond ? 'bg-zinc-800' : 'bg-slate-100'}`}></div>
-                                    <ul className="space-y-4 flex-1 mb-8">
+                                <CardContent className="flex-1 flex flex-col p-5 pt-2">
+                                    <div className={`h-px w-full mb-4 ${isDiamond ? 'bg-zinc-800' : 'bg-slate-100'}`}></div>
+                                    <ul className="space-y-3 flex-1 mb-6 px-2">
                                         {plan.features.map((feature, i) => (
-                                            <li key={i} className="flex items-start gap-3">
-                                                <CheckCircle2 className={`w-5 h-5 flex-shrink-0 ${isGold ? 'text-amber-500' :
-                                                        isDiamond ? 'text-indigo-400' : 'text-slate-400'
+                                            <li key={i} className="flex items-start gap-2.5">
+                                                <CheckCircle2 className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isGold ? 'text-amber-500' :
+                                                    isDiamond ? 'text-indigo-400' : 'text-slate-400'
                                                     }`} />
                                                 <span className={`text-sm ${isDiamond ? 'text-zinc-300' : 'text-slate-600'}`}>{feature}</span>
                                             </li>
@@ -125,10 +127,10 @@ export default function MembershipPlans() {
                                     <Button
                                         asChild
                                         size="lg"
-                                        className={`w-full font-bold h-12 text-md transition-all duration-300
-                                            ${isGold ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg shadow-amber-500/30 border-0' : ''}
-                                            ${isDiamond ? 'bg-white text-zinc-900 hover:bg-zinc-100 hover:text-zinc-950' : ''}
-                                            ${plan.theme === 'basic' ? 'bg-slate-900 text-white hover:bg-slate-800' : ''}
+                                        className={`w-[85%] mx-auto flex items-center justify-center font-bold h-10 text-base transition-all duration-300 rounded-full
+                                            ${isGold ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-xl shadow-amber-500/30 border-0 hover:-translate-y-0.5' : ''}
+                                            ${isDiamond ? 'bg-white text-zinc-900 hover:bg-zinc-100 hover:text-zinc-950 hover:shadow-lg hover:shadow-indigo-500/20' : ''}
+                                            ${plan.theme === 'basic' ? 'bg-slate-900 text-white hover:bg-slate-800 hover:shadow-lg' : ''}
                                         `}
                                     >
                                         <Link href="/vip">
@@ -141,7 +143,7 @@ export default function MembershipPlans() {
                     })}
                 </div>
 
-                <div className="mt-12 text-center">
+                <div className="mt-10 text-center">
                     <p className="text-slate-400 text-sm">
                         如有任何支付问题，请联系客服微信: <span className="text-slate-600 font-bold select-all">xingbaba</span>
                     </p>

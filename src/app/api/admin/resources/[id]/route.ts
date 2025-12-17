@@ -30,18 +30,16 @@ export async function GET(
         const resource = result.rows[0]
         console.log('Resource found:', resource.title)
 
-        // Return resource with empty download links (table doesn't exist yet)
-        const downloadLinks = {
-            baidu: '',
-            aliyun: '',
-            quark: '',
-        }
-
-        console.log('Returning resource')
         return NextResponse.json({
             doc: {
                 ...resource,
-                downloadLinks,
+                // Map snake_case database fields to camelCase for frontend if needed
+                // But looking at the POST route and general usage, frontend seems to handle what it gets
+                // Explicitly mapping assigned_page to assignedPage to match frontend state
+                assignedPage: resource.assigned_page,
+                // Ensure boolean fields are booleans
+                isWeeklyHot: !!resource.isWeeklyHot,
+                isNew: !!resource.isNew,
             },
         })
     } catch (error) {
@@ -75,14 +73,15 @@ export async function PATCH(
                 highlights = $2,
                 "resourceInfo" = $3,
                 category = $4,
-                stage = $5,
+                assigned_page = $5,
                 price = $6,
-                region = $7,
-                "isEnglishAudio" = $8,
-                "isHot" = $9,
-                content = $10,
+                "isWeeklyHot" = $7,
+                "isNew" = $8,
+                content = $9,
+                "coverImage" = $10,
+                "resourceUrl" = $11,
                 "updatedAt" = NOW()
-            WHERE id = $11
+            WHERE id = $12
             RETURNING *
         `
 
@@ -91,12 +90,13 @@ export async function PATCH(
             data.highlights,
             data.resourceInfo || '',
             data.category,
-            data.stage,
+            data.assignedPage, // Mapped from camelCase in payload
             data.price,
-            data.region || '',
-            data.isEnglishAudio || false,
-            data.isHot || false,
+            data.isWeeklyHot || false,
+            data.isNew || false,
             data.content || '',
+            data.coverImage || '',
+            data.resourceUrl || '',
             id,
         ]
 
@@ -112,9 +112,6 @@ export async function PATCH(
 
         const resource = result.rows[0]
 
-        // Skip download links update (table doesn't exist yet)
-        // TODO: Create resource_download_links table and uncomment this code
-
         // Commit transaction
         await client.query('COMMIT')
 
@@ -122,7 +119,10 @@ export async function PATCH(
 
         return NextResponse.json({
             success: true,
-            doc: resource,
+            doc: {
+                ...resource,
+                assignedPage: resource.assigned_page,
+            },
         })
     } catch (error) {
         // Rollback on error
@@ -147,7 +147,7 @@ export async function DELETE(
     const client = await pool.connect()
 
     try {
-        const id = params.id
+        const { id } = await params
 
         // Start transaction
         await client.query('BEGIN')

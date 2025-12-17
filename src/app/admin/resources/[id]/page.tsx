@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { resourcesAPI } from '@/lib/admin-api'
+import dynamic from 'next/dynamic'
+
+const TiptapEditor = dynamic(() => import('@/components/TiptapEditor'), { ssr: false })
 
 export default function EditResourcePage() {
     const router = useRouter()
@@ -11,22 +14,22 @@ export default function EditResourcePage() {
 
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
+    const [uploadingCover, setUploadingCover] = useState(false)
+    const [coverImageUrl, setCoverImageUrl] = useState('')
+
+    // State matching NewResourcePage
     const [formData, setFormData] = useState({
         title: '',
         highlights: '',
         resourceInfo: '',
         category: '',
-        stage: 'enlightenment',
+        assignedPage: '',
         price: 0,
-        region: '',
-        isEnglishAudio: false,
-        isHot: false,
+        isWeeklyHot: false,
+        isNew: false,
         content: '',
-        downloadLinks: {
-            baidu: '',
-            aliyun: '',
-            quark: '',
-        },
+        coverImage: '',
+        resourceUrl: '',
     })
 
     useEffect(() => {
@@ -39,19 +42,22 @@ export default function EditResourcePage() {
             console.log('Loading resource:', id)
             const response = await resourcesAPI.get(id)
             console.log('Resource loaded:', response)
-            const resource = response.doc
+            const resource = response.doc as any
+
+            setCoverImageUrl(resource.coverImage || '')
+
             setFormData({
                 title: resource.title || '',
                 highlights: resource.highlights || '',
                 resourceInfo: resource.resourceInfo || '',
                 category: resource.category || '',
-                stage: resource.stage || 'enlightenment',
+                assignedPage: resource.assignedPage || '',
                 price: resource.price || 0,
-                region: resource.region || '',
-                isEnglishAudio: resource.isEnglishAudio || false,
-                isHot: resource.isHot || false,
+                isWeeklyHot: !!resource.isWeeklyHot,
+                isNew: !!resource.isNew,
                 content: resource.content || '',
-                downloadLinks: resource.downloadLinks || { baidu: '', aliyun: '', quark: '' },
+                coverImage: resource.coverImage || '',
+                resourceUrl: resource.resourceUrl || '',
             })
         } catch (error) {
             console.error('Failed to load resource:', error)
@@ -61,36 +67,101 @@ export default function EditResourcePage() {
         }
     }
 
+    async function handleCoverImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        try {
+            setUploadingCover(true)
+
+            // Resize image to 200x260px
+            const resizedBlob = await resizeImage(file, 200, 260)
+
+            // Upload resized image
+            const formData = new FormData()
+            formData.append('file', resizedBlob, file.name)
+
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            })
+
+            if (!response.ok) {
+                throw new Error('Upload failed')
+            }
+
+            const result = await response.json()
+            setCoverImageUrl(result.url)
+            setFormData(prev => ({ ...prev, coverImage: result.url }))
+        } catch (error) {
+            console.error('Cover image upload error:', error)
+            alert('封面上传失败：' + (error as Error).message)
+        } finally {
+            setUploadingCover(false)
+        }
+    }
+
+    function resizeImage(file: File, targetWidth: number, targetHeight: number): Promise<Blob> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                const img = new Image()
+                img.onload = () => {
+                    const canvas = document.createElement('canvas')
+                    canvas.width = targetWidth
+                    canvas.height = targetHeight
+
+                    const ctx = canvas.getContext('2d')
+                    if (!ctx) {
+                        reject(new Error('Failed to get canvas context'))
+                        return
+                    }
+
+                    // Calculate scaling to cover the target dimensions
+                    const scale = Math.max(targetWidth / img.width, targetHeight / img.height)
+                    const scaledWidth = img.width * scale
+                    const scaledHeight = img.height * scale
+
+                    // Center the image
+                    const x = (targetWidth - scaledWidth) / 2
+                    const y = (targetHeight - scaledHeight) / 2
+
+                    ctx.drawImage(img, x, y, scaledWidth, scaledHeight)
+
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            resolve(blob)
+                        } else {
+                            reject(new Error('Failed to create blob'))
+                        }
+                    }, file.type)
+                }
+                img.onerror = () => reject(new Error('Failed to load image'))
+                img.src = e.target?.result as string
+            }
+            reader.onerror = () => reject(new Error('Failed to read file'))
+            reader.readAsDataURL(file)
+        })
+    }
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
 
         try {
             setSaving(true)
 
-            // Transform downloadLinks to array format
-            const downloadLinksArray = []
-            if (formData.downloadLinks.baidu) {
-                downloadLinksArray.push({
-                    platform: 'baidu',
-                    url: formData.downloadLinks.baidu,
-                })
-            }
-            if (formData.downloadLinks.aliyun) {
-                downloadLinksArray.push({
-                    platform: 'aliyun',
-                    url: formData.downloadLinks.aliyun,
-                })
-            }
-            if (formData.downloadLinks.quark) {
-                downloadLinksArray.push({
-                    platform: 'quark',
-                    url: formData.downloadLinks.quark,
-                })
-            }
-
             const payload = {
-                ...formData,
-                downloadLinks: downloadLinksArray,
+                title: formData.title,
+                highlights: formData.highlights,
+                resourceInfo: formData.resourceInfo,
+                category: formData.category,
+                assignedPage: formData.assignedPage,
+                price: formData.price,
+                isWeeklyHot: formData.isWeeklyHot,
+                isNew: formData.isNew,
+                content: formData.content,
+                coverImage: formData.coverImage,
+                resourceUrl: formData.resourceUrl,
             }
 
             await resourcesAPI.update(id, payload)
@@ -121,7 +192,6 @@ export default function EditResourcePage() {
             </div>
 
             <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
-                {/* Same form fields as new resource page */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         标题 *
@@ -137,6 +207,35 @@ export default function EditResourcePage() {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
+                        封面图片 (200x260px)
+                    </label>
+                    <div className="flex items-start space-x-4">
+                        {coverImageUrl && (
+                            <div className="flex-shrink-0">
+                                <img
+                                    src={coverImageUrl}
+                                    alt="封面预览"
+                                    className="w-[200px] h-[260px] object-cover rounded-lg border-2 border-gray-300"
+                                />
+                            </div>
+                        )}
+                        <div className="flex-1">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleCoverImageUpload}
+                                disabled={uploadingCover}
+                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
+                            />
+                            <p className="mt-2 text-sm text-gray-500">
+                                {uploadingCover ? '上传中...' : '上传后自动调整为 200x260px'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
                         资源亮点 *
                     </label>
                     <textarea
@@ -145,6 +244,7 @@ export default function EditResourcePage() {
                         value={formData.highlights}
                         onChange={(e) => setFormData({ ...formData, highlights: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="资源的主要亮点和特色..."
                     />
                 </div>
 
@@ -157,6 +257,7 @@ export default function EditResourcePage() {
                         value={formData.resourceInfo}
                         onChange={(e) => setFormData({ ...formData, resourceInfo: e.target.value })}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="资源的基本信息介绍..."
                     />
                 </div>
 
@@ -170,33 +271,33 @@ export default function EditResourcePage() {
                             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
-                            <option value="animation">动画</option>
-                            <option value="picture-book">绘本</option>
-                            <option value="song">儿歌</option>
-                            <option value="course">课程</option>
-                            <option value="game">游戏</option>
-                            <option value="other">其他</option>
+                            <option value="">请选择分类</option>
+                            <option value="幼儿英语启蒙">幼儿英语启蒙</option>
+                            <option value="少儿英语基础">少儿英语基础</option>
+                            <option value="青少年英语进阶">青少年英语进阶</option>
+                            <option value="科普纪录片">科普纪录片</option>
+                            <option value="TED演讲">TED演讲</option>
                         </select>
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                            适用阶段 *
+                            所属页面 *
                         </label>
                         <select
-                            value={formData.stage}
-                            onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
+                            required
+                            value={formData.assignedPage}
+                            onChange={(e) => setFormData({ ...formData, assignedPage: e.target.value })}
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
-                            <option value="enlightenment">启蒙英语</option>
-                            <option value="foundation">基础英语</option>
-                            <option value="advanced">进阶英语</option>
-                            <option value="teen">青少年英语</option>
+                            <option value="">请选择所属页面</option>
+                            <option value="幼儿英语">幼儿英语</option>
+                            <option value="少儿英语">少儿英语</option>
+                            <option value="青少年英语">青少年英语</option>
+                            <option value="科普纪录片">科普纪录片</option>
                         </select>
                     </div>
-                </div>
 
-                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                             价格 (元) *
@@ -210,107 +311,54 @@ export default function EditResourcePage() {
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            地区/国家
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="例如: 美国、英国"
-                            value={formData.region}
-                            onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                    </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="flex items-center space-x-6">
                     <label className="flex items-center">
                         <input
                             type="checkbox"
-                            checked={formData.isEnglishAudio}
-                            onChange={(e) => setFormData({ ...formData, isEnglishAudio: e.target.checked })}
+                            checked={formData.isWeeklyHot}
+                            onChange={(e) => setFormData({ ...formData, isWeeklyHot: e.target.checked })}
                             className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm text-gray-700">英文原声</span>
+                        <span className="ml-2 text-sm text-gray-700">本周热门</span>
                     </label>
 
                     <label className="flex items-center">
                         <input
                             type="checkbox"
-                            checked={formData.isHot}
-                            onChange={(e) => setFormData({ ...formData, isHot: e.target.checked })}
+                            checked={formData.isNew}
+                            onChange={(e) => setFormData({ ...formData, isNew: e.target.checked })}
                             className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                         />
-                        <span className="ml-2 text-sm text-gray-700">热门资源</span>
+                        <span className="ml-2 text-sm text-gray-700">最新资源</span>
                     </label>
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        详细内容
+                        详情介绍
                     </label>
-                    <textarea
-                        rows={6}
-                        value={formData.content}
-                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="资源的详细介绍..."
+                    <TiptapEditor
+                        content={formData.content}
+                        onChange={(value) => setFormData({ ...formData, content: value })}
                     />
+                    <p className="text-sm text-gray-500 mt-1">
+                        支持富文本编辑，可以插入图片、链接等
+                    </p>
                 </div>
 
-                <div className="border-t pt-6">
-                    <h3 className="text-lg font-medium text-gray-900 mb-4">下载链接</h3>
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                百度网盘
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.downloadLinks.baidu}
-                                onChange={(e) => setFormData({
-                                    ...formData,
-                                    downloadLinks: { ...formData.downloadLinks, baidu: e.target.value }
-                                })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="https://pan.baidu.com/..."
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                阿里云盘
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.downloadLinks.aliyun}
-                                onChange={(e) => setFormData({
-                                    ...formData,
-                                    downloadLinks: { ...formData.downloadLinks, aliyun: e.target.value }
-                                })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="https://www.aliyundrive.com/..."
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                夸克网盘
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.downloadLinks.quark}
-                                onChange={(e) => setFormData({
-                                    ...formData,
-                                    downloadLinks: { ...formData.downloadLinks, quark: e.target.value }
-                                })}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder="https://pan.quark.cn/..."
-                            />
-                        </div>
-                    </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        资源地址
+                    </label>
+                    <textarea
+                        rows={3}
+                        value={formData.resourceUrl}
+                        onChange={(e) => setFormData({ ...formData, resourceUrl: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="资源下载或访问地址...&#10;支持多行输入，每行一个链接"
+                    />
                 </div>
 
                 <div className="flex items-center justify-end space-x-4 pt-6 border-t">

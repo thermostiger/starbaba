@@ -16,6 +16,7 @@ export default function EditResourcePage() {
     const [saving, setSaving] = useState(false)
     const [uploadingCover, setUploadingCover] = useState(false)
     const [coverImageUrl, setCoverImageUrl] = useState('')
+    const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null)
 
     // State matching NewResourcePage
     const [formData, setFormData] = useState({
@@ -74,12 +75,9 @@ export default function EditResourcePage() {
         try {
             setUploadingCover(true)
 
-            // Resize image to 200x260px
-            const resizedBlob = await resizeImage(file, 200, 260)
-
-            // Upload resized image
+            // Upload original image
             const formData = new FormData()
-            formData.append('file', resizedBlob, file.name)
+            formData.append('file', file)
 
             const response = await fetch('/api/upload', {
                 method: 'POST',
@@ -99,49 +97,6 @@ export default function EditResourcePage() {
         } finally {
             setUploadingCover(false)
         }
-    }
-
-    function resizeImage(file: File, targetWidth: number, targetHeight: number): Promise<Blob> {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                const img = new Image()
-                img.onload = () => {
-                    const canvas = document.createElement('canvas')
-                    canvas.width = targetWidth
-                    canvas.height = targetHeight
-
-                    const ctx = canvas.getContext('2d')
-                    if (!ctx) {
-                        reject(new Error('Failed to get canvas context'))
-                        return
-                    }
-
-                    // Calculate scaling to cover the target dimensions
-                    const scale = Math.max(targetWidth / img.width, targetHeight / img.height)
-                    const scaledWidth = img.width * scale
-                    const scaledHeight = img.height * scale
-
-                    // Center the image
-                    const x = (targetWidth - scaledWidth) / 2
-                    const y = (targetHeight - scaledHeight) / 2
-
-                    ctx.drawImage(img, x, y, scaledWidth, scaledHeight)
-
-                    canvas.toBlob((blob) => {
-                        if (blob) {
-                            resolve(blob)
-                        } else {
-                            reject(new Error('Failed to create blob'))
-                        }
-                    }, file.type)
-                }
-                img.onerror = () => reject(new Error('Failed to load image'))
-                img.src = e.target?.result as string
-            }
-            reader.onerror = () => reject(new Error('Failed to read file'))
-            reader.readAsDataURL(file)
-        })
     }
 
     async function handleSubmit(e: React.FormEvent) {
@@ -207,7 +162,7 @@ export default function EditResourcePage() {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                        封面图片 (200x260px)
+                        封面图片
                     </label>
                     <div className="flex items-start space-x-4">
                         {coverImageUrl && (
@@ -215,8 +170,17 @@ export default function EditResourcePage() {
                                 <img
                                     src={coverImageUrl}
                                     alt="封面预览"
-                                    className="w-[200px] h-[260px] object-cover rounded-lg border-2 border-gray-300"
+                                    className="w-[200px] h-auto object-cover rounded-lg border-2 border-gray-300"
+                                    onLoad={(e) => {
+                                        const img = e.target as HTMLImageElement
+                                        setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight })
+                                    }}
                                 />
+                                {imageDimensions && (
+                                    <p className="mt-1 text-xs text-gray-500 text-center">
+                                        {imageDimensions.width} x {imageDimensions.height}
+                                    </p>
+                                )}
                             </div>
                         )}
                         <div className="flex-1">
@@ -228,7 +192,7 @@ export default function EditResourcePage() {
                                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 disabled:opacity-50"
                             />
                             <p className="mt-2 text-sm text-gray-500">
-                                {uploadingCover ? '上传中...' : '上传后自动调整为 200x260px'}
+                                {uploadingCover ? '上传中...' : '支持jpg, png格式，显示原图长宽'}
                             </p>
                         </div>
                     </div>

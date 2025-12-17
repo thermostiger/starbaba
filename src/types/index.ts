@@ -11,6 +11,7 @@ export interface Resource {
   isEnglishAudio?: boolean; // 英文原声
   content?: string; // 富文本内容
   highlights?: string; // 资源亮点
+  resourceUrl?: string; // 资源地址
   createdAt: string;
 }
 

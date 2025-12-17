@@ -248,6 +248,7 @@ export async function getResourceById(id: string): Promise<Resource | null> {
                     price: parseFloat(dbResource.price) || 0,
                     vipPrice: 0,
                     content: dbResource.content,
+                    resourceUrl: dbResource.resourceUrl || '',
                     createdAt: dbResource.createdAt,
                 };
             }

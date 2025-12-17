@@ -85,6 +85,36 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
 
                             <div className="p-8">
                                 <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: resource.content || '<p>暂无详细介绍</p>' }} />
+
+                                {resource.resourceUrl && (
+                                    <div className="mt-8 pt-8 border-t border-gray-100">
+                                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                                            <span className="w-1 h-5 bg-blue-500 rounded-full"></span>
+                                            资源地址
+                                        </h3>
+                                        <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+                                            {resource.resourceUrl.split('\n').map((line, index) => (
+                                                <div key={index} className="break-all">
+                                                    {line.match(/https?:\/\/[^\s]+/) ? (
+                                                        <a
+                                                            href={line.match(/https?:\/\/[^\s]+/)![0]}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-600 hover:text-blue-700 hover:underline"
+                                                        >
+                                                            {line}
+                                                        </a>
+                                                    ) : (
+                                                        <span className="text-gray-700">{line}</span>
+                                                    )}
+                                                </div>
+                                            ))}
+                                            <p className="text-xs text-gray-500 mt-4 pt-2 border-t border-gray-200">
+                                                提示：如果有提取码，请一同复制。链接失效请联系客服。
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

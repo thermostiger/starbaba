@@ -84,20 +84,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
                             </div>
 
                             <div className="p-8">
-                                <div className="prose max-w-none">
-                                    <p className="text-gray-600 leading-relaxed">
-                                        {resource.description}
-                                    </p>
-                                    <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-100">
-                                        <h3 className="text-lg font-bold mb-4">资源亮点</h3>
-                                        <ul className="list-disc list-inside space-y-2 text-gray-600">
-                                            <li>适合年龄：{resource.stage === '启蒙' ? '0-6岁' : '7-15岁'}</li>
-                                            <li>资源格式：高清PDF + MP3音频</li>
-                                            <li>包含内容：全套绘本 + 配套练习</li>
-                                            <li>下载方式：百度网盘 / 阿里云盘</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: resource.content || '<p>暂无详细介绍</p>' }} />
                             </div>
                         </div>
 

@@ -1,4 +1,10 @@
 import { Resource, Documentary } from '@/types';
+import { Pool } from 'pg';
+
+// Create a singleton connection pool
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL,
+});
 
 // Mock CMS data fetching functions
 // In production, these would call the actual CMS API
@@ -204,6 +210,53 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
 }
 
 export async function getResourceById(id: string): Promise<Resource | null> {
+    // For pure numeric IDs > 10 (database resources), query database directly
+    // Mock resources use IDs 1-8, so we skip database query for those
+    const numericId = parseInt(id);
+    if (/^\d+$/.test(id) && numericId > 10) {
+        console.log('[CMS] Fetching resource from database, ID:', id);
+        try {
+            const result = await pool.query(
+                'SELECT * FROM resources WHERE id = $1',
+                [id]
+            );
+
+            if (result.rows.length > 0) {
+                const dbResource = result.rows[0];
+                console.log('[CMS] Resource found in database:', dbResource.title);
+
+                // Map assigned_page to stage for compatibility
+                let stage = '启蒙';
+                if (dbResource.assigned_page) {
+                    const pageToStage: Record<string, string> = {
+                        '幼儿英语': '启蒙',
+                        '少儿英语': '进阶',
+                        '青少年英语': '青少年',
+                        '科普纪录片': '全年龄',
+                    };
+                    stage = pageToStage[dbResource.assigned_page] || '启蒙';
+                }
+
+                return {
+                    id: dbResource.id.toString(),
+                    title: dbResource.title,
+                    description: dbResource.resourceInfo || '',
+                    highlights: dbResource.highlights || '',
+                    coverImage: dbResource.coverImage || '/images/placeholder.jpg',
+                    category: dbResource.category,
+                    stage: stage,
+                    price: parseFloat(dbResource.price) || 0,
+                    vipPrice: 0,
+                    content: dbResource.content,
+                    createdAt: dbResource.createdAt,
+                };
+            }
+            console.log('[CMS] Resource not found in database');
+        } catch (error) {
+            console.error('Failed to fetch resource from database:', error);
+        }
+    }
+
     // First check static mock resources
     const staticResource = MOCK_RESOURCES.find(r => r.id === id);
     if (staticResource) return staticResource;
@@ -294,8 +347,10 @@ export async function getResourceById(id: string): Promise<Resource | null> {
         }
     }
 
+    // Check generated mock resources
     const resources = await getNewResources(100);
-    const resource = resources.find(r => r.id === id);
+    const mockResource = resources.find(r => r.id === id);
+    if (mockResource) return mockResource;
 
     return null;
 }

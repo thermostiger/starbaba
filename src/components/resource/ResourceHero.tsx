@@ -54,18 +54,16 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                                     <span className="font-semibold text-gray-700 text-sm">资源亮点</span>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <div className="flex items-center gap-2 text-xs text-gray-700">
-                                        <div className="w-1 h-1 rounded-full bg-orange-400"></div>
-                                        <span>高清画质，流畅播放</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-xs text-gray-700">
-                                        <div className="w-1 h-1 rounded-full bg-orange-400"></div>
-                                        <span>中英双语字幕可选</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-xs text-gray-700">
-                                        <div className="w-1 h-1 rounded-full bg-orange-400"></div>
-                                        <span>永久有效，随时观看</span>
-                                    </div>
+                                    {(resource.highlights ? resource.highlights.split('\n').filter(h => h.trim()) : [
+                                        '高清画质，流畅播放',
+                                        '中英双语字幕可选',
+                                        '永久有效，随时观看'
+                                    ]).map((highlight, index) => (
+                                        <div key={index} className="flex items-center gap-2 text-xs text-gray-700">
+                                            <div className="w-1 h-1 rounded-full bg-orange-400"></div>
+                                            <span>{highlight}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
 
@@ -78,32 +76,15 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                                     <span className="font-semibold text-gray-700 text-sm">资源信息</span>
                                 </div>
                                 <div className="space-y-2">
-                                    <div className="flex items-center justify-between text-xs">
-                                        <span className="text-gray-600">单独购买</span>
-                                        <span className="font-bold text-sm bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
-                                            ¥{resource.price}
-                                        </span>
-                                    </div>
-                                    <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
-                                    <div className="flex items-center justify-between text-xs">
-                                        <span className="text-gray-600">VIP会员</span>
-                                        <span className="font-bold text-sm bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
-                                            免费
-                                        </span>
-                                    </div>
-                                    <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
-                                    <div className="flex items-center gap-2">
-                                        <Clock className="w-3 h-3 text-blue-500 shrink-0" />
-                                        <span className="text-xs text-gray-600">永久有效 · 2-15岁</span>
-                                    </div>
+                                    {(resource.description ? resource.description.split('\n').filter(i => i.trim()) : ['永久有效 · 2-15岁']).map((info, index) => (
+                                        <div key={index} className="flex items-center gap-2">
+                                            <Clock className="w-3 h-3 text-blue-500 shrink-0" />
+                                            <span className="text-xs text-gray-600">{info}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-
-                        {/* Description */}
-                        <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-                            {resource.description}
-                        </p>
                     </div>
                 </div>
             </div>

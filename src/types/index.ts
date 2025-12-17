@@ -10,6 +10,7 @@ export interface Resource {
   duration?: string; // 时长
   isEnglishAudio?: boolean; // 英文原声
   content?: string; // 富文本内容
+  highlights?: string; // 资源亮点
   createdAt: string;
 }
 

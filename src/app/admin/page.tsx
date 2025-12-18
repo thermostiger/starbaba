@@ -1,7 +1,40 @@
 import { requireAdmin } from '@/lib/admin-auth'
+import { pool } from '@/lib/db'
+
+async function getStats() {
+    try {
+        const [
+            resourceResult,
+            userResult,
+            orderResult,
+            vipResult
+        ] = await Promise.all([
+            pool.query('SELECT COUNT(*) FROM resources'),
+            pool.query('SELECT COUNT(*) FROM users'),
+            pool.query('SELECT COUNT(*) FROM orders'),
+            pool.query("SELECT COUNT(*) FROM users WHERE role = 'vip'")
+        ])
+
+        return {
+            resources: parseInt(resourceResult.rows[0].count),
+            users: parseInt(userResult.rows[0].count),
+            orders: parseInt(orderResult.rows[0].count),
+            vips: parseInt(vipResult.rows[0].count)
+        }
+    } catch (error) {
+        console.error('Failed to fetch admin stats:', error)
+        return {
+            resources: 0,
+            users: 0,
+            orders: 0,
+            vips: 0
+        }
+    }
+}
 
 export default async function AdminDashboard() {
     await requireAdmin()
+    const stats = await getStats()
 
     return (
         <div className="space-y-6">
@@ -15,7 +48,7 @@ export default async function AdminDashboard() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-600">总资源数</p>
-                            <p className="text-3xl font-bold text-gray-900 mt-2">--</p>
+                            <p className="text-3xl font-bold text-gray-900 mt-2">{stats.resources}</p>
                         </div>
                         <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                             <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,7 +62,7 @@ export default async function AdminDashboard() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-600">总用户数</p>
-                            <p className="text-3xl font-bold text-gray-900 mt-2">--</p>
+                            <p className="text-3xl font-bold text-gray-900 mt-2">{stats.users}</p>
                         </div>
                         <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                             <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +76,7 @@ export default async function AdminDashboard() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-600">总订单数</p>
-                            <p className="text-3xl font-bold text-gray-900 mt-2">--</p>
+                            <p className="text-3xl font-bold text-gray-900 mt-2">{stats.orders}</p>
                         </div>
                         <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
                             <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +90,7 @@ export default async function AdminDashboard() {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-600">VIP 用户</p>
-                            <p className="text-3xl font-bold text-gray-900 mt-2">--</p>
+                            <p className="text-3xl font-bold text-gray-900 mt-2">{stats.vips}</p>
                         </div>
                         <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                             <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

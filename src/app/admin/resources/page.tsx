@@ -167,9 +167,6 @@ export default function ResourcesPage() {
                                         分类
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        阶段
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         价格
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -196,8 +193,8 @@ export default function ResourcesPage() {
                                 ) : (
                                     resources.map((resource) => (
                                         <tr key={resource.id} className="hover:bg-gray-50">
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm font-medium text-gray-900">
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-medium text-gray-900 whitespace-normal break-words max-w-[18rem]">
                                                     {resource.title}
                                                 </div>
                                             </td>
@@ -205,9 +202,6 @@ export default function ResourcesPage() {
                                                 <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
                                                     {resource.category}
                                                 </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {resource.stage}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 ¥{resource.price}

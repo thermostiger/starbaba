@@ -1,24 +1,5 @@
 import { Resource, Documentary } from '@/types';
-import { Pool } from 'pg';
-
-// Create a singleton connection pool
-// Create a singleton connection pool for Next.js
-// This prevents multiple pools from being created during hot reloads in development
-let pool: Pool;
-
-// @ts-ignore
-if (!global.pool) {
-    // @ts-ignore
-    global.pool = new Pool({
-        connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL,
-        // Add some connection stability settings
-        max: 20,
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 2000,
-    });
-}
-// @ts-ignore
-pool = global.pool;
+import { pool } from '@/lib/db';
 
 // Mock CMS data fetching functions
 // In production, these would call the actual CMS API

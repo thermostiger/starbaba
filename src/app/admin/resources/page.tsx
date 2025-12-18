@@ -41,6 +41,21 @@ export default function ResourcesPage() {
         }
     }
 
+    async function handleToggleStatus(resource: any) {
+        try {
+            const newStatus = !resource.isPublished
+            await resourcesAPI.update(resource.id, {
+                isPublished: newStatus
+            })
+            setResources(resources.map(r =>
+                r.id === resource.id ? { ...r, isPublished: newStatus } : r
+            ))
+        } catch (error) {
+            console.error('Failed to update status:', error)
+            alert('更新状态失败')
+        }
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -80,6 +95,9 @@ export default function ResourcesPage() {
                                         价格
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        状态
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         操作
                                     </th>
                                 </tr>
@@ -109,6 +127,22 @@ export default function ResourcesPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 ¥{resource.price}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <button
+                                                    onClick={() => handleToggleStatus(resource)}
+                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${resource.isPublished !== false ? 'bg-blue-600' : 'bg-gray-200'
+                                                        }`}
+                                                >
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isPublished !== false ? 'translate-x-5' : 'translate-x-0'
+                                                            }`}
+                                                    />
+                                                </button>
+                                                <span className="ml-2 text-xs text-gray-500">
+                                                    {resource.isPublished !== false ? '已上架' : '已下架'}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
                                                 <Link

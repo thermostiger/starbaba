@@ -40,6 +40,7 @@ export async function GET(
                 // Ensure boolean fields are booleans
                 isWeeklyHot: !!resource.isWeeklyHot,
                 isNew: !!resource.isNew,
+                isPublished: resource.is_published,
             },
         })
     } catch (error) {
@@ -63,6 +64,17 @@ export async function PATCH(
 
         console.log('Updating resource:', id, data)
 
+        // Check if resource exists and get current data
+        const checkResult = await client.query('SELECT * FROM resources WHERE id = $1', [id])
+        if (checkResult.rows.length === 0) {
+            client.release()
+            return NextResponse.json(
+                { error: 'Resource not found' },
+                { status: 404 }
+            )
+        }
+        const currentResource = checkResult.rows[0]
+
         // Start transaction
         await client.query('BEGIN')
 
@@ -80,23 +92,25 @@ export async function PATCH(
                 content = $9,
                 "coverImage" = $10,
                 "resourceUrl" = $11,
+                "is_published" = $12,
                 "updatedAt" = NOW()
-            WHERE id = $12
+            WHERE id = $13
             RETURNING *
         `
 
         const values = [
-            data.title,
-            data.highlights,
-            data.resourceInfo || '',
-            data.category,
-            data.assignedPage, // Mapped from camelCase in payload
-            data.price,
-            data.isWeeklyHot || false,
-            data.isNew || false,
-            data.content || '',
-            data.coverImage || '',
-            data.resourceUrl || '',
+            data.title !== undefined ? data.title : currentResource.title,
+            data.highlights !== undefined ? data.highlights : currentResource.highlights,
+            data.resourceInfo !== undefined ? data.resourceInfo : (currentResource.resourceInfo || ''),
+            data.category !== undefined ? data.category : currentResource.category,
+            data.assignedPage !== undefined ? data.assignedPage : currentResource.assigned_page,
+            data.price !== undefined ? data.price : currentResource.price,
+            data.isWeeklyHot !== undefined ? data.isWeeklyHot : currentResource.isWeeklyHot,
+            data.isNew !== undefined ? data.isNew : currentResource.isNew,
+            data.content !== undefined ? data.content : (currentResource.content || ''),
+            data.coverImage !== undefined ? data.coverImage : (currentResource.coverImage || ''),
+            data.resourceUrl !== undefined ? data.resourceUrl : (currentResource.resourceUrl || ''),
+            data.isPublished !== undefined ? data.isPublished : currentResource.is_published,
             id,
         ]
 
@@ -122,6 +136,7 @@ export async function PATCH(
             doc: {
                 ...resource,
                 assignedPage: resource.assigned_page,
+                isPublished: resource.is_published,
             },
         })
     } catch (error) {

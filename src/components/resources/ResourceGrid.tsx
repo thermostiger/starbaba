@@ -32,7 +32,7 @@ export default function ResourceGrid({ assignedPage, title, subtitle, gradientFr
         async function fetchResources() {
             try {
                 setLoading(true)
-                const response = await fetch(`/api/admin/resources?assignedPage=${encodeURIComponent(assignedPage)}&page=${currentPage}&limit=12`)
+                const response = await fetch(`/api/admin/resources?assignedPage=${encodeURIComponent(assignedPage)}&page=${currentPage}&limit=12&isPublished=true`)
                 const data = await response.json()
                 setResources(data.docs || [])
                 setTotalPages(data.totalPages || 1)

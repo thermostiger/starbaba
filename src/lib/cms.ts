@@ -9,6 +9,45 @@ const pool = new Pool({
 // Mock CMS data fetching functions
 // In production, these would call the actual CMS API
 
+function mapDbToResource(dbResource: any): Resource {
+    let stage = '启蒙';
+    if (dbResource.assigned_page) {
+        const pageToStage: Record<string, string> = {
+            '幼儿英语': '启蒙',
+            '少儿英语': '进阶',
+            '青少年英语': '青少年',
+            '科普纪录片': '全年龄',
+        };
+        stage = pageToStage[dbResource.assigned_page] || '启蒙';
+    }
+
+    return {
+        id: dbResource.id.toString(),
+        title: dbResource.title,
+        description: dbResource.resourceInfo || '',
+        highlights: dbResource.highlights || '',
+        coverImage: dbResource.coverImage || '/images/placeholder.jpg',
+        category: dbResource.category,
+        stage: stage,
+        price: parseFloat(dbResource.price) || 0,
+        vipPrice: 0,
+        content: dbResource.content,
+        resourceUrl: dbResource.resourceUrl || '',
+        createdAt: dbResource.createdAt,
+    };
+}
+
+async function checkDbHasData(): Promise<boolean> {
+    try {
+        const result = await pool.query('SELECT 1 FROM resources LIMIT 1');
+        return result.rows.length > 0;
+    } catch (e) {
+        console.error('Check DB data failed', e);
+        return false;
+    }
+}
+
+
 const MOCK_RESOURCES: Resource[] = [
     {
         id: '1',
@@ -101,10 +140,69 @@ const MOCK_RESOURCES: Resource[] = [
 ];
 
 export async function getHotResources(limit: number = 4): Promise<Resource[]> {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM resources WHERE "isWeeklyHot" = true AND is_published = true ORDER BY "createdAt" DESC LIMIT $1',
+            [limit]
+        );
+        if (result.rows.length > 0) {
+            return result.rows.map(mapDbToResource);
+        }
+
+        // If DB has data but returned nothing (due to filtering), return empty list instead of mocks
+        // Only return mocks if DB is completely empty (fresh install)
+        if (await checkDbHasData()) {
+            return [];
+        }
+    } catch (e) {
+        console.error('Fetch hot resources failed', e);
+    }
     return MOCK_RESOURCES.slice(0, limit);
 }
 
 export async function getResourcesByStage(stage: string, page: number = 1, limit: number = 16): Promise<{ data: Resource[], total: number }> {
+    // Reverse map stage to assigned_page
+    const stageToPage: Record<string, string> = {
+        '启蒙': '幼儿英语',
+        '进阶': '少儿英语',
+        '青少年': '青少年英语',
+        '全年龄': '科普纪录片',
+    };
+    const assignedPage = stageToPage[stage];
+
+    if (assignedPage) {
+        try {
+            const offset = (page - 1) * limit;
+            const countResult = await pool.query(
+                'SELECT COUNT(*) FROM resources WHERE assigned_page = $1 AND is_published = true',
+                [assignedPage]
+            );
+            const total = parseInt(countResult.rows[0].count);
+
+            const result = await pool.query(
+                'SELECT * FROM resources WHERE assigned_page = $1 AND is_published = true ORDER BY "createdAt" DESC LIMIT $2 OFFSET $3',
+                [assignedPage, limit, offset]
+            );
+
+            if (result.rows.length > 0) {
+                return {
+                    data: result.rows.map(mapDbToResource),
+                    total
+                };
+            }
+
+            // If DB has data but returned nothing (due to filtering), return empty list instead of mocks
+            if (await checkDbHasData()) {
+                return {
+                    data: [],
+                    total: 0
+                };
+            }
+        } catch (e) {
+            console.error('Fetch resources by stage failed', e);
+        }
+    }
+
     const filtered = MOCK_RESOURCES.filter(r => r.stage === stage);
 
     // Duplicate to fill the limit if needed to simulate more data
@@ -130,6 +228,23 @@ export async function getResourcesByStage(stage: string, page: number = 1, limit
 }
 
 export async function getNewResources(limit: number = 16): Promise<Resource[]> {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM resources WHERE is_published = true ORDER BY "createdAt" DESC LIMIT $1',
+            [limit]
+        );
+        if (result.rows.length > 0) {
+            return result.rows.map(mapDbToResource);
+        }
+
+        // If DB has data but returned nothing (due to filtering), return empty list instead of mocks
+        if (await checkDbHasData()) {
+            return [];
+        }
+    } catch (e) {
+        console.error('Fetch new resources failed', e);
+    }
+
     const base = await getHotResources(4);
     // Create unique resources by adding suffixes to IDs
     const duplicated = [];
@@ -217,40 +332,14 @@ export async function getResourceById(id: string): Promise<Resource | null> {
         console.log('[CMS] Fetching resource from database, ID:', id);
         try {
             const result = await pool.query(
-                'SELECT * FROM resources WHERE id = $1',
+                'SELECT * FROM resources WHERE id = $1 AND is_published = true',
                 [id]
             );
 
             if (result.rows.length > 0) {
                 const dbResource = result.rows[0];
                 console.log('[CMS] Resource found in database:', dbResource.title);
-
-                // Map assigned_page to stage for compatibility
-                let stage = '启蒙';
-                if (dbResource.assigned_page) {
-                    const pageToStage: Record<string, string> = {
-                        '幼儿英语': '启蒙',
-                        '少儿英语': '进阶',
-                        '青少年英语': '青少年',
-                        '科普纪录片': '全年龄',
-                    };
-                    stage = pageToStage[dbResource.assigned_page] || '启蒙';
-                }
-
-                return {
-                    id: dbResource.id.toString(),
-                    title: dbResource.title,
-                    description: dbResource.resourceInfo || '',
-                    highlights: dbResource.highlights || '',
-                    coverImage: dbResource.coverImage || '/images/placeholder.jpg',
-                    category: dbResource.category,
-                    stage: stage,
-                    price: parseFloat(dbResource.price) || 0,
-                    vipPrice: 0,
-                    content: dbResource.content,
-                    resourceUrl: dbResource.resourceUrl || '',
-                    createdAt: dbResource.createdAt,
-                };
+                return mapDbToResource(dbResource);
             }
             console.log('[CMS] Resource not found in database');
         } catch (error) {

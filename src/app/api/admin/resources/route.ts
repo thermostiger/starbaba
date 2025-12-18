@@ -31,9 +31,10 @@ export async function POST(request: NextRequest) {
                 content,
                 "coverImage",
                 "resourceUrl",
+                "is_published",
                 "createdAt",
                 "updatedAt"
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW(), NOW())
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), NOW())
             RETURNING *
         `
 
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
             data.content || '',
             data.coverImage || '',
             data.resourceUrl || '',
+            data.isPublished !== undefined ? data.isPublished : true,
         ]
 
         const result = await client.query(insertQuery, values)
@@ -92,20 +94,37 @@ export async function GET(request: NextRequest) {
         const assignedPage = searchParams.get('assignedPage')
         const offset = (page - 1) * limit
 
+        const isPublishedStr = searchParams.get('isPublished')
+
         let query = 'SELECT * FROM resources'
         let countQuery = 'SELECT COUNT(*) FROM resources'
         const queryParams: any[] = []
         const countParams: any[] = []
+        let paramIndex = 1
 
-        // Add assignedPage filter if provided
+        // Build WHERE clause
+        const conditions = []
+
         if (assignedPage) {
-            query += ' WHERE assigned_page = $1'
-            countQuery += ' WHERE assigned_page = $1'
+            conditions.push(`assigned_page = $${paramIndex}`)
             queryParams.push(assignedPage)
             countParams.push(assignedPage)
+            paramIndex++
         }
 
-        query += ' ORDER BY "createdAt" DESC LIMIT $' + (queryParams.length + 1) + ' OFFSET $' + (queryParams.length + 2)
+        if (isPublishedStr === 'true') {
+            conditions.push(`is_published = true`)
+        } else if (isPublishedStr === 'false') {
+            conditions.push(`is_published = false`)
+        }
+
+        if (conditions.length > 0) {
+            const whereClause = ' WHERE ' + conditions.join(' AND ')
+            query += whereClause
+            countQuery += whereClause
+        }
+
+        query += ` ORDER BY "createdAt" DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`
         queryParams.push(limit, offset)
 
         const result = await pool.query(query, queryParams)
@@ -113,7 +132,11 @@ export async function GET(request: NextRequest) {
         const totalDocs = parseInt(countResult.rows[0].count)
 
         return NextResponse.json({
-            docs: result.rows,
+            docs: result.rows.map(r => ({
+                ...r,
+                isPublished: r.is_published,
+                assignedPage: r.assigned_page,
+            })),
             totalDocs,
             limit,
             page,

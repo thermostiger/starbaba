@@ -13,7 +13,7 @@ export const metadata = {
 
 export default async function HomePage() {
     // Fetch data server-side
-    const hotResources = await getHotResources(8);
+    const hotResources = await getHotResources(10);
     const newResources = await getNewResources(16);
     const { data: documentaries } = await getDocumentaries(1, 8);
 

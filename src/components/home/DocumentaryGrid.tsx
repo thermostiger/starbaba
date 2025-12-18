@@ -52,7 +52,7 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
                                             <svg className="w-5 h-5 text-purple-600 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                                         </div>
                                     </div>
-                                    <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/60 text-white text-[10px] rounded font-medium backdrop-blur-sm">
+                                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/60 text-white text-[10px] rounded font-medium backdrop-blur-sm">
                                         {doc.duration}
                                     </div>
                                 </div>
@@ -73,6 +73,15 @@ export default function DocumentaryGrid({ documentaries, currentPage = 1, totalP
                                             )}
                                         </div>
                                         {/* Optional: Add rating or views here if available */}
+                                        {doc.isVip ? (
+                                            <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg border border-purple-200">
+                                                VIP
+                                            </span>
+                                        ) : (
+                                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg border border-green-200">
+                                                免费
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </Card>

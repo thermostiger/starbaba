@@ -34,10 +34,10 @@ export default function NewResourcesGrid({ resources, rows = 2, cardWidth, cardH
                         <Link
                             key={resource.id}
                             href={`/resources/${resource.id}`}
-                            className={cardWidth ? "flex-shrink-0" : ""}
+                            className={cardWidth ? "flex-shrink-0 block h-full" : "block h-full"}
                             style={cardWidth ? { width: cardWidth } : undefined}
                         >
-                            <div className="relative group">
+                            <div className="relative group h-full">
                                 <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 cursor-pointer h-full flex flex-col border border-cyan-100/50 shadow-sm rounded-2xl bg-white" style={cardHeight ? { height: cardHeight } : undefined}>
                                     <div className="relative w-full aspect-[3/2]">
                                         <Image
@@ -50,19 +50,23 @@ export default function NewResourcesGrid({ resources, rows = 2, cardWidth, cardH
                                             NEW
                                         </div>
                                     </div>
-                                    <CardContent className="p-4 flex-1 flex flex-col justify-between">
+                                    <CardContent className="p-3 flex-1 flex flex-col justify-between">
                                         <div>
                                             <div className="text-xs text-cyan-600 mb-1 font-medium">{resource.stage}</div>
-                                            <h3 className="font-bold text-base line-clamp-2 group-hover:text-cyan-600 transition-colors mb-2">
+                                            <h3 className="font-bold text-sm line-clamp-2 group-hover:text-cyan-600 transition-colors mb-1">
                                                 {resource.title}
                                             </h3>
                                         </div>
-                                        <div className="flex items-center justify-between mt-1 pt-3 border-t border-slate-50">
+                                        <div className="flex items-center justify-between mt-1 pt-2 border-t border-slate-50">
                                             <span className="text-xs text-slate-400">{resource.category}</span>
-                                            {resource.vipPrice === 0 ? (
-                                                <span className="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full">VIP免费</span>
+                                            {resource.isVip ? (
+                                                <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg border border-purple-200">
+                                                    VIP
+                                                </span>
                                             ) : (
-                                                <span className="text-xs font-bold text-slate-600">¥{resource.price}</span>
+                                                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg border border-green-200">
+                                                    免费
+                                                </span>
                                             )}
                                         </div>
                                     </CardContent>

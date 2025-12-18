@@ -13,6 +13,8 @@ export interface Resource {
   highlights?: string; // 资源亮点
   resourceUrl?: string; // 资源地址
   isVip?: boolean; // 是否VIP资源
+  isWeeklyHot?: boolean;
+  isNew?: boolean;
   createdAt: string;
 }
 
@@ -33,6 +35,7 @@ export interface Documentary {
   coverImage: string;
   duration: string;
   isEnglishAudio: boolean;
+  isVip?: boolean;
 }
 
 export interface User {

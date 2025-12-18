@@ -3,16 +3,7 @@
 import { useEffect, useState } from 'react'
 import ResourceCard from './ResourceCard'
 
-interface Resource {
-    id: string
-    title: string
-    highlights: string
-    category: string
-    price: number
-    coverImage?: string
-    isWeeklyHot?: boolean
-    isNew?: boolean
-}
+import { Resource } from '@/types'
 
 interface ResourceGridProps {
     assignedPage: string
@@ -32,7 +23,7 @@ export default function ResourceGrid({ assignedPage, title, subtitle, gradientFr
         async function fetchResources() {
             try {
                 setLoading(true)
-                const response = await fetch(`/api/admin/resources?assignedPage=${encodeURIComponent(assignedPage)}&page=${currentPage}&limit=12&isPublished=true`)
+                const response = await fetch(`/api/admin/resources?assignedPage=${encodeURIComponent(assignedPage)}&page=${currentPage}&limit=10&isPublished=true`)
                 const data = await response.json()
                 setResources(data.docs || [])
                 setTotalPages(data.totalPages || 1)
@@ -56,7 +47,7 @@ export default function ResourceGrid({ assignedPage, title, subtitle, gradientFr
                     </div>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 py-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                         {[...Array(8)].map((_, i) => (
                             <div key={i} className="h-96 bg-gray-200 animate-pulse rounded-lg" />
                         ))}
@@ -82,7 +73,7 @@ export default function ResourceGrid({ assignedPage, title, subtitle, gradientFr
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                             {resources.map((resource) => (
                                 <ResourceCard key={resource.id} resource={resource} />
                             ))}

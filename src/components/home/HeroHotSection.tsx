@@ -29,37 +29,39 @@ export default function HeroHotSection({ resources }: HeroHotSectionProps) {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                     {resources.map((resource) => (
-                        <Link key={resource.id} href={`/resources/${resource.id}`}>
-                            <Card className="h-full border border-orange-100 bg-white/60 backdrop-blur-md hover:bg-white hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 rounded-2xl overflow-hidden group">
-                                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                        <Link key={resource.id} href={`/resources/${resource.id}`} className="block h-full">
+                            <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 cursor-pointer h-full flex flex-col border border-cyan-100/50 shadow-sm rounded-2xl bg-white">
+                                <div className="relative w-full aspect-[3/2]">
                                     <Image
                                         src={resource.coverImage}
                                         alt={resource.title}
                                         fill
-                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                    <div className="absolute top-3 left-3">
-                                        <span className="px-3 py-1 bg-white/95 backdrop-blur shadow-sm text-orange-600 text-xs font-bold rounded-full">
-                                            {resource.stage}
-                                        </span>
+                                    <div className="absolute top-2 left-2 px-2 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full shadow-sm">
+                                        HOT
                                     </div>
                                 </div>
-                                <div className="p-5">
-                                    <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1 group-hover:text-orange-600 transition-colors">
-                                        {resource.title}
-                                    </h3>
-                                    <div className="flex items-center gap-2 mt-auto">
-                                        <div className="flex -space-x-2">
-                                            {[...Array(3)].map((_, i) => (
-                                                <div key={i} className="w-6 h-6 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[10px] text-slate-400">
-                                                    ✨
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <span className="text-xs text-slate-500 font-medium">3200+ 人已下载</span>
+                                <div className="p-3 flex-1 flex flex-col justify-between">
+                                    <div>
+                                        <div className="text-xs text-cyan-600 mb-1 font-medium">{resource.stage}</div>
+                                        <h3 className="font-bold text-sm line-clamp-2 group-hover:text-cyan-600 transition-colors mb-1">
+                                            {resource.title}
+                                        </h3>
+                                    </div>
+                                    <div className="flex items-center justify-between mt-1 pt-2 border-t border-slate-50">
+                                        <span className="text-xs text-slate-400">{resource.category}</span>
+                                        {resource.isVip ? (
+                                            <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg border border-purple-200">
+                                                VIP
+                                            </span>
+                                        ) : (
+                                            <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg border border-green-200">
+                                                免费
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             </Card>

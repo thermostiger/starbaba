@@ -110,7 +110,7 @@ export default function ResourcesPage() {
                                         价格
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Access
+                                        权限
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         状态
@@ -173,7 +173,7 @@ export default function ResourcesPage() {
                                                     />
                                                 </button>
                                                 <span className="ml-2 text-xs text-gray-500">
-                                                    {resource.isVip ? 'VIP' : 'Free'}
+                                                    {resource.isVip ? 'VIP' : '免费'}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">

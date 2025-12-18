@@ -2,9 +2,23 @@ import { Resource, Documentary } from '@/types';
 import { Pool } from 'pg';
 
 // Create a singleton connection pool
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL,
-});
+// Create a singleton connection pool for Next.js
+// This prevents multiple pools from being created during hot reloads in development
+let pool: Pool;
+
+// @ts-ignore
+if (!global.pool) {
+    // @ts-ignore
+    global.pool = new Pool({
+        connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL,
+        // Add some connection stability settings
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+    });
+}
+// @ts-ignore
+pool = global.pool;
 
 // Mock CMS data fetching functions
 // In production, these would call the actual CMS API
@@ -34,6 +48,8 @@ function mapDbToResource(dbResource: any): Resource {
         content: dbResource.content,
         resourceUrl: dbResource.resourceUrl || '',
         isVip: dbResource.is_vip,
+        isWeeklyHot: dbResource.isWeeklyHot,
+        isNew: dbResource.isNew,
         createdAt: dbResource.createdAt,
     };
 }
@@ -137,6 +153,30 @@ const MOCK_RESOURCES: Resource[] = [
         price: 29.9,
         vipPrice: 0,
         createdAt: new Date().toISOString(),
+    },
+    {
+        id: '9',
+        title: 'Dr. Seuss Collection 苏斯博士',
+        description: '苏斯博士经典绘本集',
+        coverImage: '/images/oxford.jpg',
+        category: '绘本',
+        stage: '启蒙',
+        price: 39.9,
+        vipPrice: 0,
+        createdAt: new Date().toISOString(),
+        isWeeklyHot: true,
+    },
+    {
+        id: '10',
+        title: 'I Can Read Series',
+        description: '经典分级阅读系列',
+        coverImage: '/images/phonics.jpg',
+        category: '绘本',
+        stage: '基础',
+        price: 45.9,
+        vipPrice: 0,
+        createdAt: new Date().toISOString(),
+        isWeeklyHot: true,
     }
 ];
 
@@ -267,6 +307,7 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
             coverImage: '/images/planet-earth.jpg',
             duration: '50分钟',
             isEnglishAudio: true,
+            isVip: true,
         },
         {
             id: 'd2',
@@ -275,6 +316,7 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
             coverImage: '/images/blue-planet.jpg',
             duration: '45分钟',
             isEnglishAudio: true,
+            isVip: true,
         },
         {
             id: 'd3',
@@ -283,6 +325,7 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
             coverImage: '/images/cosmos.jpg',
             duration: '42分钟',
             isEnglishAudio: true,
+            isVip: false,
         },
         {
             id: 'd4',
@@ -291,6 +334,7 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
             coverImage: '/images/life.jpg',
             duration: '50分钟',
             isEnglishAudio: true,
+            isVip: true,
         },
         {
             id: 'd5',
@@ -299,6 +343,7 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
             coverImage: '/images/frozen.jpg',
             duration: '48分钟',
             isEnglishAudio: true,
+            isVip: false,
         },
         {
             id: 'd6',
@@ -307,6 +352,7 @@ export async function getDocumentaries(page: number = 1, limit: number = 12): Pr
             coverImage: '/images/africa.jpg',
             duration: '52分钟',
             isEnglishAudio: true,
+            isVip: true,
         },
     ];
 

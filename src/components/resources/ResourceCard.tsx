@@ -5,9 +5,10 @@ import { Resource } from '@/types'
 
 interface ResourceCardProps {
     resource: Resource
+    showBadges?: boolean
 }
 
-export default function ResourceCard({ resource }: ResourceCardProps) {
+export default function ResourceCard({ resource, showBadges = false }: ResourceCardProps) {
     return (
         <Link href={`/resources/${resource.id}`} className="block h-full group">
             <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 cursor-pointer h-full flex flex-col border border-cyan-100/50 shadow-sm rounded-2xl bg-white">
@@ -21,18 +22,20 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
                     />
 
                     {/* Badges - Top Left */}
-                    <div className="absolute top-2 left-2 flex gap-1">
-                        {resource.isWeeklyHot && (
-                            <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full shadow-sm">
-                                HOT
-                            </span>
-                        )}
-                        {resource.isNew && (
-                            <span className="px-2 py-0.5 bg-cyan-500 text-white text-[10px] font-bold rounded-full shadow-sm">
-                                NEW
-                            </span>
-                        )}
-                    </div>
+                    {showBadges && (
+                        <div className="absolute top-2 left-2 flex gap-1">
+                            {resource.isWeeklyHot && (
+                                <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full shadow-sm">
+                                    HOT
+                                </span>
+                            )}
+                            {resource.isNew && (
+                                <span className="px-2 py-0.5 bg-cyan-500 text-white text-[10px] font-bold rounded-full shadow-sm">
+                                    NEW
+                                </span>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 {/* Content */}

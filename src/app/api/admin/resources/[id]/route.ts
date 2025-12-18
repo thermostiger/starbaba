@@ -79,6 +79,22 @@ export async function PATCH(
         // Start transaction
         await client.query('BEGIN')
 
+        // Check limitation for Weekly Hot
+        if (data.isWeeklyHot === true && !currentResource.isWeeklyHot) {
+            const hotCountResult = await client.query(
+                `SELECT COUNT(*) FROM resources WHERE "isWeeklyHot" = true`
+            )
+            const hotCount = parseInt(hotCountResult.rows[0].count)
+
+            if (hotCount >= 10) {
+                await client.query('ROLLBACK')
+                return NextResponse.json(
+                    { error: '最多只能设置10个热门资源' },
+                    { status: 400 }
+                )
+            }
+        }
+
         // Update resources table
         const updateQuery = `
             UPDATE resources SET

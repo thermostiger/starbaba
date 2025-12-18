@@ -94,6 +94,7 @@ export async function GET(request: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1')
         const limit = parseInt(searchParams.get('limit') || '10')
         const assignedPage = searchParams.get('assignedPage')
+        const search = searchParams.get('search')
         const offset = (page - 1) * limit
 
         const isPublishedStr = searchParams.get('isPublished')
@@ -111,6 +112,13 @@ export async function GET(request: NextRequest) {
             conditions.push(`assigned_page = $${paramIndex}`)
             queryParams.push(assignedPage)
             countParams.push(assignedPage)
+            paramIndex++
+        }
+
+        if (search) {
+            conditions.push(`title ILIKE $${paramIndex}`)
+            queryParams.push(`%${search}%`)
+            countParams.push(`%${search}%`)
             paramIndex++
         }
 

@@ -3,21 +3,28 @@
 import { useState, useEffect } from 'react'
 import { resourcesAPI } from '@/lib/admin-api'
 import Link from 'next/link'
+import { Search } from 'lucide-react'
 
 export default function ResourcesPage() {
     const [resources, setResources] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentSearch, setCurrentSearch] = useState('')
 
     useEffect(() => {
         loadResources()
-    }, [page])
+    }, [page, currentSearch])
 
     async function loadResources() {
         try {
             setLoading(true)
-            const response = await resourcesAPI.list({ page, limit: 20 })
+            const response = await resourcesAPI.list({
+                page,
+                limit: 20,
+                search: currentSearch
+            })
             setResources(response.docs || [])
             setTotalPages(response.totalPages || 1)
         } catch (error) {
@@ -26,6 +33,12 @@ export default function ResourcesPage() {
         } finally {
             setLoading(false)
         }
+    }
+
+    function handleSearch(e: React.FormEvent) {
+        e.preventDefault()
+        setPage(1)
+        setCurrentSearch(searchQuery)
     }
 
     async function handleDelete(id: string) {
@@ -71,6 +84,21 @@ export default function ResourcesPage() {
         }
     }
 
+    async function handleToggleHot(resource: any) {
+        try {
+            const newHot = !resource.isWeeklyHot
+            await resourcesAPI.update(resource.id, {
+                isWeeklyHot: newHot
+            })
+            setResources(resources.map(r =>
+                r.id === resource.id ? { ...r, isWeeklyHot: newHot } : r
+            ))
+        } catch (error) {
+            console.error('Failed to update hot status:', error)
+            alert((error as Error).message || '更新热门状态失败: 最多允许10个热门资源')
+        }
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -84,6 +112,41 @@ export default function ResourcesPage() {
                 >
                     添加资源
                 </Link>
+            </div>
+
+            {/* Search Bar */}
+            <div className="bg-white p-4 rounded-lg shadow">
+                <form onSubmit={handleSearch} className="flex gap-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="搜索资源标题..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+                    >
+                        搜索
+                    </button>
+                    {currentSearch && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setSearchQuery('')
+                                setCurrentSearch('')
+                                setPage(1)
+                            }}
+                            className="text-gray-500 hover:text-gray-700"
+                        >
+                            清除
+                        </button>
+                    )}
+                </form>
             </div>
 
             {loading ? (
@@ -111,6 +174,9 @@ export default function ResourcesPage() {
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         权限
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        热门
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         状态
@@ -145,6 +211,20 @@ export default function ResourcesPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 ¥{resource.price}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <button
+                                                    onClick={() => handleToggleHot(resource)}
+                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 ${resource.isWeeklyHot ? 'bg-red-600' : 'bg-gray-200'}`}
+                                                >
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isWeeklyHot ? 'translate-x-5' : 'translate-x-0'}`}
+                                                    />
+                                                </button>
+                                                <span className="ml-2 text-xs text-gray-500">
+                                                    {resource.isWeeklyHot ? '热门' : '普通'}
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <button

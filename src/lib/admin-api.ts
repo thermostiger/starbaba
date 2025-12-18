@@ -39,6 +39,7 @@ class PayloadAPI {
             limit?: number
             where?: any
             sort?: string
+            search?: string
         }
     ): Promise<ApiResponse<T>> {
         const searchParams = new URLSearchParams()
@@ -46,6 +47,7 @@ class PayloadAPI {
         if (params?.limit) searchParams.set('limit', params.limit.toString())
         if (params?.where) searchParams.set('where', JSON.stringify(params.where))
         if (params?.sort) searchParams.set('sort', params.sort)
+        if (params?.search) searchParams.set('search', params.search)
 
         const query = searchParams.toString()
         return this.request(`/${collection}${query ? `?${query}` : ''}`)

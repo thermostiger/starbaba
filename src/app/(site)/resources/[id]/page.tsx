@@ -93,25 +93,36 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
                                             资源地址
                                         </h3>
                                         <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                                            {resource.resourceUrl.split('\n').map((line, index) => (
-                                                <div key={index} className="break-all">
-                                                    {line.match(/https?:\/\/[^\s]+/) ? (
-                                                        <a
-                                                            href={line.match(/https?:\/\/[^\s]+/)![0]}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="text-blue-600 hover:text-blue-700 hover:underline"
-                                                        >
-                                                            {line}
-                                                        </a>
-                                                    ) : (
-                                                        <span className="text-gray-700">{line}</span>
-                                                    )}
+                                            {resource.isVip ? (
+                                                <div className="flex flex-col items-center justify-center p-8 bg-gray-100 rounded border border-gray-200 text-center">
+                                                    <div className="text-2xl mb-2">🔒</div>
+                                                    <p className="text-gray-600 font-medium mb-1">VIP 资源</p>
+                                                    <p className="text-gray-400 text-sm">************************************</p>
+                                                    <p className="text-xs text-gray-400 mt-2">（请购买或升级 VIP 会员查看）</p>
                                                 </div>
-                                            ))}
-                                            <p className="text-xs text-gray-500 mt-4 pt-2 border-t border-gray-200">
-                                                提示：如果有提取码，请一同复制。链接失效请联系客服。
-                                            </p>
+                                            ) : (
+                                                resource.resourceUrl.split('\n').map((line, index) => (
+                                                    <div key={index} className="break-all">
+                                                        {line.match(/https?:\/\/[^\s]+/) ? (
+                                                            <a
+                                                                href={line.match(/https?:\/\/[^\s]+/)![0]}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-blue-600 hover:text-blue-700 hover:underline"
+                                                            >
+                                                                {line}
+                                                            </a>
+                                                        ) : (
+                                                            <span className="text-gray-700">{line}</span>
+                                                        )}
+                                                    </div>
+                                                ))
+                                            )}
+                                            {!resource.isVip && (
+                                                <p className="text-xs text-gray-500 mt-4 pt-2 border-t border-gray-200">
+                                                    提示：如果有提取码，请一同复制。链接失效请联系客服。
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 )}

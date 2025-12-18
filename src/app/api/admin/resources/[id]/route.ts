@@ -41,6 +41,7 @@ export async function GET(
                 isWeeklyHot: !!resource.isWeeklyHot,
                 isNew: !!resource.isNew,
                 isPublished: resource.is_published,
+                isVip: resource.is_vip,
             },
         })
     } catch (error) {
@@ -93,8 +94,9 @@ export async function PATCH(
                 "coverImage" = $10,
                 "resourceUrl" = $11,
                 "is_published" = $12,
+                "is_vip" = $13,
                 "updatedAt" = NOW()
-            WHERE id = $13
+            WHERE id = $14
             RETURNING *
         `
 
@@ -111,6 +113,7 @@ export async function PATCH(
             data.coverImage !== undefined ? data.coverImage : (currentResource.coverImage || ''),
             data.resourceUrl !== undefined ? data.resourceUrl : (currentResource.resourceUrl || ''),
             data.isPublished !== undefined ? data.isPublished : currentResource.is_published,
+            data.isVip !== undefined ? data.isVip : currentResource.is_vip,
             id,
         ]
 
@@ -137,6 +140,7 @@ export async function PATCH(
                 ...resource,
                 assignedPage: resource.assigned_page,
                 isPublished: resource.is_published,
+                isVip: resource.is_vip,
             },
         })
     } catch (error) {

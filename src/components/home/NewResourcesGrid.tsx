@@ -33,7 +33,7 @@ export default function NewResourcesGrid({ resources, rows = 2, cardWidth, cardH
                     {displayResources.map((resource) => (
                         <Link
                             key={resource.id}
-                            href={`/resource/${resource.id}`}
+                            href={`/resources/${resource.id}`}
                             className={cardWidth ? "flex-shrink-0" : ""}
                             style={cardWidth ? { width: cardWidth } : undefined}
                         >

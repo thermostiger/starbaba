@@ -12,6 +12,7 @@ export interface Resource {
   content?: string; // 富文本内容
   highlights?: string; // 资源亮点
   resourceUrl?: string; // 资源地址
+  isVip?: boolean; // 是否VIP资源
   createdAt: string;
 }
 

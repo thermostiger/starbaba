@@ -56,6 +56,21 @@ export default function ResourcesPage() {
         }
     }
 
+    async function handleToggleVip(resource: any) {
+        try {
+            const newVip = !resource.isVip
+            await resourcesAPI.update(resource.id, {
+                isVip: newVip
+            })
+            setResources(resources.map(r =>
+                r.id === resource.id ? { ...r, isVip: newVip } : r
+            ))
+        } catch (error) {
+            console.error('Failed to update vip status:', error)
+            alert('更新VIP状态失败')
+        }
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -93,6 +108,9 @@ export default function ResourcesPage() {
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         价格
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Access
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         状态
@@ -142,6 +160,20 @@ export default function ResourcesPage() {
                                                 </button>
                                                 <span className="ml-2 text-xs text-gray-500">
                                                     {resource.isPublished !== false ? '已上架' : '已下架'}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <button
+                                                    onClick={() => handleToggleVip(resource)}
+                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 ${resource.isVip ? 'bg-purple-600' : 'bg-green-500'}`}
+                                                >
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isVip ? 'translate-x-5' : 'translate-x-0'}`}
+                                                    />
+                                                </button>
+                                                <span className="ml-2 text-xs text-gray-500">
+                                                    {resource.isVip ? 'VIP' : 'Free'}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">

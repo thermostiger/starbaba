@@ -32,9 +32,10 @@ export async function POST(request: NextRequest) {
                 "coverImage",
                 "resourceUrl",
                 "is_published",
+                "is_vip",
                 "createdAt",
                 "updatedAt"
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), NOW())
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW(), NOW())
             RETURNING *
         `
 
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
             data.coverImage || '',
             data.resourceUrl || '',
             data.isPublished !== undefined ? data.isPublished : true,
+            data.isVip !== undefined ? data.isVip : true,
         ]
 
         const result = await client.query(insertQuery, values)
@@ -135,6 +137,7 @@ export async function GET(request: NextRequest) {
             docs: result.rows.map(r => ({
                 ...r,
                 isPublished: r.is_published,
+                isVip: r.is_vip,
                 assignedPage: r.assigned_page,
             })),
             totalDocs,

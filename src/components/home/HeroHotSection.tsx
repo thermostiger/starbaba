@@ -31,7 +31,7 @@ export default function HeroHotSection({ resources }: HeroHotSectionProps) {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {resources.map((resource) => (
-                        <Link key={resource.id} href={`/resource/${resource.id}`}>
+                        <Link key={resource.id} href={`/resources/${resource.id}`}>
                             <Card className="h-full border border-orange-100 bg-white/60 backdrop-blur-md hover:bg-white hover:border-orange-200 hover:shadow-xl hover:shadow-orange-500/10 transition-all duration-300 rounded-2xl overflow-hidden group">
                                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                                     <Image

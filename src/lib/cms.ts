@@ -33,6 +33,7 @@ function mapDbToResource(dbResource: any): Resource {
         vipPrice: 0,
         content: dbResource.content,
         resourceUrl: dbResource.resourceUrl || '',
+        isVip: dbResource.is_vip,
         createdAt: dbResource.createdAt,
     };
 }

@@ -30,6 +30,10 @@ export const metadata: Metadata = {
     title: "星爸英语 - 专注3-12岁儿童英语启蒙",
     description: "星爸英语提供优质的儿童英语学习资源，包括动画、绘本、儿歌、纪录片等，让孩子在快乐中学习英语。",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

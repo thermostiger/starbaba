@@ -1,5 +1,5 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { handleGraphQL } from '@payloadcms/next/graphql'
+import { GRAPHQL_POST } from '@payloadcms/next/routes'
 
-export const POST = handleGraphQL(configPromise)
+export const POST = GRAPHQL_POST(configPromise)

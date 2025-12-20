@@ -18,6 +18,7 @@ function LoginForm() {
     });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,7 +46,17 @@ function LoginForm() {
     };
 
     const handleGoogleSignIn = async () => {
-        window.location.href = '/api/auth/signin/google?callbackUrl=/';
+        setIsGoogleLoading(true);
+        try {
+            await signIn('google', {
+                callbackUrl: '/',
+                redirect: true,
+            });
+        } catch (error) {
+            console.error('Google login error:', error);
+            setError('Google 登录失败，请稍后重试');
+            setIsGoogleLoading(false);
+        }
     };
 
     return (
@@ -124,10 +135,18 @@ function LoginForm() {
                 <Button
                     onClick={handleGoogleSignIn}
                     variant="outline"
-                    className="w-full"
+                    className="w-full relative"
                     size="lg"
+                    disabled={isGoogleLoading || loading}
                 >
-                    使用 Google 登录
+                    {isGoogleLoading ? (
+                        <div className="flex items-center justify-center gap-2">
+                            <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                            <span>跳转中...</span>
+                        </div>
+                    ) : (
+                        <span>使用 Google 登录</span>
+                    )}
                 </Button>
 
                 <Button

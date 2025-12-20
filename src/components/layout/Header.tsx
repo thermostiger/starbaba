@@ -15,22 +15,24 @@ import {
 import MobileNav from './MobileNav';
 
 import { useState } from 'react';
-
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Header() {
     const [isSearchExpanded, setIsSearchExpanded] = useState(false);
     const pathname = usePathname();
+    const { data: session } = useSession();
 
-    // Mock user for demonstration - set to null to show logged out state
-    const user: {
-        name: string;
-        id: string;
-        avatar: string;
-        isVip: boolean;
-        vipExpireDate: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } | null = (null as any);
+    // Map session user to display format
+    const user = session?.user ? {
+        name: session.user.name || 'User',
+        id: session.user.id || 'ID',
+        avatar: session.user.image || '',
+        // @ts-expect-error - custom session fields
+        isVip: session.user.isVip || false,
+        // @ts-expect-error - custom session fields
+        vipExpireDate: session.user.vipExpireDate || '',
+    } : null;
 
     const isActive = (path: string) => pathname === path;
 
@@ -147,7 +149,12 @@ export default function Header() {
                                                     账号设置
                                                 </Button>
                                             </div>
-                                            <Button variant="ghost" size="sm" className="w-full text-xs mt-1 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                className="w-full text-xs mt-1 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                                                onClick={() => signOut({ callbackUrl: '/' })}
+                                            >
                                                 <LogOut className="w-3 h-3 mr-1" />
                                                 退出登录
                                             </Button>

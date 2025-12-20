@@ -7,7 +7,7 @@ module.exports = {
             args: 'start', // 调用 package.json 中的 start 脚本
             env: {
                 NODE_ENV: 'production',
-                PORT: 3000 // 你可以修改端口
+                PORT: process.env.PORT || 3000 // 默认3000，生产环境建议用 Nginx 反代 80/443 -> 3000
             },
         },
     ],

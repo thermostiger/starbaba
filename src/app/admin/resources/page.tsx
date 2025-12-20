@@ -1,23 +1,30 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { resourcesAPI } from '@/lib/admin-api'
 import Link from 'next/link'
 import { Search } from 'lucide-react'
 
+interface Resource {
+    id: string
+    title: string
+    category: string
+    price: number
+    isWeeklyHot: boolean
+    isPublished: boolean
+    isVip: boolean
+    [key: string]: unknown
+}
+
 export default function ResourcesPage() {
-    const [resources, setResources] = useState<any[]>([])
+    const [resources, setResources] = useState<Resource[]>([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
     const [searchQuery, setSearchQuery] = useState('')
     const [currentSearch, setCurrentSearch] = useState('')
 
-    useEffect(() => {
-        loadResources()
-    }, [page, currentSearch])
-
-    async function loadResources() {
+    const loadResources = useCallback(async () => {
         try {
             setLoading(true)
             const response = await resourcesAPI.list({
@@ -25,7 +32,8 @@ export default function ResourcesPage() {
                 limit: 20,
                 search: currentSearch
             })
-            setResources(response.docs || [])
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            setResources((response.docs as any[]) || [])
             setTotalPages(response.totalPages || 1)
         } catch (error) {
             console.error('Failed to load resources:', error)
@@ -33,7 +41,11 @@ export default function ResourcesPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [page, currentSearch])
+
+    useEffect(() => {
+        loadResources()
+    }, [loadResources])
 
     function handleSearch(e: React.FormEvent) {
         e.preventDefault()
@@ -54,7 +66,7 @@ export default function ResourcesPage() {
         }
     }
 
-    async function handleToggleStatus(resource: any) {
+    async function handleToggleStatus(resource: Resource) {
         try {
             const newStatus = !resource.isPublished
             await resourcesAPI.update(resource.id, {
@@ -69,7 +81,7 @@ export default function ResourcesPage() {
         }
     }
 
-    async function handleToggleVip(resource: any) {
+    async function handleToggleVip(resource: Resource) {
         try {
             const newVip = !resource.isVip
             await resourcesAPI.update(resource.id, {
@@ -84,7 +96,7 @@ export default function ResourcesPage() {
         }
     }
 
-    async function handleToggleHot(resource: any) {
+    async function handleToggleHot(resource: Resource) {
         try {
             const newHot = !resource.isWeeklyHot
             await resourcesAPI.update(resource.id, {

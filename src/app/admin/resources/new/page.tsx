@@ -79,7 +79,7 @@ export default function NewResourcePage() {
             }
 
             console.log('Creating resource:', payload.title)
-            const result = await resourcesAPI.create(payload)
+            await resourcesAPI.create(payload)
             console.log('Resource created successfully')
             alert('创建成功')
             router.push('/admin/resources')
@@ -119,6 +119,7 @@ export default function NewResourcePage() {
                     <div className="flex items-start space-x-4">
                         {coverImageUrl && (
                             <div className="flex-shrink-0">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={coverImageUrl}
                                     alt="封面预览"

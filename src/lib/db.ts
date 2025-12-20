@@ -12,9 +12,9 @@ if (process.env.NODE_ENV === 'production') {
         connectionTimeoutMillis: 2000,
     })
 } else {
-    // @ts-ignore
+    // @ts-expect-error - global mongoose type delineation
     if (!global.pool) {
-        // @ts-ignore
+        // @ts-expect-error - global mongoose type delineation
         global.pool = new Pool({
             connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL,
             max: 20,
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
             connectionTimeoutMillis: 2000,
         })
     }
-    // @ts-ignore
+    // @ts-expect-error - global mongoose type delineation
     pool = global.pool
 }
 

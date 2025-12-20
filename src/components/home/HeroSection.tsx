@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Sparkles, BookOpen, Video, Star } from 'lucide-react';
+import { Search, Sparkles, BookOpen, Star } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 

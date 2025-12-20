@@ -1,23 +1,29 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { usersAPI } from '@/lib/admin-api'
 
+interface User {
+    id: string
+    name?: string
+    email: string
+    role: string
+    createdAt: string
+    [key: string]: unknown
+}
+
 export default function UsersPage() {
-    const [users, setUsers] = useState<any[]>([])
+    const [users, setUsers] = useState<User[]>([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
 
-    useEffect(() => {
-        loadUsers()
-    }, [page])
-
-    async function loadUsers() {
+    const loadUsers = useCallback(async () => {
         try {
             setLoading(true)
             const response = await usersAPI.list({ page, limit: 20 })
-            setUsers(response.docs || [])
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            setUsers((response.docs as any[]) || [])
             setTotalPages(response.totalPages || 1)
         } catch (error) {
             console.error('Failed to load users:', error)
@@ -25,7 +31,11 @@ export default function UsersPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [page])
+
+    useEffect(() => {
+        loadUsers()
+    }, [loadUsers])
 
     async function toggleVIP(userId: string, currentRole: string) {
         const newRole = currentRole === 'vip' ? 'user' : 'vip'
@@ -95,8 +105,8 @@ export default function UsersPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 py-1 text-xs font-medium rounded ${user.role === 'admin' ? 'bg-red-100 text-red-800' :
-                                                        user.role === 'vip' ? 'bg-purple-100 text-purple-800' :
-                                                            'bg-gray-100 text-gray-800'
+                                                    user.role === 'vip' ? 'bg-purple-100 text-purple-800' :
+                                                        'bg-gray-100 text-gray-800'
                                                     }`}>
                                                     {user.role === 'admin' ? '管理员' : user.role === 'vip' ? 'VIP' : '普通用户'}
                                                 </span>
@@ -109,8 +119,8 @@ export default function UsersPage() {
                                                     <button
                                                         onClick={() => toggleVIP(user.id, user.role)}
                                                         className={`${user.role === 'vip'
-                                                                ? 'text-gray-600 hover:text-gray-900'
-                                                                : 'text-purple-600 hover:text-purple-900'
+                                                            ? 'text-gray-600 hover:text-gray-900'
+                                                            : 'text-purple-600 hover:text-purple-900'
                                                             }`}
                                                     >
                                                         {user.role === 'vip' ? '取消 VIP' : '升级 VIP'}

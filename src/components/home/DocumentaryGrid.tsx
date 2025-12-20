@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
-import { Clock, Volume2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Documentary } from '@/types';
 import { Button } from '@/components/ui/button';
 

@@ -158,12 +158,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         input.click()
     }
 
-    const addLink = () => {
-        const url = window.prompt('请输入链接URL:')
-        if (url) {
-            editor.chain().focus().setLink({ href: url }).run()
-        }
-    }
+
 
     return (
         <div className="border border-gray-300 rounded-lg">

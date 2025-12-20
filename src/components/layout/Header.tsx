@@ -4,12 +4,7 @@ import Link from 'next/link';
 import { Search, Menu, User, Crown, LogOut, Settings, BookOpen, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
@@ -34,7 +29,8 @@ export default function Header() {
         avatar: string;
         isVip: boolean;
         vipExpireDate: string;
-    } | null = null;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } | null = (null as any);
 
     const isActive = (path: string) => pathname === path;
 

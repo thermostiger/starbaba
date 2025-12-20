@@ -23,6 +23,7 @@ export default async function UserDashboard() {
                             <div>
                                 <p className="text-sm text-gray-600">会员状态</p>
                                 <p className="text-2xl font-bold text-gray-900 mt-2">
+                                    {/* @ts-expect-error: session.user.role is a custom property */}
                                     {session.user.role === 'vip' ? 'VIP 会员' : '普通用户'}
                                 </p>
                             </div>
@@ -32,6 +33,7 @@ export default async function UserDashboard() {
                                 </svg>
                             </div>
                         </div>
+                        {/* @ts-expect-error: session.user.role is a custom property */}
                         {session.user.role !== 'vip' && (
                             <Link
                                 href="/vip"

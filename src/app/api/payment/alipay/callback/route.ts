@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
             { error: '生产环境配置未完成' },
             { status: 501 }
         );
-    } catch (error: any) {
+    } catch (error) {
         console.error('Alipay callback error:', error);
         return NextResponse.json(
             { error: '处理回调失败' },

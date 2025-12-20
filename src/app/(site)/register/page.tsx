@@ -54,8 +54,8 @@ export default function RegisterPage() {
 
             // Redirect to login page
             router.push('/login?registered=true');
-        } catch (err: any) {
-            setError(err.message || '注册失败，请稍后重试');
+        } catch (err) {
+            setError((err as Error).message || '注册失败，请稍后重试');
         } finally {
             setLoading(false);
         }

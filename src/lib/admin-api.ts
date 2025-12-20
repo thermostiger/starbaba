@@ -9,6 +9,17 @@ interface ApiResponse<T> {
     page?: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyObject = any;
+
+interface FindParams {
+    page?: number
+    limit?: number
+    where?: AnyObject
+    sort?: string
+    search?: string
+}
+
 class PayloadAPI {
     private async request<T>(
         endpoint: string,
@@ -34,13 +45,7 @@ class PayloadAPI {
     // Generic CRUD operations
     async find<T>(
         collection: string,
-        params?: {
-            page?: number
-            limit?: number
-            where?: any
-            sort?: string
-            search?: string
-        }
+        params?: FindParams
     ): Promise<ApiResponse<T>> {
         const searchParams = new URLSearchParams()
         if (params?.page) searchParams.set('page', params.page.toString())
@@ -57,14 +62,14 @@ class PayloadAPI {
         return this.request(`/${collection}/${id}`)
     }
 
-    async create<T>(collection: string, data: any): Promise<{ doc: T }> {
+    async create<T>(collection: string, data: AnyObject): Promise<{ doc: T }> {
         return this.request(`/${collection}`, {
             method: 'POST',
             body: JSON.stringify(data),
         })
     }
 
-    async update<T>(collection: string, id: string, data: any): Promise<{ doc: T }> {
+    async update<T>(collection: string, id: string, data: AnyObject): Promise<{ doc: T }> {
         return this.request(`/${collection}/${id}`, {
             method: 'PATCH',
             body: JSON.stringify(data),
@@ -78,7 +83,7 @@ class PayloadAPI {
     }
 
     // File upload
-    async uploadFile(file: File): Promise<{ doc: any }> {
+    async uploadFile(file: File): Promise<{ doc: AnyObject }> {
         const formData = new FormData()
         formData.append('file', file)
 
@@ -99,36 +104,36 @@ export const payloadAPI = new PayloadAPI()
 
 // Type-safe collection helpers
 export const resourcesAPI = {
-    list: (params?: any) => payloadAPI.find('admin/resources', params),
+    list: (params?: FindParams) => payloadAPI.find('admin/resources', params),
     get: (id: string) => payloadAPI.findById('admin/resources', id),
-    create: (data: any) => payloadAPI.create('admin/resources', data),
-    update: (id: string, data: any) => payloadAPI.update('admin/resources', id, data),
+    create: (data: AnyObject) => payloadAPI.create('admin/resources', data),
+    update: (id: string, data: AnyObject) => payloadAPI.update('admin/resources', id, data),
     delete: (id: string) => payloadAPI.delete('admin/resources', id),
 }
 
 export const documentariesAPI = {
-    list: (params?: any) => payloadAPI.find('documentaries', params),
+    list: (params?: FindParams) => payloadAPI.find('documentaries', params),
     get: (id: string) => payloadAPI.findById('documentaries', id),
-    create: (data: any) => payloadAPI.create('documentaries', data),
-    update: (id: string, data: any) => payloadAPI.update('documentaries', id, data),
+    create: (data: AnyObject) => payloadAPI.create('documentaries', data),
+    update: (id: string, data: AnyObject) => payloadAPI.update('documentaries', id, data),
     delete: (id: string) => payloadAPI.delete('documentaries', id),
 }
 
 export const usersAPI = {
-    list: (params?: any) => payloadAPI.find('users', params),
+    list: (params?: FindParams) => payloadAPI.find('users', params),
     get: (id: string) => payloadAPI.findById('users', id),
-    update: (id: string, data: any) => payloadAPI.update('users', id, data),
+    update: (id: string, data: AnyObject) => payloadAPI.update('users', id, data),
 }
 
 export const ordersAPI = {
-    list: (params?: any) => payloadAPI.find('orders', params),
+    list: (params?: FindParams) => payloadAPI.find('orders', params),
     get: (id: string) => payloadAPI.findById('orders', id),
 }
 
 export const membershipsAPI = {
-    list: (params?: any) => payloadAPI.find('membership-plans', params),
+    list: (params?: FindParams) => payloadAPI.find('membership-plans', params),
     get: (id: string) => payloadAPI.findById('membership-plans', id),
-    create: (data: any) => payloadAPI.create('membership-plans', data),
-    update: (id: string, data: any) => payloadAPI.update('membership-plans', id, data),
+    create: (data: AnyObject) => payloadAPI.create('membership-plans', data),
+    update: (id: string, data: AnyObject) => payloadAPI.update('membership-plans', id, data),
     delete: (id: string) => payloadAPI.delete('membership-plans', id),
 }

@@ -3,29 +3,38 @@
 import { useState, useEffect } from 'react'
 import { ordersAPI } from '@/lib/admin-api'
 
+
+interface Order {
+    id: string;
+    type: string;
+    amount: number;
+    paymentMethod: string;
+    status: string;
+    createdAt: string;
+}
+
 export default function OrdersPage() {
-    const [orders, setOrders] = useState<any[]>([])
+    const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
+        async function loadOrders() {
+            try {
+                setLoading(true)
+                const response = await ordersAPI.list({ page, limit: 20, sort: '-createdAt' })
+                setOrders((response.docs as unknown as Order[]) || [])
+                setTotalPages(response.totalPages || 1)
+            } catch (error) {
+                console.error('Failed to load orders:', error)
+                alert('加载订单失败')
+            } finally {
+                setLoading(false)
+            }
+        }
         loadOrders()
     }, [page])
-
-    async function loadOrders() {
-        try {
-            setLoading(true)
-            const response = await ordersAPI.list({ page, limit: 20, sort: '-createdAt' })
-            setOrders(response.docs || [])
-            setTotalPages(response.totalPages || 1)
-        } catch (error) {
-            console.error('Failed to load orders:', error)
-            alert('加载订单失败')
-        } finally {
-            setLoading(false)
-        }
-    }
 
     return (
         <div className="space-y-6">
@@ -95,9 +104,9 @@ export default function OrdersPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 py-1 text-xs font-medium rounded ${order.status === 'paid' ? 'bg-green-100 text-green-800' :
-                                                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                            order.status === 'cancelled' ? 'bg-gray-100 text-gray-800' :
-                                                                'bg-red-100 text-red-800'
+                                                    order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                        order.status === 'cancelled' ? 'bg-gray-100 text-gray-800' :
+                                                            'bg-red-100 text-red-800'
                                                     }`}>
                                                     {order.status === 'paid' ? '已支付' :
                                                         order.status === 'pending' ? '待支付' :

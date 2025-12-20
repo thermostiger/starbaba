@@ -4,6 +4,7 @@ import { pool } from '@/lib/db';
 // Mock CMS data fetching functions
 // In production, these would call the actual CMS API
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapDbToResource(dbResource: any): Resource {
     let stage = '启蒙';
     if (dbResource.assigned_page) {

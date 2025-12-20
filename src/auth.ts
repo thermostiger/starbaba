@@ -83,14 +83,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async session({ session, token }) {
             if (session.user) {
                 session.user.id = token.sub!;
-                // @ts-ignore
+                // @ts-expect-error - role property is not standard in next-auth types
                 session.user.role = token.role;
             }
             return session;
         },
         async jwt({ token, user }) {
             if (user) {
-                // @ts-ignore - role is added by our authorize function
+                // @ts-expect-error - role is added by our authorize function
                 token.role = user.role;
             }
             return token;

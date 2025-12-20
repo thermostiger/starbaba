@@ -117,7 +117,6 @@ export const Orders: CollectionConfig = {
                             id: doc.user,
                             data: {
                                 purchasedResources: {
-                                    // @ts-ignore
                                     add: [doc.resource],
                                 },
                             },

@@ -101,8 +101,8 @@ export async function GET(request: NextRequest) {
 
         let query = 'SELECT * FROM resources'
         let countQuery = 'SELECT COUNT(*) FROM resources'
-        const queryParams: any[] = []
-        const countParams: any[] = []
+        const queryParams: (string | number | boolean)[] = []
+        const countParams: (string | number | boolean)[] = []
         let paramIndex = 1
 
         // Build WHERE clause

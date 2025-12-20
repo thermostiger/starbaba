@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
             { error: '生产环境配置未完成' },
             { status: 501 }
         );
-    } catch (error: any) {
+    } catch (error) {
         console.error('WeChat Pay create order error:', error);
         return NextResponse.json(
             { error: '创建订单失败' },

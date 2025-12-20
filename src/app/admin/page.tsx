@@ -1,5 +1,6 @@
 import { requireAdmin } from '@/lib/admin-auth'
 import { pool } from '@/lib/db'
+import Link from 'next/link'
 
 async function getStats() {
     try {
@@ -105,7 +106,7 @@ export default async function AdminDashboard() {
                 <div className="bg-white rounded-lg shadow p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">快捷操作</h3>
                     <div className="space-y-3">
-                        <a
+                        <Link
                             href="/admin/resources/new"
                             className="block px-4 py-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
                         >
@@ -115,9 +116,9 @@ export default async function AdminDashboard() {
                                 </svg>
                                 <span className="text-sm font-medium text-gray-900">添加新资源</span>
                             </div>
-                        </a>
+                        </Link>
 
-                        <a
+                        <Link
                             href="/admin/documentaries/new"
                             className="block px-4 py-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
                         >
@@ -127,9 +128,9 @@ export default async function AdminDashboard() {
                                 </svg>
                                 <span className="text-sm font-medium text-gray-900">添加新纪录片</span>
                             </div>
-                        </a>
+                        </Link>
 
-                        <a
+                        <Link
                             href="/admin/memberships/new"
                             className="block px-4 py-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors"
                         >
@@ -139,7 +140,7 @@ export default async function AdminDashboard() {
                                 </svg>
                                 <span className="text-sm font-medium text-gray-900">添加会员套餐</span>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
 

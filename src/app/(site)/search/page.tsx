@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-export default function SearchPage() {
+function SearchContent() {
     const searchParams = useSearchParams();
     const initialQuery = searchParams.get('q') || '';
     const [query, setQuery] = useState(initialQuery);
@@ -43,5 +43,18 @@ export default function SearchPage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={
+            <div className="max-w-7xl mx-auto px-4 py-12 text-center">
+                <div className="inline-block w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                <p className="mt-4 text-gray-600">加载中...</p>
+            </div>
+        }>
+            <SearchContent />
+        </Suspense>
     );
 }

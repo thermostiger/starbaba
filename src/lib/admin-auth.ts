@@ -8,7 +8,7 @@ export async function requireAdmin() {
         redirect('/admin/login')
     }
 
-    // @ts-ignore
+    // @ts-expect-error - user role is added via custom session callback
     if (session.user.role !== 'admin') {
         redirect('/')
     }
@@ -18,6 +18,6 @@ export async function requireAdmin() {
 
 export async function checkAdmin() {
     const session = await auth()
-    // @ts-ignore
+    // @ts-expect-error - user role is added via custom session callback
     return session?.user?.role === 'admin'
 }

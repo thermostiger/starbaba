@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Resource } from '@/types';
-import { Sparkles, Clock, Users } from 'lucide-react';
+import { Sparkles, Clock } from 'lucide-react';
 
 interface ResourceHeroProps {
     resource: Resource;

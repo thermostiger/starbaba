@@ -34,39 +34,39 @@ export default function EditResourcePage() {
     })
 
     useEffect(() => {
+        async function loadResource() {
+            try {
+                setLoading(true)
+                console.log('Loading resource:', id)
+                const response = await resourcesAPI.get(id)
+                console.log('Resource loaded:', response)
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const resource = response.doc as any
+
+                setCoverImageUrl(resource.coverImage || '')
+
+                setFormData({
+                    title: resource.title || '',
+                    highlights: resource.highlights || '',
+                    resourceInfo: resource.resourceInfo || '',
+                    category: resource.category || '',
+                    assignedPage: resource.assignedPage || '',
+                    price: resource.price || 0,
+                    isWeeklyHot: !!resource.isWeeklyHot,
+                    isNew: !!resource.isNew,
+                    content: resource.content || '',
+                    coverImage: resource.coverImage || '',
+                    resourceUrl: resource.resourceUrl || '',
+                })
+            } catch (error) {
+                console.error('Failed to load resource:', error)
+                alert('加载资源失败：' + (error as Error).message)
+            } finally {
+                setLoading(false)
+            }
+        }
         loadResource()
     }, [id])
-
-    async function loadResource() {
-        try {
-            setLoading(true)
-            console.log('Loading resource:', id)
-            const response = await resourcesAPI.get(id)
-            console.log('Resource loaded:', response)
-            const resource = response.doc as any
-
-            setCoverImageUrl(resource.coverImage || '')
-
-            setFormData({
-                title: resource.title || '',
-                highlights: resource.highlights || '',
-                resourceInfo: resource.resourceInfo || '',
-                category: resource.category || '',
-                assignedPage: resource.assignedPage || '',
-                price: resource.price || 0,
-                isWeeklyHot: !!resource.isWeeklyHot,
-                isNew: !!resource.isNew,
-                content: resource.content || '',
-                coverImage: resource.coverImage || '',
-                resourceUrl: resource.resourceUrl || '',
-            })
-        } catch (error) {
-            console.error('Failed to load resource:', error)
-            alert('加载资源失败：' + (error as Error).message)
-        } finally {
-            setLoading(false)
-        }
-    }
 
     async function handleCoverImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0]
@@ -167,6 +167,7 @@ export default function EditResourcePage() {
                     <div className="flex items-start space-x-4">
                         {coverImageUrl && (
                             <div className="flex-shrink-0">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src={coverImageUrl}
                                     alt="封面预览"

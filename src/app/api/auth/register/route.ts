@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
             },
             { status: 201 }
         );
-    } catch (error: any) {
+    } catch (error) {
         console.error('Registration error:', error);
         return NextResponse.json(
             { error: '注册失败，请稍后重试' },

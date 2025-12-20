@@ -34,7 +34,7 @@ export async function POST(request: Request) {
         // 创建管理员账号
         const hashedPassword = await bcrypt.hash('admin123456', 10)
 
-        const admin = await payload.create({
+        await payload.create({
             collection: 'users',
             data: {
                 email: 'admin@starbaba.com',

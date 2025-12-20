@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
                 router.push('/admin')
                 router.refresh()
             }
-        } catch (err) {
+        } catch {
             setError('登录失败，请稍后重试')
         } finally {
             setLoading(false)

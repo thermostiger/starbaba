@@ -120,44 +120,72 @@ export default function Header() {
                                         </Avatar>
                                     </Button>
                                 </HoverCardTrigger>
-                                <HoverCardContent className="w-80" align="end">
-                                    <div className="flex justify-between space-x-4">
-                                        <Avatar className="h-12 w-12 border-2 border-orange-200">
-                                            <AvatarImage src={user.avatar} />
-                                            <AvatarFallback className="bg-gradient-to-br from-orange-400 to-amber-500 text-white">VIP</AvatarFallback>
-                                        </Avatar>
-                                        <div className="space-y-1 flex-1">
-                                            <h4 className="text-sm font-semibold flex items-center">
+                                <HoverCardContent className="w-80 p-0 overflow-hidden border-none shadow-xl bg-white/95 backdrop-blur-xl ring-1 ring-gray-900/5" align="end">
+                                    {/* Header Gradient Background */}
+                                    <div className="h-20 bg-gradient-to-br from-orange-400 via-amber-500 to-orange-600 relative">
+                                        <div className="absolute inset-0 bg-white/10" />
+                                        <div className="absolute top-4 right-4">
+                                            {user.isVip && (
+                                                <span className="px-2 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-medium text-white ring-1 ring-white/30 flex items-center gap-1">
+                                                    <Crown className="w-3 h-3" /> VIP会员
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="px-5 pb-5 -mt-10 relative">
+                                        <div className="flex justify-between items-end mb-4">
+                                            <Avatar className="h-20 w-20 border-4 border-white shadow-lg ring-1 ring-black/5">
+                                                <AvatarImage src={user.avatar} />
+                                                <AvatarFallback className="bg-orange-100 text-orange-600 text-xl font-bold">
+                                                    {user.name?.[0]?.toUpperCase()}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        </div>
+
+                                        <div className="space-y-1 mb-5">
+                                            <h4 className="text-lg font-bold text-gray-900 flex items-center">
                                                 {user.name}
-                                                {user.isVip && <Crown className="w-3 h-3 ml-1 text-amber-500 fill-amber-500" />}
                                             </h4>
-                                            <p className="text-xs text-muted-foreground">
+                                            <p className="text-xs text-gray-500 font-mono">
                                                 ID: {user.id}
                                             </p>
-                                            <div className="flex items-center pt-2">
-                                                <span className="text-xs text-muted-foreground">
+                                        </div>
+
+                                        {user.isVip ? (
+                                            <div className="flex items-center gap-2 mb-6 p-3 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100">
+                                                <Crown className="w-4 h-4 text-amber-600" />
+                                                <span className="text-xs text-amber-800 font-medium">
                                                     VIP有效期至：{user.vipExpireDate}
                                                 </span>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-2 mt-4">
-                                                <Button variant="outline" size="sm" className="w-full text-xs rounded-lg">
-                                                    <BookOpen className="w-3 h-3 mr-1" />
-                                                    我的课程
-                                                </Button>
-                                                <Button variant="outline" size="sm" className="w-full text-xs rounded-lg">
-                                                    <Settings className="w-3 h-3 mr-1" />
-                                                    账号设置
+                                        ) : (
+                                            <div className="mb-6">
+                                                <Button size="sm" className="w-full bg-gradient-to-r from-gray-900 to-gray-800 text-white hover:from-black hover:to-gray-900 shadow-md" asChild>
+                                                    <Link href="/vip">
+                                                        <Sparkles className="w-3.5 h-3.5 mr-1.5 text-amber-400" />
+                                                        升级为VIP会员
+                                                    </Link>
                                                 </Button>
                                             </div>
-                                            <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                className="w-full text-xs mt-1 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                                        )}
+
+                                        <div className="space-y-2">
+                                            <Link href="/user" className="flex items-center gap-3 w-full p-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group">
+                                                <User className="w-4 h-4 text-gray-400 group-hover:text-orange-500 transition-colors" />
+                                                个人中心
+                                            </Link>
+                                            <Link href="/user/orders" className="flex items-center gap-3 w-full p-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group">
+                                                <BookOpen className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                                                我的订单
+                                            </Link>
+                                            <button
                                                 onClick={() => signOut({ callbackUrl: '/' })}
+                                                className="flex items-center gap-3 w-full p-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors group"
                                             >
-                                                <LogOut className="w-3 h-3 mr-1" />
+                                                <LogOut className="w-4 h-4 text-red-500 group-hover:text-red-600" />
                                                 退出登录
-                                            </Button>
+                                            </button>
                                         </div>
                                     </div>
                                 </HoverCardContent>

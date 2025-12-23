@@ -21,7 +21,7 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                             <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
                             <div className="relative w-full lg:w-[200px] aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-black/5">
                                 <Image
-                                    src={resource.coverImage}
+                                    src={resource.cover_image}
                                     alt={resource.title}
                                     fill
                                     className="object-cover"
@@ -76,7 +76,7 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                                     <span className="font-semibold text-gray-700 text-sm">资源信息</span>
                                 </div>
                                 <div className="space-y-2">
-                                    {(resource.description ? resource.description.split('\n').filter(i => i.trim()) : ['永久有效 · 2-15岁']).map((info, index) => (
+                                    {(resource.resource_info ? resource.resource_info.split('\n').filter(i => i.trim()) : ['永久有效 · 2-15岁']).map((info, index) => (
                                         <div key={index} className="flex items-center gap-2">
                                             <Clock className="w-3 h-3 text-blue-500 shrink-0" />
                                             <span className="text-xs text-gray-600">{info}</span>

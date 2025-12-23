@@ -15,7 +15,7 @@ export default function ResourceCard({ resource, showBadges = false }: ResourceC
                 {/* Cover Image */}
                 <div className="relative w-full aspect-[3/2]">
                     <Image
-                        src={resource.coverImage || '/placeholder.png'}
+                        src={resource.cover_image || '/placeholder.png'}
                         alt={resource.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -24,12 +24,12 @@ export default function ResourceCard({ resource, showBadges = false }: ResourceC
                     {/* Badges - Top Left */}
                     {showBadges && (
                         <div className="absolute top-2 left-2 flex gap-1">
-                            {resource.isWeeklyHot && (
+                            {resource.is_weekly_hot && (
                                 <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded-full shadow-sm">
                                     HOT
                                 </span>
                             )}
-                            {resource.isNew && (
+                            {resource.is_new && (
                                 <span className="px-2 py-0.5 bg-cyan-500 text-white text-[10px] font-bold rounded-full shadow-sm">
                                     NEW
                                 </span>
@@ -41,7 +41,7 @@ export default function ResourceCard({ resource, showBadges = false }: ResourceC
                 {/* Content */}
                 <div className="p-3 flex-1 flex flex-col justify-between">
                     <div>
-                        <div className="text-xs text-cyan-600 mb-1 font-medium">{resource.stage || resource.category}</div>
+                        <div className="text-xs text-cyan-600 mb-1 font-medium">{resource.resource_info || resource.category}</div>
                         <h3 className="font-bold text-sm text-slate-900 line-clamp-2 group-hover:text-cyan-600 transition-colors mb-1">
                             {resource.title}
                         </h3>
@@ -49,7 +49,7 @@ export default function ResourceCard({ resource, showBadges = false }: ResourceC
 
                     <div className="flex items-center justify-between mt-1 pt-2 border-t border-slate-50">
                         <span className="text-xs text-slate-400">{resource.category}</span>
-                        {resource.isVip ? (
+                        {resource.is_vip ? (
                             <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg border border-purple-200">
                                 VIP
                             </span>

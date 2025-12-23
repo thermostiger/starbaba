@@ -18,7 +18,7 @@ export default function RelatedResources({ resources }: RelatedResourcesProps) {
                         <Card className="group overflow-hidden hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer">
                             <div className="relative aspect-[3/4]">
                                 <Image
-                                    src={resource.coverImage}
+                                    src={resource.cover_image}
                                     alt={resource.title}
                                     fill
                                     className="object-cover"
@@ -29,7 +29,7 @@ export default function RelatedResources({ resources }: RelatedResourcesProps) {
                                     {resource.title}
                                 </h3>
                                 <div className="flex items-center justify-between mt-2">
-                                    <span className="text-xs text-muted-foreground">{resource.stage}</span>
+                                    <span className="text-xs text-muted-foreground">{resource.resource_info}</span>
                                     <span className="text-xs font-bold text-primary">¥{resource.price}</span>
                                 </div>
                             </CardContent>

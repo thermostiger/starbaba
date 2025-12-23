@@ -31,18 +31,7 @@ export async function GET(
         console.log('Resource found:', resource.title)
 
         return NextResponse.json({
-            doc: {
-                ...resource,
-                // Map snake_case database fields to camelCase for frontend if needed
-                // But looking at the POST route and general usage, frontend seems to handle what it gets
-                // Explicitly mapping assigned_page to assignedPage to match frontend state
-                assignedPage: resource.assigned_page,
-                // Ensure boolean fields are booleans
-                isWeeklyHot: !!resource.isWeeklyHot,
-                isNew: !!resource.isNew,
-                isPublished: resource.is_published,
-                isVip: resource.is_vip,
-            },
+            doc: resource,
         })
     } catch (error) {
         console.error('Failed to fetch resource:', error)
@@ -80,9 +69,9 @@ export async function PATCH(
         await client.query('BEGIN')
 
         // Check limitation for Weekly Hot
-        if (data.isWeeklyHot === true && !currentResource.isWeeklyHot) {
+        if (data.is_weekly_hot === true && !currentResource.is_weekly_hot) {
             const hotCountResult = await client.query(
-                `SELECT COUNT(*) FROM resources WHERE "isWeeklyHot" = true`
+                `SELECT COUNT(*) FROM resources WHERE is_weekly_hot = true`
             )
             const hotCount = parseInt(hotCountResult.rows[0].count)
 
@@ -100,36 +89,30 @@ export async function PATCH(
             UPDATE resources SET
                 title = $1,
                 highlights = $2,
-                "resourceInfo" = $3,
+                resource_info = $3,
                 category = $4,
                 assigned_page = $5,
-                price = $6,
-                "isWeeklyHot" = $7,
-                "isNew" = $8,
-                content = $9,
-                "coverImage" = $10,
-                "resourceUrl" = $11,
-                "is_published" = $12,
-                "is_vip" = $13,
-                "updatedAt" = NOW()
-            WHERE id = $14
+                is_weekly_hot = $6,
+                is_new = $7,
+                content = $8,
+                cover_image = $9,
+                "is_published" = $10,
+                updated_at = NOW()
+            WHERE id = $11
             RETURNING *
         `
 
         const values = [
             data.title !== undefined ? data.title : currentResource.title,
             data.highlights !== undefined ? data.highlights : currentResource.highlights,
-            data.resourceInfo !== undefined ? data.resourceInfo : (currentResource.resourceInfo || ''),
+            data.resource_info !== undefined ? data.resource_info : (currentResource.resource_info || ''),
             data.category !== undefined ? data.category : currentResource.category,
-            data.assignedPage !== undefined ? data.assignedPage : currentResource.assigned_page,
-            data.price !== undefined ? data.price : currentResource.price,
-            data.isWeeklyHot !== undefined ? data.isWeeklyHot : currentResource.isWeeklyHot,
-            data.isNew !== undefined ? data.isNew : currentResource.isNew,
+            data.assigned_page !== undefined ? data.assigned_page : currentResource.assigned_page,
+            data.is_weekly_hot !== undefined ? data.is_weekly_hot : currentResource.is_weekly_hot,
+            data.is_new !== undefined ? data.is_new : currentResource.is_new,
             data.content !== undefined ? data.content : (currentResource.content || ''),
-            data.coverImage !== undefined ? data.coverImage : (currentResource.coverImage || ''),
-            data.resourceUrl !== undefined ? data.resourceUrl : (currentResource.resourceUrl || ''),
-            data.isPublished !== undefined ? data.isPublished : currentResource.is_published,
-            data.isVip !== undefined ? data.isVip : currentResource.is_vip,
+            data.cover_image !== undefined ? data.cover_image : (currentResource.cover_image || ''),
+            data.is_published !== undefined ? data.is_published : currentResource.is_published,
             id,
         ]
 
@@ -152,12 +135,7 @@ export async function PATCH(
 
         return NextResponse.json({
             success: true,
-            doc: {
-                ...resource,
-                assignedPage: resource.assigned_page,
-                isPublished: resource.is_published,
-                isVip: resource.is_vip,
-            },
+            doc: resource,
         })
     } catch (error) {
         // Rollback on error

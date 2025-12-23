@@ -43,19 +43,19 @@ export default function EditResourcePage() {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const resource = response.doc as any
 
-                setCoverImageUrl(resource.coverImage || '')
+                setCoverImageUrl(resource.cover_image || '')
 
                 setFormData({
                     title: resource.title || '',
                     highlights: resource.highlights || '',
-                    resourceInfo: resource.resourceInfo || '',
+                    resourceInfo: resource.resource_info || '',
                     category: resource.category || '',
-                    assignedPage: resource.assignedPage || '',
+                    assignedPage: resource.assigned_page || '',
                     price: resource.price || 0,
-                    isWeeklyHot: !!resource.isWeeklyHot,
-                    isNew: !!resource.isNew,
+                    isWeeklyHot: !!resource.is_weekly_hot,
+                    isNew: !!resource.is_new,
                     content: resource.content || '',
-                    coverImage: resource.coverImage || '',
+                    coverImage: resource.cover_image || '',
                     resourceUrl: resource.resourceUrl || '',
                 })
             } catch (error) {
@@ -108,14 +108,14 @@ export default function EditResourcePage() {
             const payload = {
                 title: formData.title,
                 highlights: formData.highlights,
-                resourceInfo: formData.resourceInfo,
+                resource_info: formData.resourceInfo,
                 category: formData.category,
-                assignedPage: formData.assignedPage,
+                assigned_page: formData.assignedPage,
                 price: formData.price,
-                isWeeklyHot: formData.isWeeklyHot,
-                isNew: formData.isNew,
+                is_weekly_hot: formData.isWeeklyHot,
+                is_new: formData.isNew,
                 content: formData.content,
-                coverImage: formData.coverImage,
+                cover_image: formData.coverImage,
                 resourceUrl: formData.resourceUrl,
             }
 

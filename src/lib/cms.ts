@@ -6,33 +6,23 @@ import { pool } from '@/lib/db';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapDbToResource(dbResource: any): Resource {
-    let stage = '启蒙';
-    if (dbResource.assigned_page) {
-        const pageToStage: Record<string, string> = {
-            '幼儿英语': '启蒙',
-            '少儿英语': '进阶',
-            '青少年英语': '青少年',
-            '科普纪录片': '全年龄',
-        };
-        stage = pageToStage[dbResource.assigned_page] || '启蒙';
-    }
-
     return {
         id: dbResource.id.toString(),
         title: dbResource.title,
-        description: dbResource.resourceInfo || '',
+        resource_info: dbResource.resource_info || '',
         highlights: dbResource.highlights || '',
-        coverImage: dbResource.coverImage || '/images/placeholder.jpg',
+        cover_image: dbResource.cover_image || '/images/placeholder.jpg',
         category: dbResource.category,
-        stage: stage,
+        assigned_page: dbResource.assigned_page,
         price: parseFloat(dbResource.price) || 0,
         vipPrice: 0,
         content: dbResource.content,
         resourceUrl: dbResource.resourceUrl || '',
-        isVip: dbResource.is_vip,
-        isWeeklyHot: dbResource.isWeeklyHot,
-        isNew: dbResource.isNew,
-        createdAt: dbResource.createdAt,
+        is_vip: dbResource.is_vip,
+        is_weekly_hot: dbResource.is_weekly_hot,
+        is_new: dbResource.is_new,
+        created_at: dbResource.created_at,
+        is_published: dbResource.is_published,
     };
 }
 
@@ -51,121 +41,121 @@ const MOCK_RESOURCES: Resource[] = [
     {
         id: '1',
         title: 'Peppa Pig 粉红猪小妹全集',
-        description: '适合3-6岁英语启蒙',
-        coverImage: '/images/peppa.jpg',
+        resource_info: '适合3-6岁英语启蒙',
+        cover_image: '/images/peppa.jpg',
         category: '动画',
-        stage: '启蒙',
+        assigned_page: '幼儿英语',
         price: 29.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '2',
         title: 'Oxford Reading Tree 牛津阅读树',
-        description: '分级阅读经典教材',
-        coverImage: '/images/oxford.jpg',
+        resource_info: '分级阅读经典教材',
+        cover_image: '/images/oxford.jpg',
         category: '绘本',
-        stage: '进阶',
+        assigned_page: '少儿英语',
         price: 49.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '3',
         title: 'Super Simple Songs 儿歌精选',
-        description: '朗朗上口的英语儿歌',
-        coverImage: '/images/songs.jpg',
+        resource_info: '朗朗上口的英语儿歌',
+        cover_image: '/images/songs.jpg',
         category: '儿歌',
-        stage: '启蒙',
+        assigned_page: '幼儿英语',
         price: 19.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '4',
         title: 'Phonics 自然拼读课程',
-        description: '系统学习发音规则',
-        coverImage: '/images/phonics.jpg',
+        resource_info: '系统学习发音规则',
+        cover_image: '/images/phonics.jpg',
         category: '课程',
-        stage: '基础',
+        assigned_page: '少儿英语', // 基础 -> 少儿英语/进阶
         price: 99.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '5',
         title: 'Harry Potter Audiobooks',
-        description: '哈利波特原版有声书',
-        coverImage: '/images/oxford.jpg', // Placeholder using existing image
+        resource_info: '哈利波特原版有声书',
+        cover_image: '/images/oxford.jpg', // Placeholder using existing image
         category: '听力',
-        stage: '青少年',
+        assigned_page: '青少年英语',
         price: 59.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '6',
         title: 'TED Talks for Teens',
-        description: '适合青少年的TED演讲',
-        coverImage: '/images/planet-earth.jpg', // Placeholder using existing image
+        resource_info: '适合青少年的TED演讲',
+        cover_image: '/images/planet-earth.jpg', // Placeholder using existing image
         category: '视频',
-        stage: '青少年',
+        assigned_page: '青少年英语',
         price: 0,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '7',
         title: 'National Geographic Kids',
-        description: '国家地理儿童版',
-        coverImage: '/images/africa.jpg', // Placeholder using existing image
+        resource_info: '国家地理儿童版',
+        cover_image: '/images/africa.jpg', // Placeholder using existing image
         category: '阅读',
-        stage: '青少年',
+        assigned_page: '青少年英语',
         price: 39.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '8',
         title: 'Magic School Bus',
-        description: '神奇校车',
-        coverImage: '/images/peppa.jpg', // Placeholder using existing image
+        resource_info: '神奇校车',
+        cover_image: '/images/peppa.jpg', // Placeholder using existing image
         category: '动画',
-        stage: '启蒙',
+        assigned_page: '幼儿英语',
         price: 29.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
+        created_at: new Date().toISOString(),
     },
     {
         id: '9',
         title: 'Dr. Seuss Collection 苏斯博士',
-        description: '苏斯博士经典绘本集',
-        coverImage: '/images/oxford.jpg',
+        resource_info: '苏斯博士经典绘本集',
+        cover_image: '/images/oxford.jpg',
         category: '绘本',
-        stage: '启蒙',
+        assigned_page: '幼儿英语',
         price: 39.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
-        isWeeklyHot: true,
+        created_at: new Date().toISOString(),
+        is_weekly_hot: true,
     },
     {
         id: '10',
         title: 'I Can Read Series',
-        description: '经典分级阅读系列',
-        coverImage: '/images/phonics.jpg',
+        resource_info: '经典分级阅读系列',
+        cover_image: '/images/phonics.jpg',
         category: '绘本',
-        stage: '基础',
+        assigned_page: '少儿英语',
         price: 45.9,
         vipPrice: 0,
-        createdAt: new Date().toISOString(),
-        isWeeklyHot: true,
+        created_at: new Date().toISOString(),
+        is_weekly_hot: true,
     }
 ];
 
 export async function getHotResources(limit: number = 4): Promise<Resource[]> {
     try {
         const result = await pool.query(
-            'SELECT * FROM resources WHERE "isWeeklyHot" = true AND is_published = true ORDER BY "createdAt" DESC LIMIT $1',
+            'SELECT * FROM resources WHERE is_weekly_hot = true AND is_published = true ORDER BY created_at DESC LIMIT $1',
             [limit]
         );
         if (result.rows.length > 0) {
@@ -203,7 +193,7 @@ export async function getResourcesByStage(stage: string, page: number = 1, limit
             const total = parseInt(countResult.rows[0].count);
 
             const result = await pool.query(
-                'SELECT * FROM resources WHERE assigned_page = $1 AND is_published = true ORDER BY "createdAt" DESC LIMIT $2 OFFSET $3',
+                'SELECT * FROM resources WHERE assigned_page = $1 AND is_published = true ORDER BY created_at DESC LIMIT $2 OFFSET $3',
                 [assignedPage, limit, offset]
             );
 
@@ -226,7 +216,7 @@ export async function getResourcesByStage(stage: string, page: number = 1, limit
         }
     }
 
-    const filtered = MOCK_RESOURCES.filter(r => r.stage === stage);
+    const filtered = MOCK_RESOURCES.filter(r => r.assigned_page === assignedPage);
 
     // Duplicate to fill the limit if needed to simulate more data
     const totalCount = 100; // Simulate 100 items
@@ -253,7 +243,7 @@ export async function getResourcesByStage(stage: string, page: number = 1, limit
 export async function getNewResources(limit: number = 16): Promise<Resource[]> {
     try {
         const result = await pool.query(
-            'SELECT * FROM resources WHERE is_published = true ORDER BY "createdAt" DESC LIMIT $1',
+            'SELECT * FROM resources WHERE is_published = true ORDER BY created_at DESC LIMIT $1',
             [limit]
         );
         if (result.rows.length > 0) {
@@ -452,16 +442,16 @@ export async function getResourceById(id: string): Promise<Resource | null> {
             return {
                 id: id,
                 title: documentary.title,
-                description: documentary.subtitle,
-                coverImage: documentary.coverImage,
+                resource_info: documentary.subtitle,
+                cover_image: documentary.coverImage,
                 category: '纪录片',
-                stage: '全年龄',
+                assigned_page: '科普纪录片',
                 price: 39.9,
                 vipPrice: 0,
                 duration: documentary.duration,
                 isEnglishAudio: documentary.isEnglishAudio,
                 content: `<h2>${documentary.title}</h2><p>${documentary.subtitle}</p><p>时长：${documentary.duration}</p>`,
-                createdAt: new Date().toISOString(),
+                created_at: new Date().toISOString(),
             };
         }
     }

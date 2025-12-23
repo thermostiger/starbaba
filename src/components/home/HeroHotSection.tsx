@@ -35,7 +35,7 @@ export default function HeroHotSection({ resources }: HeroHotSectionProps) {
                             <Card className="relative overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300 cursor-pointer h-full flex flex-col border border-cyan-100/50 shadow-sm rounded-2xl bg-white">
                                 <div className="relative w-full aspect-[3/2]">
                                     <Image
-                                        src={resource.coverImage}
+                                        src={resource.cover_image}
                                         alt={resource.title}
                                         fill
                                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -46,14 +46,14 @@ export default function HeroHotSection({ resources }: HeroHotSectionProps) {
                                 </div>
                                 <div className="p-3 flex-1 flex flex-col justify-between">
                                     <div>
-                                        <div className="text-xs text-cyan-600 mb-1 font-medium">{resource.stage}</div>
+                                        <div className="text-xs text-cyan-600 mb-1 font-medium">{resource.resource_info}</div>
                                         <h3 className="font-bold text-sm line-clamp-2 group-hover:text-cyan-600 transition-colors mb-1">
                                             {resource.title}
                                         </h3>
                                     </div>
                                     <div className="flex items-center justify-between mt-1 pt-2 border-t border-slate-50">
                                         <span className="text-xs text-slate-400">{resource.category}</span>
-                                        {resource.isVip ? (
+                                        {resource.is_vip ? (
                                             <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg border border-purple-200">
                                                 VIP
                                             </span>

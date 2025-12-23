@@ -67,14 +67,14 @@ export default function NewResourcePage() {
             const payload = {
                 title: formData.title,
                 highlights: formData.highlights,
-                resourceInfo: formData.resourceInfo,
+                resource_info: formData.resourceInfo,
                 category: formData.category,
-                assignedPage: formData.assignedPage,
+                assigned_page: formData.assignedPage,
                 price: formData.price,
-                isWeeklyHot: formData.isWeeklyHot,
-                isNew: formData.isNew,
+                is_weekly_hot: formData.isWeeklyHot,
+                is_new: formData.isNew,
                 content: formData.content,
-                coverImage: formData.coverImage,
+                cover_image: formData.coverImage,
                 resourceUrl: formData.resourceUrl,
             }
 

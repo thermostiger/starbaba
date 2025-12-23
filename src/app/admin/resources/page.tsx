@@ -9,10 +9,9 @@ interface Resource {
     id: string
     title: string
     category: string
-    price: number
     isWeeklyHot: boolean
     isPublished: boolean
-    isVip: boolean
+    isFree: boolean
     [key: string]: unknown
 }
 
@@ -70,7 +69,7 @@ export default function ResourcesPage() {
         try {
             const newStatus = !resource.isPublished
             await resourcesAPI.update(resource.id, {
-                isPublished: newStatus
+                is_published: newStatus
             })
             setResources(resources.map(r =>
                 r.id === resource.id ? { ...r, isPublished: newStatus } : r
@@ -81,33 +80,36 @@ export default function ResourcesPage() {
         }
     }
 
-    async function handleToggleVip(resource: Resource) {
+    async function handleToggleFree(resource: Resource) {
         try {
-            const newVip = !resource.isVip
+            const newFree = !resource.isFree
             await resourcesAPI.update(resource.id, {
-                isVip: newVip
+                is_free: newFree
             })
             setResources(resources.map(r =>
-                r.id === resource.id ? { ...r, isVip: newVip } : r
+                r.id === resource.id ? { ...r, isFree: newFree } : r
             ))
         } catch (error) {
-            console.error('Failed to update vip status:', error)
-            alert('更新VIP状态失败')
+            console.error('Failed to update free status:', error)
+            alert('更新免费状态失败')
         }
     }
+
+
 
     async function handleToggleHot(resource: Resource) {
         try {
             const newHot = !resource.isWeeklyHot
             await resourcesAPI.update(resource.id, {
-                isWeeklyHot: newHot
+                is_weekly_hot: newHot
             })
             setResources(resources.map(r =>
                 r.id === resource.id ? { ...r, isWeeklyHot: newHot } : r
             ))
         } catch (error) {
             console.error('Failed to update hot status:', error)
-            alert((error as Error).message || '更新热门状态失败: 最多允许10个热门资源')
+            // Fix error message handling to match admin-api.ts error throwing
+            alert((error as Error).message || '更新热门状态失败')
         }
     }
 
@@ -179,16 +181,10 @@ export default function ResourcesPage() {
                                         分类
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        价格
+                                        上下架
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        权限
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        热门
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        状态
+                                        是否免费
                                     </th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         操作
@@ -216,23 +212,6 @@ export default function ResourcesPage() {
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                ¥{resource.price}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                <button
-                                                    onClick={() => handleToggleHot(resource)}
-                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 ${resource.isWeeklyHot ? 'bg-red-600' : 'bg-gray-200'}`}
-                                                >
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isWeeklyHot ? 'translate-x-5' : 'translate-x-0'}`}
-                                                    />
-                                                </button>
-                                                <span className="ml-2 text-xs text-gray-500">
-                                                    {resource.isWeeklyHot ? '热门' : '普通'}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <button
                                                     onClick={() => handleToggleStatus(resource)}
                                                     className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${resource.isPublished !== false ? 'bg-blue-600' : 'bg-gray-200'
@@ -250,16 +229,16 @@ export default function ResourcesPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <button
-                                                    onClick={() => handleToggleVip(resource)}
-                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2 ${resource.isVip ? 'bg-purple-600' : 'bg-green-500'}`}
+                                                    onClick={() => handleToggleFree(resource)}
+                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 ${resource.isFree ? 'bg-green-500' : 'bg-orange-500'}`}
                                                 >
                                                     <span
                                                         aria-hidden="true"
-                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isVip ? 'translate-x-5' : 'translate-x-0'}`}
+                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isFree ? 'translate-x-5' : 'translate-x-0'}`}
                                                     />
                                                 </button>
                                                 <span className="ml-2 text-xs text-gray-500">
-                                                    {resource.isVip ? 'VIP' : '免费'}
+                                                    {resource.isFree ? '免费' : '付费'}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">

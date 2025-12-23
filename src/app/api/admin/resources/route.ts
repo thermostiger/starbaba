@@ -22,37 +22,31 @@ export async function POST(request: NextRequest) {
             INSERT INTO resources (
                 title,
                 highlights,
-                "resourceInfo",
+                resource_info,
                 category,
                 assigned_page,
-                price,
-                "isWeeklyHot",
-                "isNew",
+                is_weekly_hot,
+                is_new,
                 content,
-                "coverImage",
-                "resourceUrl",
+                cover_image,
                 "is_published",
-                "is_vip",
-                "createdAt",
-                "updatedAt"
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW(), NOW())
+                created_at,
+                updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
             RETURNING *
         `
 
         const values = [
             data.title,
             data.highlights,
-            data.resourceInfo || '',
+            data.resource_info || '',
             data.category,
-            data.assignedPage,
-            data.price,
-            data.isWeeklyHot || false,
-            data.isNew || false,
+            data.assigned_page,
+            data.is_weekly_hot || false,
+            data.is_new || false,
             data.content || '',
-            data.coverImage || '',
-            data.resourceUrl || '',
-            data.isPublished !== undefined ? data.isPublished : true,
-            data.isVip !== undefined ? data.isVip : true,
+            data.cover_image || '',
+            data.is_published !== undefined ? data.is_published : true,
         ]
 
         const result = await client.query(insertQuery, values)
@@ -134,7 +128,7 @@ export async function GET(request: NextRequest) {
             countQuery += whereClause
         }
 
-        query += ` ORDER BY "createdAt" DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`
+        query += ` ORDER BY created_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`
         queryParams.push(limit, offset)
 
         const result = await pool.query(query, queryParams)
@@ -142,12 +136,7 @@ export async function GET(request: NextRequest) {
         const totalDocs = parseInt(countResult.rows[0].count)
 
         return NextResponse.json({
-            docs: result.rows.map(r => ({
-                ...r,
-                isPublished: r.is_published,
-                isVip: r.is_vip,
-                assignedPage: r.assigned_page,
-            })),
+            docs: result.rows,
             totalDocs,
             limit,
             page,

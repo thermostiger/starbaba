@@ -24,48 +24,111 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     console.log('Attempting to authenticate:', credentials.email);
 
-                    // Direct Supabase connection instead of Payload
+                    // 1. Verify credentials with Supabase Auth
                     const { createClient } = await import('@supabase/supabase-js');
                     const supabase = createClient(
                         process.env.NEXT_PUBLIC_SUPABASE_URL!,
                         process.env.SUPABASE_SERVICE_ROLE_KEY!
                     );
 
-                    const { data: users, error } = await supabase
-                        .from('users')
-                        .select('*')
-                        .eq('email', credentials.email as string)
-                        .limit(1);
+                    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+                        email: credentials.email as string,
+                        password: credentials.password as string,
+                    });
 
-                    if (error) {
-                        console.error('Database error:', error);
-                        return null;
+                    if (authError) {
+                        console.error('Supabase Auth error:', authError.message);
+                        console.log('Falling back to legacy bcrypt check...');
+
+                        // FALLBACK: Try legacy bcrypt check for existing users who haven't migrated
+                        const { data: users, error: dbError } = await supabase
+                            .from('users')
+                            .select('*')
+                            .eq('email', credentials.email as string)
+                            .limit(1);
+
+                        if (dbError || !users?.[0]) {
+                            return null;
+                        }
+
+                        const user = users[0];
+                        if (!user.password || user.provider !== 'email') { // Only check if password exists and is email provider
+                            return null;
+                        }
+
+                        // If password isn't a hash (e.g. strict bcrypt format), skip
+                        if (!user.password.startsWith('$2b$') && !user.password.startsWith('$2a$') && !user.password.startsWith('$2y$')) {
+                            return null;
+                        }
+
+                        const isValid = await bcrypt.compare(
+                            credentials.password as string,
+                            user.password
+                        );
+
+                        if (!isValid) {
+                            return null;
+                        }
+
+                        // Legacy Login Successful
+                        return {
+                            id: user.id.toString(),
+                            email: user.email,
+                            name: user.name,
+                            role: user.role,
+                        };
                     }
 
-                    const user = users?.[0];
+                    // 2. Auth Successful, sync with 'users' table
+                    if (authData.user) {
+                        const { data: users, error: dbError } = await supabase
+                            .from('users')
+                            .select('*')
+                            .eq('email', authData.user.email!)
+                            .single();
 
-                    if (!user || !user.password) {
-                        console.log('User not found or no password');
-                        return null;
+                        if (users) {
+                            // User exists, return user data
+                            return {
+                                id: users.id.toString(),
+                                email: users.email,
+                                name: users.name,
+                                role: users.role,
+                            };
+                        } else {
+                            // First time login after email verification, create user in 'users' table
+                            const { data: newUser, error: createError } = await supabase
+                                .from('users')
+                                .insert([
+                                    {
+                                        email: authData.user.email!,
+                                        // Use part of email as name if not provided (though we don't have name from signUp)
+                                        name: authData.user.email!.split('@')[0],
+                                        role: 'user',
+                                        provider: 'email',
+                                        createdAt: new Date().toISOString(),
+                                        updatedAt: new Date().toISOString(),
+                                    }
+                                ])
+                                .select()
+                                .single();
+
+                            if (createError) {
+                                console.error('Error creating user in sync:', createError);
+                                return null;
+                            }
+
+                            return {
+                                id: newUser.id.toString(),
+                                email: newUser.email,
+                                name: newUser.name,
+                                role: newUser.role,
+                            };
+                        }
                     }
 
-                    const isValid = await bcrypt.compare(
-                        credentials.password as string,
-                        user.password
-                    );
+                    return null;
 
-                    if (!isValid) {
-                        console.log('Invalid password');
-                        return null;
-                    }
-
-                    console.log('Authentication successful for:', user.email);
-                    return {
-                        id: user.id.toString(),
-                        email: user.email,
-                        name: user.name,
-                        role: user.role,
-                    };
                 } catch (error) {
                     console.error('Auth error:', error);
                     return null;

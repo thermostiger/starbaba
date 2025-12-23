@@ -11,6 +11,7 @@ function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const registered = searchParams.get('registered');
+    const verified = searchParams.get('verified');
 
     const [formData, setFormData] = useState({
         email: '',
@@ -72,7 +73,9 @@ function LoginForm() {
             <CardContent className="space-y-4">
                 {registered && (
                     <div className="p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg">
-                        注册成功！请登录您的账号
+                        {verified === 'false'
+                            ? '注册成功！请前往邮箱查收确认邮件以激活账号'
+                            : '注册成功！请登录您的账号'}
                     </div>
                 )}
 
@@ -149,23 +152,7 @@ function LoginForm() {
                     )}
                 </Button>
 
-                <Button
-                    variant="outline"
-                    className="w-full"
-                    size="lg"
-                    disabled
-                >
-                    微信登录（开发中）
-                </Button>
 
-                <Button
-                    variant="outline"
-                    className="w-full"
-                    size="lg"
-                    disabled
-                >
-                    QQ登录（开发中）
-                </Button>
 
                 <div className="text-center text-sm text-gray-600">
                     还没有账号？{' '}

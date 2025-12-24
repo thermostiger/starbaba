@@ -68,17 +68,30 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50 px-4">
-            <Card className="w-full max-w-md">
-                <CardHeader className="text-center">
-                    <CardTitle className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                        星爸英语
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                        创建账号，开启英语学习之旅
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
+        <div className="min-h-screen w-full lg:grid lg:grid-cols-2">
+            {/* Left Column: Decorative Panel (Hidden on mobile) */}
+            <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-orange-500 to-red-600 p-12 text-white">
+                <div className="space-y-4">
+                    <h1 className="text-4xl font-bold">星爸英语</h1>
+                    <p className="text-lg opacity-90">
+                        加入我们，开启孩子快乐的英语启蒙之旅。海量优质资源，陪伴孩子成长。
+                    </p>
+                </div>
+                <div className="space-y-2 opacity-80 text-sm">
+                    <p>© 2024 Starbaba English. All rights reserved.</p>
+                </div>
+            </div>
+
+            {/* Right Column: Registration Form */}
+            <div className="flex items-center justify-center p-8 bg-white">
+                <div className="mx-auto w-full max-w-sm space-y-6">
+                    <div className="space-y-2 text-center lg:text-left">
+                        <h2 className="text-3xl font-bold">创建账号</h2>
+                        <p className="text-gray-500">
+                            输入您的信息以开始使用
+                        </p>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {error && (
                             <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
@@ -95,6 +108,7 @@ export default function RegisterPage() {
                                 type="email"
                                 required
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="name@example.com"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             />
@@ -126,9 +140,10 @@ export default function RegisterPage() {
                                     )}
                                 </button>
                             </div>
+                            <p className="text-xs text-gray-500">
+                                密码至少需要8个字符
+                            </p>
                         </div>
-
-
 
                         <Button
                             type="submit"
@@ -153,7 +168,7 @@ export default function RegisterPage() {
                         <Button
                             onClick={handleGoogleSignIn}
                             variant="outline"
-                            type="button"
+                            type="button" // Explicitly type="button" to prevent form submission
                             className="w-full relative"
                             size="lg"
                             disabled={isGoogleLoading || loading}
@@ -179,8 +194,8 @@ export default function RegisterPage() {
                             注册即表示您同意我们的服务条款和隐私政策
                         </p>
                     </form>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 }

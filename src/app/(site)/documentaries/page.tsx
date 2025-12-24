@@ -1,18 +1,34 @@
-import ResourceGrid from '@/components/resources/ResourceGrid'
+import CategoryLayout from '@/components/resources/CategoryLayout';
 
 export const metadata = {
-    title: '原声科普 - 星爸英语',
-    description: 'BBC自然纪录片、科学纪录片，英文原声，适合儿童英语学习',
-}
+    title: '原声科普 - K12书架',
+    description: 'Discovery, BBC等原声纪录片',
+};
 
-export default function DocumentariesPage() {
+export default async function DocumentariesPage() {
+    let initialResources = [];
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/admin/resources?assignedPage=原声科普&limit=12&isPublished=true`, { cache: 'no-store' });
+        const data = await res.json();
+        initialResources = data.docs || [];
+    } catch (e) { console.warn("Fetch failed"); }
+
+    const featuredResource = initialResources.length > 0 ? initialResources[0] : undefined;
+
     return (
-        <ResourceGrid
-            assignedPage="科普纪录片"
+        <CategoryLayout
             title="原声科普纪录片"
-            subtitle="精选BBC优质纪录片，开拓视野，提升听力"
-            gradientFrom="from-emerald-100"
-            gradientTo="to-teal-100"
+            subtitle="BBC · Discovery · 国家地理 · 探索世界"
+            category="原声科普"
+            initialResources={initialResources}
+            featuredResource={featuredResource}
+            filters={[
+                { label: '自然地理', value: 'nature_geo' },
+                { label: '历史人文', value: 'history' },
+                { label: 'STEM/科技', value: 'stem' },
+                { label: 'TED 演讲', value: 'ted' }
+            ]}
+            cardVariant="landscape"
         />
-    )
+    );
 }

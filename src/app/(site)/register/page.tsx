@@ -70,7 +70,7 @@ export default function RegisterPage() {
     return (
         <div className="min-h-screen w-full lg:grid lg:grid-cols-2">
             {/* Left Column: Decorative Panel (Hidden on mobile) */}
-            <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-orange-500 to-red-600 p-12 text-white">
+            <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-blue-800 to-indigo-900 p-12 text-white">
                 <div className="space-y-4">
                     <h1 className="text-4xl font-bold">星爸英语</h1>
                     <p className="text-lg opacity-90">
@@ -83,11 +83,11 @@ export default function RegisterPage() {
             </div>
 
             {/* Right Column: Registration Form */}
-            <div className="flex items-center justify-center p-8 bg-white">
-                <div className="mx-auto w-full max-w-sm space-y-6">
+            <div className="flex items-center justify-center p-8 bg-slate-50">
+                <div className="mx-auto w-full max-w-sm space-y-6 bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                     <div className="space-y-2 text-center lg:text-left">
-                        <h2 className="text-3xl font-bold">创建账号</h2>
-                        <p className="text-gray-500">
+                        <h2 className="text-3xl font-bold text-slate-900">创建账号</h2>
+                        <p className="text-slate-500">
                             输入您的信息以开始使用
                         </p>
                     </div>
@@ -100,14 +100,14 @@ export default function RegisterPage() {
                         )}
 
                         <div className="space-y-2">
-                            <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                            <label htmlFor="email" className="text-sm font-medium text-slate-700">
                                 邮箱地址
                             </label>
                             <input
                                 id="email"
                                 type="email"
                                 required
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all"
                                 placeholder="name@example.com"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                         </div>
 
                         <div className="space-y-2">
-                            <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                            <label htmlFor="password" className="text-sm font-medium text-slate-700">
                                 密码
                             </label>
                             <div className="relative">
@@ -124,14 +124,14 @@ export default function RegisterPage() {
                                     type={showPassword ? "text" : "password"}
                                     required
                                     minLength={8}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent pr-10"
+                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent pr-10 outline-none transition-all"
                                     value={formData.password}
                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700"
                                 >
                                     {showPassword ? (
                                         <EyeOffIcon className="h-4 w-4" />
@@ -140,7 +140,7 @@ export default function RegisterPage() {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-slate-500">
                                 密码至少需要8个字符
                             </p>
                         </div>
@@ -148,7 +148,7 @@ export default function RegisterPage() {
                         <Button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                            className="w-full bg-blue-800 hover:bg-blue-900 text-white font-medium"
                             size="lg"
                         >
                             {loading ? '注册中...' : '注册'}
@@ -156,10 +156,10 @@ export default function RegisterPage() {
 
                         <div className="relative my-4">
                             <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t" />
+                                <span className="w-full border-t border-slate-200" />
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-white px-2 text-muted-foreground">
+                                <span className="bg-white px-2 text-slate-500">
                                     或使用第三方登录
                                 </span>
                             </div>
@@ -168,14 +168,14 @@ export default function RegisterPage() {
                         <Button
                             onClick={handleGoogleSignIn}
                             variant="outline"
-                            type="button" // Explicitly type="button" to prevent form submission
-                            className="w-full relative"
+                            type="button"
+                            className="w-full relative border-slate-300 hover:bg-slate-50"
                             size="lg"
                             disabled={isGoogleLoading || loading}
                         >
                             {isGoogleLoading ? (
                                 <div className="flex items-center justify-center gap-2">
-                                    <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                                    <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                                     <span>跳转中...</span>
                                 </div>
                             ) : (
@@ -183,14 +183,14 @@ export default function RegisterPage() {
                             )}
                         </Button>
 
-                        <div className="text-center text-sm text-gray-600 mt-4">
+                        <div className="text-center text-sm text-slate-600 mt-4">
                             已有账号？{' '}
-                            <Link href="/login" className="text-orange-500 hover:text-orange-600 font-medium">
+                            <Link href="/login" className="text-blue-700 hover:text-blue-800 font-medium hover:underline">
                                 立即登录
                             </Link>
                         </div>
 
-                        <p className="text-xs text-center text-muted-foreground mt-6">
+                        <p className="text-xs text-center text-slate-400 mt-6">
                             注册即表示您同意我们的服务条款和隐私政策
                         </p>
                     </form>

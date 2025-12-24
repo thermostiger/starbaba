@@ -41,9 +41,11 @@ export default function HeroSection() {
 
                 {/* Main Headlines */}
                 <h1 className="text-4xl xs:text-5xl md:text-6xl font-extrabold tracking-tight text-blue-950 mb-6 animate-fade-in-up animation-delay-100 text-balance">
-                    <span className="block mb-2">汇聚全球资源</span>
-                    <span className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-800 bg-clip-text text-transparent transform hover:scale-105 transition-transform cursor-default inline-block">
-                        陪伴孩子快乐成长
+                    <span className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-800 bg-clip-text text-transparent transform hover:scale-105 transition-transform cursor-default inline-block mb-2">
+                        K12书架
+                    </span>
+                    <span className="block text-2xl md:text-3xl text-slate-600 font-bold mt-2">
+                        全球严选 K12 英语原版资源库
                     </span>
                 </h1>
 

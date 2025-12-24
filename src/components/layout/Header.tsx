@@ -45,7 +45,7 @@ export default function Header() {
                         <Sparkles className="w-5 h-5 text-blue-900" />
                     </div>
                     <div className="text-xl font-bold text-white tracking-tight">
-                        星爸英语
+                        K12书架
                     </div>
                 </Link>
 

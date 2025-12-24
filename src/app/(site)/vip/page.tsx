@@ -1,84 +1,165 @@
-import MembershipPlans from '@/components/home/MembershipPlans';
-import { Check, Star, Zap } from 'lucide-react';
+import { Check, HelpCircle, ShieldCheck, Crown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata = {
-    title: 'VIP会员权益',
-    description: '开通VIP会员，无限制访问全站优质英语学习资源',
+    title: 'VIP会员 - K12书架',
+    description: '每天不到 3 毛钱，给孩子一座搬不完的牛津图书馆。解锁全站 5000+ 原版资源。',
 };
 
 export default function VIPPage() {
     return (
-        <div className="max-w-7xl mx-auto px-4 py-12">
-            {/* Hero Section */}
-            <div className="text-center mb-16">
-                <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                    VIP会员权益
-                </h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    一次开通，全站资源无限制访问，让孩子的英语学习之路更轻松
-                </p>
-            </div>
-
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mb-4">
-                        <Star className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">海量资源</h3>
-                    <p className="text-muted-foreground">
-                        10000+ 优质英语学习资源，涵盖动画、绘本、儿歌、课程等
+        <div className="min-h-screen bg-slate-50 font-sans">
+            {/* 1. Hero Section */}
+            <header className="bg-blue-800 text-white py-20 px-4 text-center">
+                <div className="max-w-4xl mx-auto">
+                    <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
+                        解锁 K12书架 海量精选原版资源
+                    </h1>
+                    <p className="text-xl md:text-2xl text-blue-100 font-medium">
+                        每天不到 3 毛钱，把国际学校的图书馆搬回家。
                     </p>
                 </div>
+            </header>
 
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full mb-4">
-                        <Zap className="w-8 h-8 text-white" />
+            {/* 2. Pricing Cards Container (The Core) */}
+            <section className="max-w-6xl mx-auto px-4 -mt-10 pb-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start justify-center max-w-4xl mx-auto">
+
+                    {/* Card A: The Anchor (Yearly) */}
+                    <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col relative order-2 md:order-1">
+                        <h3 className="text-xl font-bold text-slate-900 mb-2">年度会员</h3>
+                        <p className="text-slate-500 text-sm mb-6">适合短期备考或试用体验</p>
+
+                        <div className="mb-6 flex items-baseline">
+                            <span className="text-4xl font-bold text-slate-900">¥99</span>
+                            <span className="text-slate-500 ml-2">/ 年</span>
+                        </div>
+
+                        <Button
+                            className="w-full bg-blue-100 text-blue-700 hover:bg-blue-200 hover:text-blue-800 font-bold py-6 text-lg rounded-xl mb-8 transition-colors"
+                            asChild
+                        >
+                            <Link href="https://mbd.pub/o/YOUR_LINK_HERE" target="_blank">
+                                选择年度计划
+                            </Link>
+                        </Button>
+
+                        <div className="space-y-4">
+                            <div className="flex items-start gap-3">
+                                <Check className="w-5 h-5 text-blue-600 shrink-0" />
+                                <span className="text-slate-600">解锁全站隐藏资源</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <Check className="w-5 h-5 text-blue-600 shrink-0" />
+                                <span className="text-slate-600">支持主流网盘下载</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <Check className="w-5 h-5 text-blue-600 shrink-0" />
+                                <span className="text-slate-600">365天 有效期</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">持续更新</h3>
-                    <p className="text-muted-foreground">
-                        每周更新最新优质内容，紧跟英语教育前沿
+
+                    {/* Card B: The Winner (Lifetime) */}
+                    <div className="bg-white rounded-2xl p-8 ring-4 ring-amber-400 shadow-xl flex flex-col relative order-1 md:order-2 transform md:scale-105 z-10">
+                        {/* Badge */}
+                        <div className="absolute -top-5 right-8 bg-amber-400 text-blue-900 text-sm font-bold px-4 py-1.5 rounded-full shadow-md flex items-center gap-1">
+                            <Crown className="w-4 h-4 fill-current" />
+                            80% 家长选择
+                        </div>
+
+                        <h3 className="text-xl font-bold text-blue-900 mb-2">终身会员</h3>
+                        <p className="text-blue-600/80 text-sm mb-6 font-medium">一次付费，覆盖 K12 全学龄段</p>
+
+                        <div className="mb-6 flex items-baseline">
+                            <span className="text-5xl font-extrabold text-blue-900">¥199</span>
+                            <span className="text-slate-500 ml-2">/ 永久</span>
+                        </div>
+
+                        <Button
+                            className="w-full bg-amber-400 text-blue-900 hover:bg-amber-500 font-bold py-6 text-lg rounded-xl mb-8 shadow-lg shadow-amber-400/30 transition-all hover:scale-[1.02]"
+                            asChild
+                        >
+                            <Link href="https://mbd.pub/o/YOUR_LINK_HERE" target="_blank">
+                                立即开通终身会员
+                            </Link>
+                        </Button>
+
+                        <div className="space-y-4">
+                            <div className="flex items-start gap-3">
+                                <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
+                                <span className="text-slate-700 font-medium">包含年度会员所有权益</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
+                                <span className="text-slate-700 font-medium">账号永久有效，无续费烦恼</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
+                                <span className="text-slate-700 font-medium">免费享受未来新增资源</span>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
+                                <span className="text-slate-700 font-medium">优先响应资源求助</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* 3. Social Proof / Trust Section */}
+            <section className="max-w-3xl mx-auto px-4 pb-24">
+                <div className="text-center mb-10">
+                    <h2 className="text-2xl font-bold text-slate-800 mb-2">常见问题</h2>
+                    <p className="text-slate-500">购买前请仔细阅读，如有疑问可联系客服</p>
+                </div>
+
+                <div className="space-y-4">
+                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+                        <div className="flex gap-4">
+                            <HelpCircle className="w-6 h-6 text-blue-300 shrink-0 mt-0.5" />
+                            <div>
+                                <h4 className="font-bold text-slate-900 mb-2">付款后怎么使用？</h4>
+                                <p className="text-slate-600 leading-relaxed">
+                                    付款成功后，系统会自动为您当前的账号开通 VIP 权限。您只需刷新任意资源页，下载链接及其提取码就会自动解锁显示，无需等待人工审核。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+                        <div className="flex gap-4">
+                            <HelpCircle className="w-6 h-6 text-blue-300 shrink-0 mt-0.5" />
+                            <div>
+                                <h4 className="font-bold text-slate-900 mb-2">资源会更新吗？</h4>
+                                <p className="text-slate-600 leading-relaxed">
+                                    会。网站保持每周定期更新，包括最新的热门绘本、动画和课程。终身会员无需额外付费即可享受网站未来更新的所有新资源。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+                        <div className="flex gap-4">
+                            <HelpCircle className="w-6 h-6 text-blue-300 shrink-0 mt-0.5" />
+                            <div>
+                                <h4 className="font-bold text-slate-900 mb-2">资源是存放在哪里的？</h4>
+                                <p className="text-slate-600 leading-relaxed">
+                                    目前主要使用网盘进行资源分享。解锁后您将获得网盘的分享链接和提取码，您可以选择直接下载或转存到您自己的网盘中。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-12 text-center border-t border-slate-200 pt-8">
+                    <p className="text-slate-400 text-sm">
+                        如有其他问题，请联系客服微信：<span className="font-bold text-slate-600 select-all">xingbaba</span>
                     </p>
                 </div>
-
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full mb-4">
-                        <Check className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">专属服务</h3>
-                    <p className="text-muted-foreground">
-                        VIP专属客服，一对一解答学习疑问
-                    </p>
-                </div>
-            </div>
-
-            {/* Pricing Plans */}
-            <MembershipPlans />
-
-            {/* FAQ Section */}
-            <div className="mt-20">
-                <h2 className="text-3xl font-bold text-center mb-12">常见问题</h2>
-                <div className="max-w-3xl mx-auto space-y-6">
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <h3 className="font-bold text-lg mb-2">VIP会员可以下载资源吗？</h3>
-                        <p className="text-muted-foreground">
-                            可以。VIP会员享有高清无水印下载权限，支持离线学习。
-                        </p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <h3 className="font-bold text-lg mb-2">会员到期后还能访问已下载的资源吗？</h3>
-                        <p className="text-muted-foreground">
-                            可以。已下载的资源永久保存在您的设备上，会员到期后仍可使用。
-                        </p>
-                    </div>
-                    <div className="bg-white rounded-xl p-6 shadow-md">
-                        <h3 className="font-bold text-lg mb-2">支持哪些支付方式？</h3>
-                        <p className="text-muted-foreground">
-                            支持微信支付、支付宝、银行卡等多种支付方式。
-                        </p>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
     );
 }

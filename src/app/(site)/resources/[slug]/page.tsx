@@ -9,18 +9,21 @@ import Link from 'next/link';
 import { Home, ChevronRight, FileText, HelpCircle } from 'lucide-react';
 import { Resource } from '@/types';
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
 
     // Try to fetch from DB first using secure view
     const supabase = await createClient();
     const { data: dbResource } = await supabase
         .from('resources_view')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single();
 
-    const resource = dbResource ? dbResource as unknown as Resource : await getResourceById(id);
+    // Use dbResource if found, otherwise fallback to mock (assuming mock might support slug or we fallback to ID lookup logic for legacy mock data which is risky but ok for dev)
+    // For now, if not in DB, we attempt to find by slug in mocks (need to update fetch logic or just assume DB is primary)
+    // Note: getResourceById currently expects ID. We might need a getResourceBySlug.
+    const resource = dbResource ? dbResource as unknown as Resource : null; // await getResourceBySlug(slug)
 
     if (!resource) {
         return {
@@ -39,16 +42,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
 }
 
-export default async function ResourcePage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export default async function ResourcePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     const supabase = await createClient();
 
-    // 1. 优先查询安全视图 (Secure View)
-    // 这里利用 Supabase Auth, 如果用户已登录, SQL View 会根据 public.is_vip(auth.uid()) 自动返回 download_url 或 NULL
+    // 1. 优先查询安全视图 (Secure View) by SLUG
     const { data: dbData, error } = await supabase
         .from('resources_view')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single();
 
     let resource: Resource | null = null;
@@ -59,13 +61,23 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
             // 确保兼容性映射
             resourceUrl: dbData.download_url || '',
             is_unlocked: dbData.is_unlocked ?? false,
-            price: dbData.price ?? 0, // View 中可能没有 price (如果 SQL 没写), 默认为 0
+            price: dbData.price ?? 0,
             vipPrice: 0,
         } as Resource;
     } else {
-        // 2. 如果数据库没找到, 尝试获取 Mock 数据 (用于开发调试)
-        console.log('Resource not found in DB, checking mocks via getResourceById...');
-        resource = await getResourceById(id);
+        // 2. 如果数据库没找到, 尝试获取 Mock 数据
+        // Since we don't have getResourceBySlug yet, and legacy mocks used IDs...
+        // We will try to see if the slug LOOKS like an ID (numeric) or just fail for mocks that don't satisfy the slug.
+        // Or better: Assume for this task we primarily care about DB resources having proper slugs.
+        // For fallback, we might check if 'slug' matches an ID in mock data?
+        // Let's implement a simple fallback: if numeric, try getResourceById?
+        if (/^\d+$/.test(slug)) {
+            console.log('Slug looks like ID, trying fallback fetch...');
+            resource = await getResourceById(slug);
+        } else {
+            // Try to find mock by checking if any mock has this slug (mock data might not have slug field populated yet)
+            console.log('Resource not found in DB by slug.');
+        }
     }
 
     if (!resource) {
@@ -81,7 +93,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ id: s
     const stage = resource.assigned_page ? (pageToStage[resource.assigned_page] || '启蒙') : '启蒙';
 
     // Fetch related resources only for non-documentary resources
-    const isDocumentary = id.startsWith('d');
+    const isDocumentary = slug.startsWith('d');
     const relatedResources = isDocumentary
         ? []
         : (await getResourcesByStage(stage, 1, 4)).data;

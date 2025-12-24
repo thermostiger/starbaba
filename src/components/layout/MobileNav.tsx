@@ -10,16 +10,16 @@ export default function MobileNav() {
             <Link href="/" className="text-lg font-medium hover:text-primary transition-colors">
                 首页
             </Link>
-            <Link href="/young-children" className="text-lg font-medium hover:text-primary transition-colors">
+            <Link href="/preschool" className="text-lg font-medium hover:text-primary transition-colors">
                 幼儿英语
             </Link>
-            <Link href="/children" className="text-lg font-medium hover:text-primary transition-colors">
+            <Link href="/kids" className="text-lg font-medium hover:text-primary transition-colors">
                 少儿英语
             </Link>
-            <Link href="/teenagers" className="text-lg font-medium hover:text-primary transition-colors">
+            <Link href="/teens" className="text-lg font-medium hover:text-primary transition-colors">
                 青少年英语
             </Link>
-            <Link href="/documentaries" className="text-lg font-medium hover:text-primary transition-colors">
+            <Link href="/science" className="text-lg font-medium hover:text-primary transition-colors">
                 原声科普
             </Link>
             <Link href="/vip" className="text-lg font-medium hover:text-primary transition-colors flex items-center">

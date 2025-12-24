@@ -47,9 +47,11 @@ export default function ResourceGrid({ assignedPage, title, subtitle, gradientFr
                     </div>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 py-8">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                    {/* Skeleton Grid: Matches new layout */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+                        <div className="md:col-span-2 md:row-span-2 h-auto aspect-[4/3] bg-gray-200 animate-pulse rounded-xl" />
                         {[...Array(8)].map((_, i) => (
-                            <div key={i} className="h-96 bg-gray-200 animate-pulse rounded-lg" />
+                            <div key={i} className="aspect-[4/3] bg-gray-200 animate-pulse rounded-xl" />
                         ))}
                     </div>
                 </div>
@@ -73,10 +75,26 @@ export default function ResourceGrid({ assignedPage, title, subtitle, gradientFr
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-                            {resources.map((resource) => (
-                                <ResourceCard key={resource.id} resource={resource} />
-                            ))}
+                        {/* 
+                            Grid Layout:
+                            Mobile: grid-cols-2 gap-3 (Must show 2 items per row)
+                            Desktop: grid-cols-4 or grid-cols-5 (Using lg:grid-cols-5)
+                        */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 auto-rows-min">
+                            {resources.map((resource, index) => {
+                                // Special Logic: First Item spans 2 columns on Desktop
+                                const isFirstItem = index === 0
+                                const desktopSpanClass = isFirstItem ? 'md:col-span-2 md:row-span-2' : ''
+
+                                return (
+                                    <ResourceCard
+                                        key={resource.id}
+                                        resource={resource}
+                                        isFeatured={isFirstItem}
+                                        className={desktopSpanClass}
+                                    />
+                                )
+                            })}
                         </div>
 
                         {totalPages > 1 && (

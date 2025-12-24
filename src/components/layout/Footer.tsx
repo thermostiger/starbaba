@@ -75,27 +75,27 @@ export default function Footer() {
                             </h3>
                             <ul className="space-y-2 text-sm">
                                 <li>
-                                    <Link href="/category/enlightenment" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
+                                    <Link href="/preschool" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
                                         <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-amber-400 transition-colors"></span>
                                         启蒙英语
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/category/teen" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
+                                    <Link href="/teens" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
                                         <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-amber-400 transition-colors"></span>
                                         青少年英语
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/category/animation" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
+                                    <Link href="/kids" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
                                         <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-amber-400 transition-colors"></span>
-                                        英语动画
+                                        少儿英语
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/category/songs" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
+                                    <Link href="/science" className="text-slate-400 hover:text-amber-400 transition-colors inline-flex items-center gap-2 group">
                                         <span className="w-1 h-1 rounded-full bg-slate-600 group-hover:bg-amber-400 transition-colors"></span>
-                                        英语儿歌
+                                        科普纪录片
                                     </Link>
                                 </li>
                             </ul>

@@ -21,7 +21,7 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                             <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
                             <div className="relative w-full lg:w-[200px] aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-black/5">
                                 <Image
-                                    src={resource.cover_image}
+                                    src={resource.cover_image || '/images/oxford.jpg'}
                                     alt={resource.title}
                                     fill
                                     className="object-cover"

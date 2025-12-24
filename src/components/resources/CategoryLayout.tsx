@@ -6,7 +6,7 @@ import ResourceCard from './ResourceCard';
 import { Filter, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import Image from 'next/image';
+import { MOCK_RESOURCES } from '@/lib/mockData';
 
 interface FilterOption {
     label: string;
@@ -30,80 +30,93 @@ export default function CategoryLayout({
     initialResources = [],
     featuredResource,
     filters = [],
-    cardVariant = 'portrait'
+    cardVariant = 'portrait' // Deprecated prop kept for compatibility but unused
 }: CategoryLayoutProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    // Get initial filter from URL or default to 'all'
+    // Get params from URL
     const currentFilterValue = searchParams.get('sub_category') || 'all';
+    const currentPageVal = Number(searchParams.get('page')) || 1;
 
-    const [resources, setResources] = useState<Resource[]>(initialResources);
+    // Use Mock Data if initialResources is empty AND we are on the first page/default filter
+    // This allows SSR pass-through if real data exists, but falls back to mock if not.
+    // However, if we are Client-Side navigating, we might want to refetch.
+    // For simplicity: If initial pass is empty, we set MOCK. 
+    // Effect will override this if fetch returns real data or different data.
+    // Use Mock Data if initialResources is empty AND we are on the first page/default filter
+    // Also Pad with Mock Data if fetched initialResources > 0 but < 12 items
+    let effectiveInitialResources = initialResources;
+
+    if (effectiveInitialResources.length === 0 && currentPageVal === 1 && currentFilterValue === 'all') {
+        effectiveInitialResources = MOCK_RESOURCES.slice(0, 12);
+    } else if (effectiveInitialResources.length > 0 && effectiveInitialResources.length < 12) {
+        const needed = 12 - effectiveInitialResources.length;
+        const mocksToAdd = MOCK_RESOURCES.slice(0, needed).map((m, i) => ({
+            ...m,
+            id: `mock-padded-init-${i}` // Stable-ish ID
+        }));
+        effectiveInitialResources = [...effectiveInitialResources, ...mocksToAdd];
+    }
+
+    const [resources, setResources] = useState<Resource[]>(effectiveInitialResources);
     const [activeFilter, setActiveFilter] = useState(currentFilterValue);
-    const [page, setPage] = useState(1);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [totalPages, setTotalPages] = useState(1);
 
-    // Sync state with URL param changes (e.g. back button)
+    // Sync state with URL param changes
     useEffect(() => {
         setActiveFilter(currentFilterValue);
     }, [currentFilterValue]);
 
-    // Refetch when activeFilter changes (except on initial mount if data is already passed)
-    // Actually, distinct from initial load, we might need to fetch if the *URL* filter is different from "All" 
-    // and initialResources might be just "All" data or pre-filtered?
-    // Assuming initialResources matches the initial URL state is tricky without Server Component passing filtered data.
-    // For simplicity: unique fetch on filter change.
+    // Fetch data when Filter or Page changes
     useEffect(() => {
-        const fetchFiltered = async () => {
-            // Note: If initialResources are populated and we are on 'all' (default), we might skip first fetch?
-            // But if user lands on ?sub_category=phonics, we need to ensure we show phonics.
-            // We'll rely on client-side fetch for filtering for now to ensure consistency.
-            setPage(1);
-            setResources([]);
-            setHasMore(true);
+        const fetchResources = async () => {
+            setLoading(true);
             try {
                 const filterQuery = activeFilter !== 'all' ? `&resource_info=${activeFilter}` : '';
-                // Note: User requested filter value for DB filtering. 
-                // We assume 'activeFilter' (the english key) is what the backend expects or data contains?
-                // Or should we use the Label? The user prompt said: "value (for URL query param or DB filtering)"
-                // So we use the value.
-
-                const res = await fetch(`/api/admin/resources?assignedPage=${category}&page=1&limit=12&isPublished=true${filterQuery}`);
+                // Limit 12 = 3 full rows in 5-col grid (1 featured 2x2 + 11 normal)
+                const res = await fetch(`/api/admin/resources?assignedPage=${category}&page=${currentPageVal}&limit=12&isPublished=true${filterQuery}`);
                 const data = await res.json();
-                setResources(data.docs || []);
-                if (data.totalPages <= 1) setHasMore(false);
+
+                let fetchedResources = data.docs || [];
+                let calculatedTotalPages = data.totalPages || 1;
+
+                // Pad with Mock Data if fewer than 12 items
+                if (fetchedResources.length > 0 && fetchedResources.length < 12) {
+                    const needed = 12 - fetchedResources.length;
+                    const mocksToAdd = MOCK_RESOURCES.slice(0, needed).map((m, i) => ({
+                        ...m,
+                        id: `mock-padded-${Date.now()}-${i}` // Ensure unique keys
+                    }));
+                    fetchedResources = [...fetchedResources, ...mocksToAdd];
+                } else if (fetchedResources.length === 0 && currentPageVal === 1 && activeFilter === 'all') {
+                    // Fallback to full mock data if no real data found on default view
+                    fetchedResources = MOCK_RESOURCES.slice(0, 12); // Ensure 12 mocks
+                    calculatedTotalPages = 1;
+                }
+
+                setResources(fetchedResources);
+                setTotalPages(calculatedTotalPages);
             } catch (err) {
                 console.error(err);
+                if (currentPageVal === 1 && activeFilter === 'all') {
+                    setResources(MOCK_RESOURCES.slice(0, 12));
+                }
+            } finally {
+                setLoading(false);
             }
         };
 
-        fetchFiltered();
-    }, [activeFilter, category]);
-
-
-    const handleLoadMore = async () => {
-        setLoadingMore(true);
-        const nextPage = page + 1;
-        try {
-            const filterQuery = activeFilter !== 'all' ? `&resource_info=${activeFilter}` : '';
-            const res = await fetch(`/api/admin/resources?assignedPage=${category}&page=${nextPage}&limit=12&isPublished=true${filterQuery}`);
-            const data = await res.json();
-
-            if (data.docs && data.docs.length > 0) {
-                setResources(prev => [...prev, ...data.docs]);
-                setPage(nextPage);
-                if (data.page >= data.totalPages) setHasMore(false);
-            } else {
-                setHasMore(false);
-            }
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoadingMore(false);
-        }
-    };
+        // If we are strictly relying on initialResources from server for the first render, 
+        // we might want to skip this fetch if inputs haven't changed.
+        // But since we want to handle the "Empty -> Mock" logic seamlessly and "Pagination" logic:
+        // We will run this effect. 
+        // Optimization: If initialResources was populated and matches params, skip? 
+        // For safety/easiness: just fetch. 
+        fetchResources();
+    }, [activeFilter, category, currentPageVal]);
 
     const handleFilterClick = (filterValue: string) => {
         const params = new URLSearchParams(searchParams);
@@ -112,6 +125,13 @@ export default function CategoryLayout({
         } else {
             params.set('sub_category', filterValue);
         }
+        params.set('page', '1'); // Reset to page 1
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(searchParams);
+        params.set('page', newPage.toString());
         router.push(`${pathname}?${params.toString()}`);
     };
 
@@ -147,8 +167,8 @@ export default function CategoryLayout({
                         <button
                             onClick={() => handleFilterClick('all')}
                             className={`px-3.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${activeFilter === 'all'
-                                    ? 'bg-blue-800 text-white shadow-md'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'
+                                ? 'bg-blue-800 text-white shadow-md'
+                                : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'
                                 }`}
                         >
                             全部
@@ -158,8 +178,8 @@ export default function CategoryLayout({
                                 key={filter.value}
                                 onClick={() => handleFilterClick(filter.value)}
                                 className={`px-3.5 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${activeFilter === filter.value
-                                        ? 'bg-blue-800 text-white shadow-md'
-                                        : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'
+                                    ? 'bg-blue-800 text-white shadow-md'
+                                    : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-700'
                                     }`}
                             >
                                 {filter.label}
@@ -171,7 +191,13 @@ export default function CategoryLayout({
 
             {/* 3. The Resource Grid */}
             <div className="max-w-7xl mx-auto px-4 py-6">
-                {resources.length === 0 ? (
+                {loading ? (
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+                        {[...Array(10)].map((_, i) => (
+                            <div key={i} className="aspect-[4/3] bg-slate-200 animate-pulse rounded-xl" />
+                        ))}
+                    </div>
+                ) : resources.length === 0 ? (
                     <div className="text-center py-20">
                         <div className="inline-block p-4 rounded-full bg-slate-100 mb-4">
                             <Search className="w-8 h-8 text-slate-400" />
@@ -180,28 +206,79 @@ export default function CategoryLayout({
                         <p className="text-slate-500">试着切换其他筛选项看看</p>
                     </div>
                 ) : (
-                    <div className={`grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8`}>
-                        {resources.map(resource => (
-                            <ResourceCard
-                                key={resource.id}
-                                resource={resource}
-                                variant={cardVariant}
-                                isFeatured={featuredResource && resource.id === featuredResource.id}
-                            />
-                        ))}
+                    <div className={`grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 auto-rows-min`}>
+                        {resources.map((resource, index) => {
+                            // Only first item on first page is featured
+                            const isFirst = index === 0 && currentPageVal === 1;
+                            return (
+                                <ResourceCard
+                                    key={resource.id}
+                                    resource={resource}
+                                    isFeatured={isFirst}
+                                    className={isFirst ? 'md:col-span-2 md:row-span-2' : ''}
+                                />
+                            )
+                        })}
                     </div>
                 )}
 
-                {/* 4. Pagination / Load More */}
-                {hasMore && resources.length > 0 && (
-                    <div className="mt-16 text-center">
+                {/* 4. Pagination (Standard UI) */}
+                {!loading && (
+                    <div className="mt-12 flex justify-center items-center gap-2">
                         <Button
-                            onClick={handleLoadMore}
-                            disabled={loadingMore}
-                            variant="secondary"
-                            className="bg-slate-100 text-slate-700 hover:bg-slate-200 px-8 py-6 rounded-xl font-medium text-base w-full md:w-auto min-w-[200px]"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handlePageChange(Math.max(1, currentPageVal - 1))}
+                            disabled={currentPageVal === 1}
+                            className="bg-white hover:bg-slate-50"
                         >
-                            {loadingMore ? '加载中...' : '加载更多资源'}
+                            上一页
+                        </Button>
+
+                        <div className="flex items-center gap-1">
+                            {Array.from({ length: Math.max(1, totalPages) }, (_, i) => i + 1).map(p => {
+                                // Basic Pagination Logic
+                                // If totalPages is 1, just show 1.
+                                if (totalPages <= 1 && p === 1) {
+                                    return (
+                                        <button
+                                            key={p}
+                                            disabled
+                                            className={`w-9 h-9 rounded-lg text-sm font-bold transition-all bg-blue-600 text-white shadow-md`}
+                                        >
+                                            {p}
+                                        </button>
+                                    )
+                                }
+
+                                if (p === 1 || p === totalPages || (p >= currentPageVal - 1 && p <= currentPageVal + 1)) {
+                                    return (
+                                        <button
+                                            key={p}
+                                            onClick={() => handlePageChange(p)}
+                                            className={`w-9 h-9 rounded-lg text-sm font-bold transition-all ${currentPageVal === p
+                                                ? 'bg-blue-600 text-white shadow-md'
+                                                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 hover:border-blue-200'
+                                                }`}
+                                        >
+                                            {p}
+                                        </button>
+                                    );
+                                } else if (p === currentPageVal - 2 || p === currentPageVal + 2) {
+                                    return <span key={p} className="text-slate-400 text-xs text-center w-6">...</span>;
+                                }
+                                return null;
+                            })}
+                        </div>
+
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handlePageChange(Math.min(totalPages, currentPageVal + 1))}
+                            disabled={currentPageVal >= totalPages}
+                            className="bg-white hover:bg-slate-50"
+                        >
+                            下一页
                         </Button>
                     </div>
                 )}

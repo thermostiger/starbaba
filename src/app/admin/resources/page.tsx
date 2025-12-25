@@ -9,9 +9,9 @@ interface Resource {
     id: string
     title: string
     category: string
-    isWeeklyHot: boolean
-    isPublished: boolean
-    isFree: boolean
+    is_weekly_hot: boolean
+    is_published: boolean
+    is_free: boolean
     [key: string]: unknown
 }
 
@@ -67,12 +67,12 @@ export default function ResourcesPage() {
 
     async function handleToggleStatus(resource: Resource) {
         try {
-            const newStatus = !resource.isPublished
+            const newStatus = !resource.is_published
             await resourcesAPI.update(resource.id, {
                 is_published: newStatus
             })
             setResources(resources.map(r =>
-                r.id === resource.id ? { ...r, isPublished: newStatus } : r
+                r.id === resource.id ? { ...r, is_published: newStatus } : r
             ))
         } catch (error) {
             console.error('Failed to update status:', error)
@@ -82,12 +82,12 @@ export default function ResourcesPage() {
 
     async function handleToggleFree(resource: Resource) {
         try {
-            const newFree = !resource.isFree
+            const newFree = !resource.is_free
             await resourcesAPI.update(resource.id, {
                 is_free: newFree
             })
             setResources(resources.map(r =>
-                r.id === resource.id ? { ...r, isFree: newFree } : r
+                r.id === resource.id ? { ...r, is_free: newFree } : r
             ))
         } catch (error) {
             console.error('Failed to update free status:', error)
@@ -99,12 +99,12 @@ export default function ResourcesPage() {
 
     async function handleToggleHot(resource: Resource) {
         try {
-            const newHot = !resource.isWeeklyHot
+            const newHot = !resource.is_weekly_hot
             await resourcesAPI.update(resource.id, {
                 is_weekly_hot: newHot
             })
             setResources(resources.map(r =>
-                r.id === resource.id ? { ...r, isWeeklyHot: newHot } : r
+                r.id === resource.id ? { ...r, is_weekly_hot: newHot } : r
             ))
         } catch (error) {
             console.error('Failed to update hot status:', error)
@@ -214,31 +214,31 @@ export default function ResourcesPage() {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <button
                                                     onClick={() => handleToggleStatus(resource)}
-                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${resource.isPublished !== false ? 'bg-blue-600' : 'bg-gray-200'
+                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${resource.is_published !== false ? 'bg-blue-600' : 'bg-gray-200'
                                                         }`}
                                                 >
                                                     <span
                                                         aria-hidden="true"
-                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isPublished !== false ? 'translate-x-5' : 'translate-x-0'
+                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.is_published !== false ? 'translate-x-5' : 'translate-x-0'
                                                             }`}
                                                     />
                                                 </button>
                                                 <span className="ml-2 text-xs text-gray-500">
-                                                    {resource.isPublished !== false ? '已上架' : '已下架'}
+                                                    {resource.is_published !== false ? '已上架' : '已下架'}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <button
                                                     onClick={() => handleToggleFree(resource)}
-                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 ${resource.isFree ? 'bg-green-500' : 'bg-orange-500'}`}
+                                                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 ${resource.is_free ? 'bg-green-500' : 'bg-orange-500'}`}
                                                 >
                                                     <span
                                                         aria-hidden="true"
-                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.isFree ? 'translate-x-5' : 'translate-x-0'}`}
+                                                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${resource.is_free ? 'translate-x-5' : 'translate-x-0'}`}
                                                     />
                                                 </button>
                                                 <span className="ml-2 text-xs text-gray-500">
-                                                    {resource.isFree ? '免费' : '付费'}
+                                                    {resource.is_free ? '免费' : '付费'}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">

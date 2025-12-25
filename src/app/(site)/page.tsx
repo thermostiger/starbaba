@@ -3,6 +3,7 @@ import HeroSection from '@/components/home/HeroSection';
 import ResourceCard from '@/components/resources/ResourceCard';
 import FeaturedCard from '@/components/resources/FeaturedCard';
 import MembershipPlans from '@/components/home/MembershipPlans';
+import ValueProposition from '@/components/home/ValueProposition';
 import { getHotResources, getNewResources, getResourcesBySearch } from '@/lib/cms';
 import { Check } from 'lucide-react';
 
@@ -14,7 +15,7 @@ export default async function HomePage() {
     // Fetch data for all sections
     const editorPicks = await getHotResources(7); // 1 featured + 6 standard = 7
     const classicReaders = await getResourcesBySearch('分级阅读', 5);
-    const popularCartoons = await getResourcesBySearch('动画', 5);
+    const scienceResources = await getResourcesBySearch('科普', 5);
     const newResources = await getNewResources(10);
 
     return (
@@ -75,21 +76,21 @@ export default async function HomePage() {
                         </div>
                     </div>
 
-                    {/* Shelf B: Popular Cartoons */}
+                    {/* Shelf B: Science & Documentaries (Renamed from Cartoons) */}
                     <div>
                         <div className="flex items-center justify-between mb-8 pb-4 border-b border-indigo-100">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-indigo-100 rounded-xl">
-                                    <span className="text-2xl">🎬</span>
+                                    <span className="text-2xl">🔭</span>
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl font-bold text-slate-900">热门原版动画</h2>
+                                    <h2 className="text-2xl font-bold text-slate-900">精品原声科普</h2>
                                     <p className="text-sm text-slate-500 mt-1">原汁原味的英语环境，快乐开启双语思维</p>
                                 </div>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                            {popularCartoons.map((resource) => (
+                            {scienceResources.map((resource) => (
                                 <ResourceCard key={resource.id} resource={resource} />
                             ))}
                         </div>
@@ -118,7 +119,10 @@ export default async function HomePage() {
                 </div>
             </section>
 
-            {/* Section 5: Membership CTA Section (Dark Section) */}
+            {/* Section 5: Value Proposition */}
+            <ValueProposition />
+
+            {/* Section 6: Membership CTA Section (Dark Section) */}
             <section className="py-10 bg-blue-900 text-white relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                     <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-white rounded-full blur-[120px]" />

@@ -43,20 +43,7 @@ export default function ResourceCard({ resource, showBadges = true, isFeatured =
                     )}
 
                     {/* Top Left Badges (Hot/New) */}
-                    {showBadges && (
-                        <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
-                            {resource.is_weekly_hot && (
-                                <span className="px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded shadow-sm">
-                                    HOT
-                                </span>
-                            )}
-                            {resource.is_new && (
-                                <span className="px-1.5 py-0.5 bg-blue-500 text-white text-[10px] font-bold rounded shadow-sm">
-                                    NEW
-                                </span>
-                            )}
-                        </div>
-                    )}
+
 
                     {/* Media Type Icon - Bottom Right */}
                     <div className="absolute bottom-2 right-2 z-10">

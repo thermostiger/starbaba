@@ -30,8 +30,8 @@ export default async function HomePage() {
                             <span className="text-2xl">✨</span>
                         </div>
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-900">本周主编推荐</h2>
-                            <p className="text-sm text-slate-500 mt-1">主编为您精心挑选的优质学习资源</p>
+                            <h2 className="text-2xl font-bold text-slate-900">本周推荐</h2>
+                            <p className="text-sm text-slate-500 mt-1">为您精心挑选的优质学习资源</p>
                         </div>
                     </div>
 

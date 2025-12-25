@@ -21,8 +21,8 @@ export default function HeroHotSection({ resources }: HeroHotSectionProps) {
                             <span className="text-2xl">🔥</span>
                         </div>
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">本周热门资源</h2>
-                            <p className="text-sm text-slate-500 mt-1">大家都爱看的优质内容</p>
+                            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">本周推荐</h2>
+                            <p className="text-sm text-slate-500 mt-1">为您精心挑选的优质学习资源</p>
                         </div>
                     </div>
                 </div>

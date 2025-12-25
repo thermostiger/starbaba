@@ -47,37 +47,53 @@
   --radius: 0.75rem;
 
   /* StarDad Ivy Blue Theme */
-  --blue-primary: 224 71% 40%;    /* blue-800 #1e40af - Professional, Trust */
-  --amber-accent: 43 96% 56%;     /* amber-400 #fbbf24 - High Visibility */
-  --slate-bg: 210 40% 98%;        /* slate-50 #f8fafc - Clean Background */
-  --text-primary: 215 25% 15%;    /* slate-900 #0f172a */
-  --text-secondary: 215 16% 47%;  /* slate-600 #475569 */
+  --blue-primary: 224 71% 40%;
+  /* blue-800 #1e40af - Professional, Trust */
+  --amber-accent: 43 96% 56%;
+  /* amber-400 #fbbf24 - High Visibility */
+  --slate-bg: 210 40% 98%;
+  /* slate-50 #f8fafc - Clean Background */
+  --text-primary: 215 25% 15%;
+  /* slate-900 #0f172a */
+  --text-secondary: 215 16% 47%;
+  /* slate-600 #475569 */
 
-  --background: 210 40% 98%;      /* slate-50 */
-  --foreground: 215 25% 15%;      /* slate-900 */
-  
+  --background: 210 40% 98%;
+  /* slate-50 */
+  --foreground: 215 25% 15%;
+  /* slate-900 */
+
   --card: 0 0% 100%;
   --card-foreground: 215 25% 15%;
-  
+
   --popover: 0 0% 100%;
   --popover-foreground: 215 25% 15%;
-  
-  --primary: 224 71% 40%;         /* blue-800 */
-  --primary-foreground: 0 0% 100%; /* white */
-  
-  --secondary: 210 40% 96%;       /* slate-100 */
-  --secondary-foreground: 224 71% 40%; /* blue-800 */
-  
-  --muted: 210 40% 96%;           /* slate-100 */
-  --muted-foreground: 215 16% 47%; /* slate-600 */
-  
-  --accent: 43 96% 56%;           /* amber-400 */
-  --accent-foreground: 224 71% 40%; /* blue-800 text on amber? or maybe dark text. Let's try blue text for contrast or just black. Amber usually needs dark text. Blue-900 is good. */
-  
+
+  --primary: 224 71% 40%;
+  /* blue-800 */
+  --primary-foreground: 0 0% 100%;
+  /* white */
+
+  --secondary: 210 40% 96%;
+  /* slate-100 */
+  --secondary-foreground: 224 71% 40%;
+  /* blue-800 */
+
+  --muted: 210 40% 96%;
+  /* slate-100 */
+  --muted-foreground: 215 16% 47%;
+  /* slate-600 */
+
+  --accent: 43 96% 56%;
+  /* amber-400 */
+  --accent-foreground: 224 71% 40%;
+  /* blue-800 text on amber? or maybe dark text. Let's try blue text for contrast or just black. Amber usually needs dark text. Blue-900 is good. */
+
   --destructive: 0 84% 60%;
   --border: 214 32% 91%;
   --input: 214 32% 91%;
-  --ring: 224 71% 40%;            /* blue-800 */
+  --ring: 224 71% 40%;
+  /* blue-800 */
 }
 
 .dark {

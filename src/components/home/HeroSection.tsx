@@ -12,62 +12,37 @@ export default function HeroSection() {
     const [query, setQuery] = useState('');
     const [isFocused, setIsFocused] = useState(false);
 
-    const categories = [
-        {
-            title: '启蒙',
-            subtitle: '0-6岁',
-            icon: '👶',
-            href: '/preschool',
-            color: 'from-pink-500/10 to-rose-500/10',
-            borderColor: 'border-rose-100',
-            iconBg: 'bg-rose-50'
-        },
-        {
-            title: '少儿',
-            subtitle: '7-12岁',
-            icon: '👦',
-            href: '/kids',
-            color: 'from-blue-500/10 to-indigo-500/10',
-            borderColor: 'border-blue-100',
-            iconBg: 'bg-blue-50'
-        },
-        {
-            title: '少年',
-            subtitle: '13-18岁',
-            icon: '🎓',
-            href: '/teens',
-            color: 'from-amber-500/10 to-orange-500/10',
-            borderColor: 'border-amber-100',
-            iconBg: 'bg-amber-50'
-        },
-        {
-            title: '科普',
-            subtitle: '全年龄',
-            icon: '🔭',
-            href: '/science',
-            color: 'from-emerald-500/10 to-teal-500/10',
-            borderColor: 'border-emerald-100',
-            iconBg: 'bg-emerald-50'
-        }
-    ];
+
 
     return (
         <section className="relative w-full overflow-hidden bg-white">
-            {/* Elegant Background Gradients - Reduced intensity */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-50/50 rounded-full filter blur-[100px]" />
-                <div className="absolute top-[10%] -right-[15%] w-[40%] h-[40%] bg-amber-50/40 rounded-full filter blur-[100px]" />
+            {/* Elegant Background Gradients - Enhanced for "Star" theme */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-blue-100/40 rounded-full filter blur-[100px] animate-pulse-slow" />
+                <div className="absolute top-[10%] -right-[15%] w-[50%] h-[50%] bg-purple-100/40 rounded-full filter blur-[100px] animate-pulse-slow animation-delay-2000" />
+                <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-rose-50/40 rounded-full filter blur-[100px] animate-pulse-slow animation-delay-4000" />
+
+                {/* Decorative Stars */}
+                <div className="absolute top-20 left-[15%] text-amber-200/60 animate-bounce-slow">
+                    <Star className="w-8 h-8 fill-current" />
+                </div>
+                <div className="absolute bottom-32 right-[10%] text-blue-200/60 animate-bounce-slow animation-delay-1000">
+                    <Star className="w-6 h-6 fill-current" />
+                </div>
+                <div className="absolute top-40 right-[25%] text-rose-200/40 animate-pulse">
+                    <Sparkles className="w-5 h-5" />
+                </div>
             </div>
 
             <div className="relative px-4 pt-12 pb-12 mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col items-center text-center">
                 {/* Compact Content */}
                 <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4 animate-fade-in-up">
-                    <span className="bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-rose-500 bg-clip-text text-transparent inline-block pb-1">
                         专注 K12 英语原版资源
                     </span>
                 </h1>
 
-                <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-500 mb-8 animate-fade-in-up animation-delay-100">
+                <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-500 mb-6 animate-fade-in-up animation-delay-100">
                     海量绘本、儿歌、动画与纪录片，让英语学习更加简单、高效。
                 </p>
 
@@ -105,7 +80,8 @@ export default function HeroSection() {
                     </div>
 
                     {/* Quick Tags */}
-                    <div className="mt-4 flex flex-wrap justify-center gap-3">
+                    {/* Quick Tags - Rounded Pills */}
+                    <div className="mt-6 flex flex-wrap justify-center gap-2">
                         {HOT_SEARCHES.map((term) => (
                             <button
                                 key={term}
@@ -113,37 +89,15 @@ export default function HeroSection() {
                                     setQuery(term);
                                     window.location.href = `/search?q=${encodeURIComponent(term)}`;
                                 }}
-                                className="text-xs text-slate-500 hover:text-blue-600 transition-colors"
+                                className="px-4 py-1.5 bg-white/80 border border-slate-200 rounded-full text-xs font-medium text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
                             >
-                                #{term}
+                                {term}
                             </button>
                         ))}
                     </div>
                 </div>
-
-                {/* AGE-BASED NAVIGATION CARDS */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl animate-fade-in-up animation-delay-300">
-                    {categories.map((cat) => (
-                        <Link
-                            key={cat.title}
-                            href={cat.href}
-                            className={`group relative overflow-hidden p-4 rounded-2xl border ${cat.borderColor} bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1 block`}
-                        >
-                            <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
-
-                            <div className="relative z-10 flex flex-col items-center gap-2">
-                                <div className={`w-12 h-12 ${cat.iconBg} rounded-xl flex items-center justify-center text-2xl shadow-inner`}>
-                                    {cat.icon}
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-slate-800">{cat.title}</h3>
-                                    <p className="text-[10px] text-slate-400 uppercase tracking-tight">{cat.subtitle}</p>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
             </div>
         </section>
+
     );
 }

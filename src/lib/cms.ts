@@ -15,7 +15,7 @@ function mapDbToResource(dbResource: any): Resource {
         category: dbResource.category,
         assigned_page: dbResource.assigned_page,
         price: parseFloat(dbResource.price) || 0,
-        vipPrice: 0,
+        vipPrice: parseFloat(dbResource.vip_price) || 0,
         content: dbResource.content,
         resourceUrl: dbResource.resourceUrl || '',
         is_vip: dbResource.is_vip,
@@ -23,6 +23,7 @@ function mapDbToResource(dbResource: any): Resource {
         is_new: dbResource.is_new,
         created_at: dbResource.created_at,
         is_published: dbResource.is_published,
+        is_free: dbResource.is_free,
     };
 }
 

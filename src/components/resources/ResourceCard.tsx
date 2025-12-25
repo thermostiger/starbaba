@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Card } from '@/components/ui/card'
 import { Resource } from '@/types'
-import { Lock, Video, FileText } from 'lucide-react'
+import { Lock, Video, FileText, Star } from 'lucide-react'
 
 interface ResourceCardProps {
     resource: Resource
@@ -33,11 +33,12 @@ export default function ResourceCard({ resource, showBadges = true, isFeatured =
                     {/* Gradient Overlay for subtle depth */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                    {/* Featured Badge - Top Right */}
+                    {/* Featured Badge - Unified Style */}
                     {isFeatured && (
-                        <div className="absolute top-0 right-0 z-20">
-                            <div className="bg-amber-400 text-blue-900 text-[10px] font-bold px-2 py-1 rounded-bl-lg shadow-sm flex items-center gap-1">
-                                <span className="text-xs">★</span> 严选推荐
+                        <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20">
+                            <div className="bg-amber-400 text-blue-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 whitespace-nowrap">
+                                <Star className="w-3.5 h-3.5 fill-current" />
+                                <span>主编力荐</span>
                             </div>
                         </div>
                     )}

@@ -28,8 +28,8 @@ export default function FeaturedCard({ resource, className = '' }: FeaturedCardP
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
                     {/* Featured Tag */}
-                    <div className="absolute top-4 left-4 z-20">
-                        <div className="bg-amber-400 text-blue-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 animate-bounce-subtle">
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+                        <div className="bg-amber-400 text-blue-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 animate-bounce-subtle whitespace-nowrap">
                             <Star className="w-3.5 h-3.5 fill-current" />
                             <span>主编力荐</span>
                         </div>

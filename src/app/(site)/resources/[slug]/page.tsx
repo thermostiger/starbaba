@@ -84,19 +84,31 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
         notFound();
     }
 
-    const pageToStage: Record<string, string> = {
+    // Define mappings for Breadcrumbs and Routing
+    const categoryMap: Record<string, { path: string; label: string }> = {
+        '幼儿英语': { path: '/preschool', label: '幼儿英语' },
+        '少儿英语': { path: '/kids', label: '少儿英语' },
+        '青少年英语': { path: '/teens', label: '青少年英语' },
+        '科普纪录片': { path: '/science', label: '科普纪录片' },
+    };
+
+    // Define CMS stage mapping (for getResourcesByStage compatibility)
+    const stageForCms: Record<string, string> = {
         '幼儿英语': '启蒙',
         '少儿英语': '进阶',
         '青少年英语': '青少年',
         '科普纪录片': '全年龄',
     };
-    const stage = resource.assigned_page ? (pageToStage[resource.assigned_page] || '启蒙') : '启蒙';
+
+    const assignedPage = resource.assigned_page || '幼儿英语';
+    const categoryInfo = categoryMap[assignedPage] || { path: '/preschool', label: '幼儿英语' };
+    const cmsStage = stageForCms[assignedPage] || '启蒙';
 
     // Fetch related resources only for non-documentary resources
     const isDocumentary = slug.startsWith('d');
     const relatedResources = isDocumentary
         ? []
-        : (await getResourcesByStage(stage, 1, 4)).data;
+        : (await getResourcesByStage(cmsStage, 1, 4)).data;
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -119,8 +131,8 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
                                 首页
                             </Link>
                             <ChevronRight className="w-4 h-4" />
-                            <Link href={`/category/${stage === '启蒙' ? 'enlightenment' : 'teen'}`} className="hover:text-primary">
-                                {stage}英语
+                            <Link href={categoryInfo.path} className="hover:text-primary">
+                                {categoryInfo.label}
                             </Link>
                             <ChevronRight className="w-4 h-4" />
                             <span className="text-gray-900 truncate max-w-[200px]">{resource.title}</span>

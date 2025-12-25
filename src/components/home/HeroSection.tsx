@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Search, Sparkles, BookOpen, Star } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const HOT_SEARCHES = ['Peppa Pig', '牛津树', '自然拼读', '英语儿歌', 'BBC纪录片'];
 
@@ -11,89 +12,136 @@ export default function HeroSection() {
     const [query, setQuery] = useState('');
     const [isFocused, setIsFocused] = useState(false);
 
+    const categories = [
+        {
+            title: '启蒙',
+            subtitle: '0-6岁',
+            icon: '👶',
+            href: '/preschool',
+            color: 'from-pink-500/10 to-rose-500/10',
+            borderColor: 'border-rose-100',
+            iconBg: 'bg-rose-50'
+        },
+        {
+            title: '少儿',
+            subtitle: '7-12岁',
+            icon: '👦',
+            href: '/kids',
+            color: 'from-blue-500/10 to-indigo-500/10',
+            borderColor: 'border-blue-100',
+            iconBg: 'bg-blue-50'
+        },
+        {
+            title: '少年',
+            subtitle: '13-18岁',
+            icon: '🎓',
+            href: '/teens',
+            color: 'from-amber-500/10 to-orange-500/10',
+            borderColor: 'border-amber-100',
+            iconBg: 'bg-amber-50'
+        },
+        {
+            title: '科普',
+            subtitle: '全年龄',
+            icon: '🔭',
+            href: '/science',
+            color: 'from-emerald-500/10 to-teal-500/10',
+            borderColor: 'border-emerald-100',
+            iconBg: 'bg-emerald-50'
+        }
+    ];
+
     return (
-        <section className="relative w-full overflow-hidden bg-slate-50">
-            {/* Elaborate Background with Premium Gradients */}
+        <section className="relative w-full overflow-hidden bg-white">
+            {/* Elegant Background Gradients - Reduced intensity */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] bg-gradient-to-br from-blue-100/40 via-blue-50/40 to-transparent rounded-full filter blur-[100px] animate-pulse-slow" />
-                <div className="absolute top-[20%] -right-[10%] w-[60%] h-[60%] bg-gradient-to-bl from-amber-100/40 via-yellow-50/40 to-transparent rounded-full filter blur-[100px] animate-pulse-slow animation-delay-2000" />
+                <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-50/50 rounded-full filter blur-[100px]" />
+                <div className="absolute top-[10%] -right-[15%] w-[40%] h-[40%] bg-amber-50/40 rounded-full filter blur-[100px]" />
             </div>
 
-            {/* Decorative Floating Elements */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute top-20 left-[10%] opacity-20 animate-float-slow">
-                    <Star className="w-12 h-12 text-amber-400 fill-amber-200" />
-                </div>
-                <div className="absolute bottom-32 right-[15%] opacity-20 animate-float">
-                    <BookOpen className="w-16 h-16 text-blue-400 fill-blue-100" />
-                </div>
-                <div className="absolute top-32 right-[20%] opacity-15 animate-float-reverse">
-                    <Sparkles className="w-10 h-10 text-blue-500" />
-                </div>
-            </div>
-
-            <div className="relative px-4 pt-16 pb-20 mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col items-center text-center">
-                {/* Badge */}
-                <div className="inline-flex items-center px-3 py-1 mb-6 text-sm font-medium text-blue-800 bg-blue-50/80 backdrop-blur-sm rounded-full border border-blue-100 shadow-sm animate-fade-in-up">
-                    <span className="flex w-2 h-2 mr-2 bg-blue-600 rounded-full animate-pulse" />
-                    每日更新 · 严选精品资源
-                </div>
-
-                {/* Main Headlines */}
-                <h1 className="text-4xl xs:text-5xl md:text-6xl font-extrabold tracking-tight text-blue-950 mb-6 animate-fade-in-up animation-delay-100 text-balance">
-                    <span className="bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-800 bg-clip-text text-transparent transform hover:scale-105 transition-transform cursor-default inline-block mb-2">
-                        K12书架
-                    </span>
-                    <span className="block text-2xl md:text-3xl text-slate-600 font-bold mt-2">
-                        全球严选 K12 英语原版资源库
+            <div className="relative px-4 pt-12 pb-12 mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col items-center text-center">
+                {/* Compact Content */}
+                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4 animate-fade-in-up">
+                    <span className="bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent">
+                        专注 K12 英语原版资源
                     </span>
                 </h1>
 
-                <p className="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 mb-8 animate-fade-in-up animation-delay-200 text-balance leading-relaxed">
-                    精选海量绘本、儿歌、动画与纪录片
-                    <br className="hidden sm:block" />
-                    让每一次陪伴都充满成长的惊喜
+                <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-500 mb-8 animate-fade-in-up animation-delay-100">
+                    海量绘本、儿歌、动画与纪录片，让英语学习更加简单、高效。
                 </p>
 
-                {/* Search Interaction */}
-                <div className="w-full max-w-2xl relative animate-fade-in-up animation-delay-300 z-10">
-                    <div className={`relative group transition-all duration-300 ${isFocused ? 'scale-105' : ''}`}>
-                        <div className={`absolute -inset-1 bg-gradient-to-r from-blue-400 via-amber-300 to-blue-500 rounded-2xl opacity-20 group-hover:opacity-40 blur transition duration-500 ${isFocused ? 'opacity-50' : ''}`} />
-                        <div className="relative flex items-center bg-white rounded-xl shadow-xl shadow-blue-900/5 border border-slate-100">
+                {/* Search Box - More Compact */}
+                <div className="w-full max-w-2xl relative animate-fade-in-up animation-delay-200 z-20 mb-10">
+                    <div className={`relative group transition-all duration-300 ${isFocused ? 'scale-[1.02]' : ''}`}>
+                        <div className={`absolute -inset-1 bg-gradient-to-r from-blue-400/20 to-indigo-400/20 rounded-2xl blur-md transition duration-500 ${isFocused ? 'opacity-100' : 'opacity-0'}`} />
+                        <div className="relative flex items-center bg-white rounded-xl shadow-lg border border-slate-100">
                             <div className="pl-5 text-slate-400">
-                                <Search className="w-6 h-6" />
+                                <Search className="w-5 h-5" />
                             </div>
-                            <Input
-                                type="text"
-                                placeholder="搜索海量资源：如 Peppa Pig, 牛津树..."
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                                onFocus={() => setIsFocused(true)}
-                                onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                                className="w-full h-16 px-4 bg-transparent border-none text-lg placeholder:text-slate-400 focus:ring-0 focus-visible:ring-0 rounded-xl"
-                            />
-                            <div className="pr-2">
-                                <Button size="lg" className="h-12 px-8 rounded-lg bg-blue-900 text-white hover:bg-blue-800 transition-colors shadow-lg shadow-blue-900/20">
-                                    搜索
-                                </Button>
-                            </div>
+                            <form
+                                className="flex-1 flex items-center"
+                                onSubmit={(e) => {
+                                    e.preventDefault();
+                                    if (query.trim()) window.location.href = `/search?q=${encodeURIComponent(query)}`;
+                                }}
+                            >
+                                <Input
+                                    type="text"
+                                    placeholder="搜索资源：如 Peppa Pig, 牛津树..."
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                    onFocus={() => setIsFocused(true)}
+                                    onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+                                    className="w-full h-14 px-4 bg-transparent border-none text-base placeholder:text-slate-400 focus:ring-0 focus-visible:ring-0 rounded-xl"
+                                />
+                                <div className="pr-2">
+                                    <Button type="submit" className="h-10 px-6 rounded-lg bg-blue-900 text-white hover:bg-blue-800 transition-colors shadow-sm">
+                                        搜索
+                                    </Button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
-                    {/* Hot Search Tags */}
-                    <div className="mt-6 flex flex-wrap justify-center items-center gap-2 text-sm text-slate-500">
-                        <span className="mr-2 text-xs font-semibold uppercase tracking-wider text-slate-400">Hot Trend:</span>
-                        {HOT_SEARCHES.map((term, index) => (
+                    {/* Quick Tags */}
+                    <div className="mt-4 flex flex-wrap justify-center gap-3">
+                        {HOT_SEARCHES.map((term) => (
                             <button
                                 key={term}
-                                onClick={() => setQuery(term)}
-                                className="px-3 py-1 bg-white/60 hover:bg-white border border-transparent hover:border-blue-200 rounded-full transition-all duration-200 hover:shadow-md hover:text-blue-700"
-                                style={{ animationDelay: `${400 + index * 50}ms` }}
+                                onClick={() => {
+                                    setQuery(term);
+                                    window.location.href = `/search?q=${encodeURIComponent(term)}`;
+                                }}
+                                className="text-xs text-slate-500 hover:text-blue-600 transition-colors"
                             >
-                                {term}
+                                #{term}
                             </button>
                         ))}
                     </div>
+                </div>
+
+                {/* AGE-BASED NAVIGATION CARDS */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl animate-fade-in-up animation-delay-300">
+                    {categories.map((cat) => (
+                        <Link
+                            key={cat.title}
+                            href={cat.href}
+                            className={`group relative overflow-hidden p-4 rounded-2xl border ${cat.borderColor} bg-white shadow-sm hover:shadow-md transition-all hover:-translate-y-1 block`}
+                        >
+                            <div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+
+                            <div className="relative z-10 flex flex-col items-center gap-2">
+                                <div className={`w-12 h-12 ${cat.iconBg} rounded-xl flex items-center justify-center text-2xl shadow-inner`}>
+                                    {cat.icon}
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-slate-800">{cat.title}</h3>
+                                    <p className="text-[10px] text-slate-400 uppercase tracking-tight">{cat.subtitle}</p>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </section>

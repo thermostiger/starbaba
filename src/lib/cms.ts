@@ -468,3 +468,23 @@ export async function getRelatedResources(resourceId: string, limit: number = 4)
     const resources = await getNewResources(20);
     return resources.filter(r => r.id !== resourceId).slice(0, limit);
 }
+export async function getResourcesBySearch(query: string, limit: number = 5): Promise<Resource[]> {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM resources WHERE (title ILIKE $1 OR resource_info ILIKE $1) AND is_published = true ORDER BY created_at DESC LIMIT $2',
+            [`%${query}%`, limit]
+        );
+        if (result.rows.length > 0) {
+            return result.rows.map(mapDbToResource);
+        }
+
+        // Fallback to mock search if DB search returns nothing
+        const mocks = MOCK_RESOURCES.filter(r =>
+            r.title.includes(query) || (r.resource_info?.includes(query))
+        );
+        return mocks.slice(0, limit);
+    } catch (e) {
+        console.error('Fetch resources by search failed', e);
+        return [];
+    }
+}

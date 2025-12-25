@@ -97,7 +97,28 @@ export default async function HomePage() {
                 </div>
             </section>
 
-            {/* Section 4: Membership CTA Section (Dark Section) */}
+            {/* Section 4: New Arrivals */}
+            <section className="py-20 bg-white">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex items-center gap-3 mb-10 pb-4 border-b border-cyan-100">
+                        <div className="p-2 bg-cyan-50 rounded-xl">
+                            <span className="text-2xl">🆕</span>
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-slate-900">最新上架</h2>
+                            <p className="text-sm text-slate-500 mt-1">每日更新，紧跟全球优质教育资源</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+                        {newResources.map((resource) => (
+                            <ResourceCard key={resource.id} resource={resource} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Section 5: Membership CTA Section (Dark Section) */}
             <section className="py-10 bg-blue-900 text-white relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                     <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-white rounded-full blur-[120px]" />
@@ -133,27 +154,6 @@ export default async function HomePage() {
                         <div className="lg:w-[60%] w-full">
                             <MembershipPlans />
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Section 5: New Arrivals */}
-            <section className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex items-center gap-3 mb-10 pb-4 border-b border-cyan-100">
-                        <div className="p-2 bg-cyan-50 rounded-xl">
-                            <span className="text-2xl">🆕</span>
-                        </div>
-                        <div>
-                            <h2 className="text-2xl font-bold text-slate-900">最新上架</h2>
-                            <p className="text-sm text-slate-500 mt-1">每日更新，紧跟全球优质教育资源</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-                        {newResources.map((resource) => (
-                            <ResourceCard key={resource.id} resource={resource} />
-                        ))}
                     </div>
                 </div>
             </section>

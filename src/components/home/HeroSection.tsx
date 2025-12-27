@@ -18,9 +18,15 @@ export default function HeroSection() {
         <section className="relative w-full overflow-hidden bg-white">
             {/* Elegant Background Gradients - Enhanced for "Star" theme */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-blue-100/40 rounded-full filter blur-[100px] animate-pulse-slow" />
-                <div className="absolute top-[10%] -right-[15%] w-[50%] h-[50%] bg-purple-100/40 rounded-full filter blur-[100px] animate-pulse-slow animation-delay-2000" />
-                <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-rose-50/40 rounded-full filter blur-[100px] animate-pulse-slow animation-delay-4000" />
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+
+                {/* Intensified blobs */}
+                <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-blue-500/40 rounded-full filter blur-[100px] animate-pulse-slow" />
+                <div className="absolute top-[10%] -right-[15%] w-[50%] h-[50%] bg-purple-500/40 rounded-full filter blur-[100px] animate-pulse-slow animation-delay-2000" />
+                <div className="absolute bottom-[0%] left-[20%] w-[40%] h-[40%] bg-rose-400/30 rounded-full filter blur-[100px] animate-pulse-slow animation-delay-4000" />
+
+                {/* Bottom Fade for smooth transition */}
+                <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-white via-white/80 to-transparent z-10" />
 
                 {/* Decorative Stars */}
                 <div className="absolute top-20 left-[15%] text-amber-200/60 animate-bounce-slow">

@@ -29,17 +29,10 @@ export default function Footer() {
                         </Link>
 
                         <p className="text-sm leading-7 text-slate-400 max-w-sm">
-                            专为3-12岁中国儿童打造的英语原版资源库。我们精选全球优质原版教材、绘本、动画和纪录片，帮助孩子建立纯正的英语思维，让学习变回探索世界的快乐旅程。
+                            我们精选全球优质教材、绘本、动画和纪录片，帮助孩子建立纯正的英语思维，让学习变回探索世界的快乐旅程。
                         </p>
 
-                        <div className="flex items-center gap-2 pt-2">
-                            <span className="px-3 py-1 rounded-full bg-blue-900/50 border border-blue-800 text-xs text-blue-200 font-medium">
-                                专注原版阅读
-                            </span>
-                            <span className="px-3 py-1 rounded-full bg-blue-900/50 border border-blue-800 text-xs text-blue-200 font-medium">
-                                科学分级体系
-                            </span>
-                        </div>
+
                     </div>
 
                     {/* Column 2: Resources Navigation (3 cols) */}
@@ -131,7 +124,7 @@ export default function Footer() {
                                     <div className="w-8 h-8 rounded-lg bg-blue-800/50 flex items-center justify-center shrink-0">
                                         <Mail className="w-4 h-4" />
                                     </div>
-                                    <span>邮箱:x_in@outlook.com</span>
+                                    <span>邮箱:k12shelf@outlook.com</span>
                                 </div>
                                 <div className="text-sm text-slate-300 flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-lg bg-blue-800/50 flex items-center justify-center shrink-0">
@@ -149,19 +142,13 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-blue-900/50 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
                     <div className="flex items-center gap-2">
-                        <span>&copy; {currentYear} K12书架 (StarDad English). All rights reserved.</span>
-                        <span className="hidden md:inline text-slate-700">|</span>
-                        <div className="flex items-center gap-1">
-                            <span>Made with</span>
-                            <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
-                            <span>for kids</span>
-                        </div>
+                        <span>&copy; {currentYear} K12Shelf. All rights reserved.</span>
                     </div>
 
                     <div className="flex items-center gap-6">
                         <Link href="/privacy" className="hover:text-amber-400 transition-colors">隐私政策</Link>
-                        <Link href="/terms" className="hover:text-amber-400 transition-colors">服务条款</Link>
-                        <Link href="/copyright" className="hover:text-amber-400 transition-colors">版权声明</Link>
+                        <Link href="/terms" className="hover:text-amber-400 transition-colors">用户协议</Link>
+                        <Link href="/disclaimer" className="hover:text-amber-400 transition-colors">免责声明</Link>
                     </div>
                 </div>
             </div>

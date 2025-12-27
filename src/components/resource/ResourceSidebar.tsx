@@ -10,7 +10,7 @@ interface ResourceSidebarProps {
 
 export default function ResourceSidebar({ resource }: ResourceSidebarProps) {
     return (
-        <div className="lg:sticky lg:top-24 space-y-4">
+        <div className="space-y-4">
             {/* VIP Membership Card - Warm educational theme */}
             <Card className="relative overflow-hidden border-0 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-orange-200/30 rounded-full -translate-y-16 translate-x-16"></div>
@@ -68,17 +68,12 @@ export default function ResourceSidebar({ resource }: ResourceSidebarProps) {
                 <CardContent className="p-5">
                     <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                         <MessageCircle className="w-5 h-5 text-green-500" />
-                        联系客服
+                        微信客服
                     </h3>
 
                     <div className="space-y-4">
                         <div>
-                            <div className="text-sm text-gray-600 mb-2 flex items-center gap-2">
-                                <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">
-                                    <MessageCircle className="h-3.5 w-3.5 text-green-600" />
-                                </div>
-                                微信客服
-                            </div>
+
                             <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
                                 <Image
                                     src="/images/wechat-qr.png"

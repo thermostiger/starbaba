@@ -116,9 +116,9 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
             <ResourceHero resource={resource} />
 
             <div className="max-w-7xl mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
                     {/* Left Sidebar (1 col) -> Now Right due to order-2 */}
-                    <div className="lg:col-span-1 order-2">
+                    <div className="lg:col-span-1 order-2 lg:sticky lg:top-28 z-30">
                         <ResourceSidebar resource={resource} />
                     </div>
 
@@ -204,6 +204,10 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
                                         </div>
                                     </div>
                                 )}
+
+                                <div className="mt-8 p-4 bg-gray-50 rounded-lg text-xs text-gray-500 leading-relaxed border border-gray-100">
+                                    免责声明： 本站所有资源均收集自互联网，仅供内部学习交流使用，请于下载后 24 小时内删除。本站不承担任何法律责任。如有侵权，请联系 k12shelf@outlook.com，我们将第一时间处理。
+                                </div>
                             </div>
                         </div>
 

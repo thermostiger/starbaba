@@ -148,9 +148,9 @@ export default function CategoryLayout({
 
                         {/* Stats / Trust Badges */}
                         <div className="flex items-center gap-3 text-xs text-blue-500 font-medium bg-white/50 px-3 py-1.5 rounded-full backdrop-blur-sm border border-blue-100">
-                            <span className="flex items-center"><CheckBadge /> 原版引进</span>
+                            <span className="flex items-center"><CheckBadge /> 原版资源</span>
                             <span className="w-px h-3 bg-blue-200"></span>
-                            <span className="flex items-center"><CheckBadge /> 每日更新</span>
+                            <span className="flex items-center"><CheckBadge /> 每周更新</span>
                         </div>
                     </div>
                 </div>

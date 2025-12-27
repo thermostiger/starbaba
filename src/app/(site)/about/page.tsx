@@ -62,7 +62,7 @@ export default function AboutPage() {
                         <Sparkles className="w-6 h-6 text-green-600" />
                     </div>
                     <h3 className="text-lg font-bold mb-2 text-slate-900">赋能思维进阶</h3>
-                    <p className="text-slate-600">打破课堂边界。依托持续扩充的百科级资源库，在获取知识的同时，全面提升批判性思维与核心竞争力。</p>
+                    <p className="text-slate-600">打破课堂边界。依托持续扩充的百科级资源库，在获取知识的同时，全面提升独立思考与核心竞争力。</p>
                 </div>
             </div>
 

@@ -18,7 +18,7 @@ export default async function TeenagersPage() {
     return (
         <CategoryLayout
             title="青少年英语"
-            subtitle="适合 13-18 岁 · 原版小说 · 深度阅读 · 批判性思维"
+            subtitle="适合 13-18 岁 · 原版小说 · 深度阅读 · 独立思考"
             category="青少年英语"
             initialResources={initialResources}
             featuredResource={featuredResource}

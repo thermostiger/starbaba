@@ -19,7 +19,7 @@ export default function ValueProposition() {
         {
             icon: <Lightbulb className="w-8 h-8 text-purple-500" />,
             title: '赋能思维进阶',
-            description: '打破课堂边界。依托持续扩充的百科级资源库，在获取知识的同时，全面提升批判性思维与核心竞争力。',
+            description: '打破课堂边界。依托持续扩充的百科级资源库，在获取知识的同时，全面提升独立思考与核心竞争力。',
             bg: 'bg-purple-50',
             borderColor: 'border-purple-100'
         }

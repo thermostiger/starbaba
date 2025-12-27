@@ -117,13 +117,13 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
 
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    {/* Left Sidebar (1 col) */}
-                    <div className="lg:col-span-1 order-2 lg:order-1">
+                    {/* Left Sidebar (1 col) -> Now Right due to order-2 */}
+                    <div className="lg:col-span-1 order-2">
                         <ResourceSidebar resource={resource} />
                     </div>
 
-                    {/* Right Content (3 cols) */}
-                    <div className="lg:col-span-3 order-1 lg:order-2 space-y-8">
+                    {/* Right Content (3 cols) -> Now Left due to order-1 */}
+                    <div className="lg:col-span-3 order-1 space-y-8">
                         {/* Breadcrumbs */}
                         <div className="flex items-center gap-2 text-sm text-gray-500">
                             <Link href="/" className="hover:text-primary flex items-center gap-1">

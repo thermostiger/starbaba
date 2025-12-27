@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { MessageCircle, Users, Star, Gift, Download } from 'lucide-react';
+import { MessageCircle, Star, Gift } from 'lucide-react';
 import Image from 'next/image';
 import { Resource } from '@/types';
 
@@ -48,35 +48,7 @@ export default function ResourceSidebar({ resource }: ResourceSidebarProps) {
                 </CardContent>
             </Card>
 
-            {/* Single Purchase Card - Clean modern style */}
-            <Card className="border border-blue-100 shadow-md bg-white">
-                <CardContent className="p-5">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center">
-                            <Download className="w-5 h-5 text-white" />
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-gray-800">单独购买</h3>
-                            <p className="text-xs text-gray-500">永久访问此资源</p>
-                        </div>
-                    </div>
 
-                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 mb-4">
-                        <div className="flex items-baseline justify-between">
-                            <span className="text-sm text-gray-600">价格</span>
-                            <div className="flex items-baseline gap-1">
-                                <span className="text-xs text-gray-500">¥</span>
-                                <span className="text-3xl font-bold text-orange-500">{resource.price}</span>
-                            </div>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-2">购买后永久有效</p>
-                    </div>
-
-                    <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-semibold shadow-md h-11 rounded-xl">
-                        立即购买
-                    </Button>
-                </CardContent>
-            </Card>
 
             {/* Gift Card - Special offer */}
             <Card className="border border-purple-100 shadow-md bg-gradient-to-br from-purple-50 to-pink-50">
@@ -118,24 +90,7 @@ export default function ResourceSidebar({ resource }: ResourceSidebarProps) {
                             </div>
                         </div>
 
-                        <div className="h-px bg-gray-200"></div>
 
-                        <div>
-                            <div className="text-sm text-gray-600 mb-2 flex items-center gap-2">
-                                <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <Users className="h-3.5 w-3.5 text-blue-600" />
-                                </div>
-                                家长交流群
-                            </div>
-                            <div className="relative aspect-square bg-gray-50 rounded-xl overflow-hidden border border-gray-100">
-                                <Image
-                                    src="/images/group-qr.png"
-                                    alt="家长群二维码"
-                                    fill
-                                    className="object-contain p-3"
-                                />
-                            </div>
-                        </div>
                     </div>
                 </CardContent>
             </Card>

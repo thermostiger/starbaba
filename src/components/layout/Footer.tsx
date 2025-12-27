@@ -23,7 +23,7 @@ export default function Footer() {
                                 <Sparkles className="w-6 h-6 text-blue-950" />
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-xl font-bold text-white tracking-tight leading-none group-hover:text-amber-400 transition-colors">K12shelf</span>
+                                <span className="text-xl font-bold text-white tracking-tight leading-none group-hover:text-amber-400 transition-colors">K12Shelf</span>
                             </div>
                         </Link>
 

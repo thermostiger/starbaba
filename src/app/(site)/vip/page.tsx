@@ -15,7 +15,7 @@ export default function VIPPage() {
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-                        解锁 K12全部海量精选原版资源
+                        解锁 K12Shelf全部海量精选原版资源
                     </h1>
                     <p className="text-xl md:text-2xl text-blue-100 font-medium">
                         每天不到 3 毛钱，把国际学校的图书馆搬回家。

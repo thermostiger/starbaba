@@ -84,7 +84,7 @@ export default function RegisterPage() {
                 </div>
 
                 <div className="relative z-10 space-y-4">
-                    <h1 className="text-4xl font-bold">K12Shelf Resources</h1>
+                    <h1 className="text-4xl font-bold text-amber-400">K12Shelf Resources</h1>
                     <p className="text-lg opacity-90 leading-relaxed">
                         把国际学校的图书馆搬回家。<br />
                         精选全球优质原版资源，让孩子在纯正的语言环境中探索世界，培养终身受益的国际视野。

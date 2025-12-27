@@ -133,7 +133,7 @@ export default async function HomePage() {
                         {/* Left Column: Marketing Text (40%) */}
                         <div className="lg:w-[40%] text-white space-y-6">
                             <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight">
-                                解锁K12shelf<br />全部精选原版资源
+                                解锁K12Shelf<br />全部精选原版资源
                             </h2>
                             <p className="text-blue-100 text-lg font-light">
                                 灵活方案任选，一次付费，长久受益。

@@ -44,12 +44,12 @@ export default function HeroSection() {
                 {/* Compact Content */}
                 <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-4 animate-fade-in-up">
                     <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-rose-500 bg-clip-text text-transparent inline-block pb-1">
-                        专注 K12 英语原版资源
+                        精选英语原版资源
                     </span>
                 </h1>
 
                 <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-500 mb-6 animate-fade-in-up animation-delay-100">
-                    海量绘本、儿歌、动画与纪录片，让英语学习更加简单、高效。
+                    拒绝滥竽充数，让英语学习更加简单、高效。
                 </p>
 
                 {/* Search Box - More Compact */}

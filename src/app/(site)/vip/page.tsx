@@ -11,7 +11,8 @@ export default function VIPPage() {
     return (
         <div className="min-h-screen bg-slate-50 font-sans">
             {/* 1. Hero Section */}
-            <header className="bg-blue-800 text-white py-20 px-4 text-center">
+            <header className="bg-gradient-to-br from-slate-900 via-blue-900 to-amber-700 text-white py-20 px-4 text-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
                         解锁 K12全部海量精选原版资源
@@ -27,7 +28,7 @@ export default function VIPPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start justify-center max-w-4xl mx-auto">
 
                     {/* Card A: The Anchor (Yearly) */}
-                    <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col relative order-2 md:order-1">
+                    <div className="bg-white rounded-2xl p-8 border-[3px] border-blue-200 shadow-sm flex flex-col relative order-2 md:order-1">
                         <h3 className="text-xl font-bold text-slate-900 mb-2">年度会员</h3>
                         <p className="text-slate-500 text-sm mb-6">解锁全站权限，畅享一年无忧下载</p>
 

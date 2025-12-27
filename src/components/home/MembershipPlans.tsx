@@ -17,7 +17,7 @@ export default function MembershipPlans() {
 
                 {/* Single line features */}
                 <div className="text-sm text-gray-500 mt-2 leading-relaxed">
-                    适合短期备考 • 支持网盘下载 • 365天有效
+                    解锁全站 • 支持网盘 • 365天有效
                 </div>
 
                 <Button
@@ -49,7 +49,7 @@ export default function MembershipPlans() {
 
                 {/* Single line features */}
                 <div className="text-sm text-gray-500 mt-2 leading-relaxed">
-                    全龄段覆盖 • 永久有效 • 无需续费 • 优先更新
+                    所有权益 • 永久有效 • 专属客服 • 优先更新
                 </div>
 
                 <Button

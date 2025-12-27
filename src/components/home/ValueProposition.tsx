@@ -4,8 +4,8 @@ export default function ValueProposition() {
     const items = [
         {
             icon: <BookOpen className="w-8 h-8 text-orange-500" />,
-            title: '激发阅读本能',
-            description: '无需刻意坚持，让内容本身成为吸引力。无论处于哪个阶段，每个人都能在这里找到沉浸书海的理由。',
+            title: '激发英文本能',
+            description: '无需刻意坚持，让内容本身成为吸引力。无论处于哪个阶段，每个人都能在这里找到沉浸英文的理由。',
             bg: 'bg-orange-50',
             borderColor: 'border-orange-100'
         },

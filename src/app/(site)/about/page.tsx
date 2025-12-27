@@ -47,22 +47,22 @@ export default function AboutPage() {
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                         <Globe className="w-6 h-6 text-blue-600" />
                     </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900">全球视野</h3>
-                    <p className="text-slate-600">汇聚全球顶级出版社与制作机构的优质资源</p>
+                    <h3 className="text-lg font-bold mb-2 text-slate-900">激发英文本能</h3>
+                    <p className="text-slate-600">无需刻意坚持，让内容本身成为吸引力。无论处于哪个阶段，每个人都能在这里找到沉浸英语的理由。</p>
                 </div>
                 <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 text-center">
                     <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                         <BookOpen className="w-6 h-6 text-amber-600" />
                     </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900">严选内容</h3>
-                    <p className="text-slate-600">每一份资源都经过精心筛选，确保教育价值</p>
+                    <h3 className="text-lg font-bold mb-2 text-slate-900">无界探索成长</h3>
+                    <p className="text-slate-600">拒绝单一枯燥。从兴趣出发，在自己喜欢的主题中自由漫游，在未知的领域里发现惊喜，拓宽认知边界。</p>
                 </div>
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 text-center">
                     <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
                         <Sparkles className="w-6 h-6 text-green-600" />
                     </div>
-                    <h3 className="text-lg font-bold mb-2 text-slate-900">快乐启蒙</h3>
-                    <p className="text-slate-600">让兴趣成为最好的老师，在探索中自然习得</p>
+                    <h3 className="text-lg font-bold mb-2 text-slate-900">赋能思维进阶</h3>
+                    <p className="text-slate-600">打破课堂边界。依托持续扩充的百科级资源库，在获取知识的同时，全面提升批判性思维与核心竞争力。</p>
                 </div>
             </div>
 

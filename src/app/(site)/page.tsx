@@ -133,15 +133,15 @@ export default async function HomePage() {
                         {/* Left Column: Marketing Text (40%) */}
                         <div className="lg:w-[40%] text-white space-y-6">
                             <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight">
-                                助力高效备考，<br />解锁全部资源
+                                解锁K12shelf<br />全部精选原版资源
                             </h2>
                             <p className="text-blue-100 text-lg font-light">
                                 灵活方案任选，一次付费，长久受益。
                             </p>
                             <ul className="space-y-3">
                                 {[
-                                    '全站资源无限制极速下载',
-                                    '优先获取独家更新内容',
+                                    '解锁全站隐藏资源',
+                                    '优先获取独家更新内容、功能',
                                     '尊享VIP专属客服支持'
                                 ].map((item, idx) => (
                                     <li key={idx} className="flex items-center gap-2">

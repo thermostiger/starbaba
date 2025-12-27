@@ -14,7 +14,7 @@ export default function VIPPage() {
             <header className="bg-blue-800 text-white py-20 px-4 text-center">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-                        解锁 K12书架 海量精选原版资源
+                        解锁 K12全部海量精选原版资源
                     </h1>
                     <p className="text-xl md:text-2xl text-blue-100 font-medium">
                         每天不到 3 毛钱，把国际学校的图书馆搬回家。
@@ -29,7 +29,7 @@ export default function VIPPage() {
                     {/* Card A: The Anchor (Yearly) */}
                     <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm flex flex-col relative order-2 md:order-1">
                         <h3 className="text-xl font-bold text-slate-900 mb-2">年度会员</h3>
-                        <p className="text-slate-500 text-sm mb-6">适合短期备考或试用体验</p>
+                        <p className="text-slate-500 text-sm mb-6">解锁全站权限，畅享一年无忧下载</p>
 
                         <div className="mb-6 flex items-baseline">
                             <span className="text-4xl font-bold text-slate-900">¥99</span>
@@ -66,11 +66,11 @@ export default function VIPPage() {
                         {/* Badge */}
                         <div className="absolute -top-5 right-8 bg-amber-400 text-blue-900 text-sm font-bold px-4 py-1.5 rounded-full shadow-md flex items-center gap-1">
                             <Crown className="w-4 h-4 fill-current" />
-                            80% 家长选择
+                            80% 用户选择
                         </div>
 
                         <h3 className="text-xl font-bold text-blue-900 mb-2">终身会员</h3>
-                        <p className="text-blue-600/80 text-sm mb-6 font-medium">一次付费，覆盖 K12 全学龄段</p>
+                        <p className="text-blue-600/80 text-sm mb-6 font-medium">👑 超值首选 · 终身有效 · 包含所有后续更新</p>
 
                         <div className="mb-6 flex items-baseline">
                             <span className="text-5xl font-extrabold text-blue-900">¥199</span>
@@ -97,7 +97,7 @@ export default function VIPPage() {
                             </div>
                             <div className="flex items-start gap-3">
                                 <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
-                                <span className="text-slate-700 font-medium">免费享受未来新增资源</span>
+                                <span className="text-slate-700 font-medium">免费享受未来新增资源、新功能</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <ShieldCheck className="w-5 h-5 text-amber-500 shrink-0" />
@@ -141,23 +141,11 @@ export default function VIPPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
-                        <div className="flex gap-4">
-                            <HelpCircle className="w-6 h-6 text-blue-300 shrink-0 mt-0.5" />
-                            <div>
-                                <h4 className="font-bold text-slate-900 mb-2">资源是存放在哪里的？</h4>
-                                <p className="text-slate-600 leading-relaxed">
-                                    目前主要使用网盘进行资源分享。解锁后您将获得网盘的分享链接和提取码，您可以选择直接下载或转存到您自己的网盘中。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
 
                 <div className="mt-12 text-center border-t border-slate-200 pt-8">
-                    <p className="text-slate-400 text-sm">
-                        如有其他问题，请联系客服微信：<span className="font-bold text-slate-600 select-all">xingbaba</span>
-                    </p>
+                    如有其他问题，请联系客服微信：<span className="font-bold text-slate-600 select-all">k12shelf</span>
                 </div>
             </section>
         </div>

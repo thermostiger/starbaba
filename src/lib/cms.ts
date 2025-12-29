@@ -24,6 +24,7 @@ function mapDbToResource(dbResource: any): Resource {
         created_at: dbResource.created_at,
         is_published: dbResource.is_published,
         is_free: dbResource.is_free,
+        slug: dbResource.slug,
     };
 }
 

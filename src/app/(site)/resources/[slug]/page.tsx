@@ -152,7 +152,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
                             </div>
 
                             <div className="p-8">
-                                <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: resource.content || '<p>暂无详细介绍</p>' }} />
+                                <div className="prose max-w-none whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: resource.content || '<p>暂无详细介绍</p>' }} />
 
                                 {(resource.is_vip || resource.download_url) && (
                                     <div className="mt-8 pt-8 border-t border-gray-100">

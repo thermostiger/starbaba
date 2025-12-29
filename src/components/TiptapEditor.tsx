@@ -24,6 +24,9 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
 
     const editor = useEditor({
         immediatelyRender: false,
+        parseOptions: {
+            preserveWhitespace: 'full',
+        },
         extensions: [
             StarterKit.configure({
                 heading: {
@@ -55,7 +58,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         },
         editorProps: {
             attributes: {
-                class: 'prose max-w-none focus:outline-none min-h-[200px] px-4 py-2',
+                class: 'prose max-w-none focus:outline-none min-h-[200px] px-4 py-2 whitespace-pre-wrap',
             },
         },
     })

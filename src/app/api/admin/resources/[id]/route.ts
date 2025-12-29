@@ -98,8 +98,9 @@ export async function PATCH(
                 cover_image = $9,
                 "is_published" = $10,
                 "is_free" = $11,
+                download_url = $12,
                 updated_at = NOW()
-            WHERE id = $12
+            WHERE id = $13
             RETURNING *
         `
 
@@ -115,6 +116,7 @@ export async function PATCH(
             data.cover_image !== undefined ? data.cover_image : (currentResource.cover_image || ''),
             data.is_published !== undefined ? data.is_published : currentResource.is_published,
             data.is_free !== undefined ? data.is_free : currentResource.is_free,
+            data.resourceUrl !== undefined ? data.resourceUrl : (currentResource.download_url || ''),
             id,
         ]
 

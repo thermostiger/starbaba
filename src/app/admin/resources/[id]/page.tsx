@@ -56,7 +56,7 @@ export default function EditResourcePage() {
                     isNew: !!resource.is_new,
                     content: resource.content || '',
                     coverImage: resource.cover_image || '',
-                    resourceUrl: resource.resourceUrl || '',
+                    resourceUrl: resource.download_url || resource.resourceUrl || '',
                 })
             } catch (error) {
                 console.error('Failed to load resource:', error)

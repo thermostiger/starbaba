@@ -13,29 +13,29 @@ export default function AboutPage() {
             {/* Hero */}
             <div className="text-center mb-16">
                 <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    关于 K12Shelf
+                    让优质教育不再是特权
                 </h1>
-                <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                    我们精选全球优质教材、绘本、动画和纪录片，帮助孩子建立纯正的英语思维，让学习变回探索世界的快乐旅程。
+                <p className="text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed">
+                    打破地域、经济与阶层的界限。K12Shelf，致力于让每一个家庭都能以极低的成本，平等触达全球顶尖的英语原版教育资源。
                 </p>
             </div>
 
             {/* Story */}
             <div className="prose max-w-none mb-16">
                 <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-                    <h2 className="text-2xl font-bold mb-6 text-slate-900">我们的初衷</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-slate-900">看见差距，为了改变</h2>
                     <div className="space-y-4 text-lg text-slate-600 leading-relaxed">
                         <p>
-                            K12Shelf 的故事始于一群“挑剔”的父母。在陪伴孩子学习英语的过程中，我们发现通过互联网获取资源虽然容易，但要找到真正适合不同年龄段、不仅有趣而且内容严谨的原版素材，却往往如大海捞针。
+                            教育的起跑线从未真正对齐。
                         </p>
                         <p>
-                            太多的劣质动画充斥屏幕，太多的碎片化教材让家长无所适从。我们深信，孩子的童年时间最宝贵，每一次观看、每一次阅读都不应被辜负。
+                            受限于地域发展、家庭经济和社会资源的差异，教育鸿沟真实而残酷地存在着。在资源丰富的地区，孩子们可能早早便开始用英文探讨世界历史；而在更多的地方，许多孩子仍在为获取最基础的优质学习材料而犹豫。这不是天赋的差异，而是<strong>接触机会（Access）</strong>的差异。
                         </p>
                         <p>
-                            因此，我们创立了 K12Shelf。不仅仅是一个资源库，更是一个为您过滤杂质、留存精华的“过滤器”。我们坚持“原版主义”，相信最好的语言学习方式不是死记硬背，而是沉浸在生动的故事、地道的表达和广阔的人文科学知识中。
+                            我们深信，语言是连接世界的桥梁，不应成为阶层的壁垒。无论身处繁华都市还是偏远角落，无论家庭收入高低，每个孩子都应享有平等接触地道英语环境的权利。
                         </p>
                         <p>
-                            我们希望，通过这些精心整理的全球顶级资源，不仅能帮助孩子掌握一门语言，更能为他们打开通向世界的窗户，培养终身受益的国际视野与批判性思维。
+                            这就是 K12Shelf 存在的意义。我们将那些曾经被视为昂贵稀缺的全球顶级原版资源搬上云端，努力打破获取的门槛。我们希望用优质的内容抹平信息的落差，让每一个渴望成长的孩子，都有机会通过英语这扇窗，自由地探索更大的世界。
                         </p>
                     </div>
                 </div>

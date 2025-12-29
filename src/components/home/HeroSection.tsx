@@ -48,8 +48,9 @@ export default function HeroSection() {
                     </span>
                 </h1>
 
-                <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-500 mb-6 animate-fade-in-up animation-delay-100">
-                    拒绝滥竽充数，让英语学习更加简单、高效。
+                <p className="max-w-2xl mx-auto text-base md:text-lg mb-6 animate-fade-in-up animation-delay-100 font-serif italic bg-gradient-to-r from-blue-600 via-purple-600 to-rose-500 bg-clip-text text-transparent">
+                    "The limits of my language mean the limits of my world."<br />
+                    <span className="text-sm not-italic mt-2 block">我语言的界限意味着我世界的界限。</span>
                 </p>
 
                 {/* Search Box - More Compact */}

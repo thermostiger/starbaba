@@ -25,9 +25,12 @@
     "paths": {
       "@/*": [
         "./src/*"
+<<<<<<< HEAD
       ],
       "@payload-config": [
         "./payload.config.ts"
+=======
+>>>>>>> main
       ]
     }
   },

@@ -142,4 +142,10 @@
     background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
     background-size: 24px 24px;
   }
+
+  /* Fix for Tiptap empty paragraphs collapsing */
+  .prose p:empty::before {
+    content: '\00a0';
+    display: inline-block;
+  }
 }

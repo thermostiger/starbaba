@@ -42,8 +42,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
+import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { auth } from '@/auth';
+
 export default async function ResourcePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
+    const session = await auth();
+    // @ts-expect-error isVip is added in auth.ts
+    const isVip = !!session?.user?.isVip;
+
     const supabase = await createClient();
 
     // 1. 优先查询安全视图 (Secure View) by SLUG
@@ -82,6 +89,25 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
 
     if (!resource) {
         notFound();
+    }
+
+    // Special logic for VIPs: If the view hid the download_url (row level security or view logic), 
+    // but the user is VIP, we fetch it with admin privileges.
+    if (resource && !resource.download_url && isVip) {
+        const adminSupabase = createAdminClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
+        const { data: adminData } = await adminSupabase
+            .from('resources')
+            .select('download_url, extraction_code')
+            .eq('slug', slug)
+            .single();
+
+        if (adminData) {
+            resource.download_url = adminData.download_url;
+            resource.extraction_code = adminData.extraction_code;
+        }
     }
 
     // Define mappings for Breadcrumbs and Routing
@@ -154,7 +180,7 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
                             <div className="p-8">
                                 <div className="prose max-w-none whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: resource.content || '<p>暂无详细介绍</p>' }} />
 
-                                {(resource.is_vip || resource.download_url) && (
+                                {(resource.is_vip || !resource.is_free || resource.download_url) && (
                                     <div className="mt-8 pt-8 border-t border-gray-100">
                                         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                                             <span className="w-1 h-5 bg-blue-500 rounded-full"></span>

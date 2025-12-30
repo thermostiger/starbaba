@@ -62,7 +62,7 @@ export default function AgreementPage() {
                             会员费用主要用于平台运营维护。
                         </p>
                         <p className="leading-relaxed font-bold text-amber-600">
-                            虚拟资源，一旦发货（下载）概不退款。
+                            虚拟资源，一旦发货概不退款。
                         </p>
                     </div>
                 </div>

@@ -30,7 +30,7 @@ export default function DisclaimerPage() {
                     <div className="prose max-w-none text-slate-600 space-y-4">
                         <p className="leading-relaxed">
                             本站（K12Shelf）所有资源（包括但不限于电子书、音频、视频等）均收集于互联网。
-                            本站仅提供一个整理、索引服务的平台，不拥有任何资源的版权。
+                            本站仅提供一个整理、索引服务的平台，不拥有任何资源的版权，不存储任何资源。
                             所有资源的版权归原作者、出版社或发行公司所有。
                         </p>
                     </div>
@@ -83,7 +83,7 @@ export default function DisclaimerPage() {
                             本站高度重视知识产权保护，并遵守“避风港原则”。
                             由于本站资源多由爬虫抓取或用户上传，无法对所有内容进行实时版权核实。
                             如果您是相关资源的版权所有者，且认为本站的内容侵犯了您的合法权益，
-                            请立即联系我们要删除。
+                            请立即联系我们删除网盘链接，但由于本站仅提供索引整理服务，无法删除网盘资源，请联系网盘用户或管理员。
                         </p>
                         <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mt-4">
                             <ul className="space-y-3">

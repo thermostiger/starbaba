@@ -63,7 +63,7 @@ export default function PrivacyPage() {
                             我们收集的信息将仅用于以下用途：
                         </p>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li>为您提供注册、登录及资源浏览、下载服务；</li>
+                            <li>为您提供注册、登录及资源浏览；</li>
                             <li>处理您的订单并开通相应的会员权益；</li>
                             <li>向您发送服务通知（如会员到期提醒、安全验证码）；</li>
                             <li>保障账号安全，检测和防范欺诈活动；</li>

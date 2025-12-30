@@ -30,7 +30,7 @@ export default function VIPPage() {
                     {/* Card A: The Anchor (Yearly) */}
                     <div className="bg-white rounded-2xl p-8 border-[3px] border-blue-200 shadow-sm flex flex-col relative order-2 md:order-1">
                         <h3 className="text-xl font-bold text-slate-900 mb-2">年度会员</h3>
-                        <p className="text-slate-500 text-sm mb-6">解锁全站权限，畅享一年无忧下载</p>
+                        <p className="text-slate-500 text-sm mb-6">解锁全站权限，畅享一年无忧</p>
 
                         <div className="mb-6 flex items-baseline">
                             <span className="text-4xl font-bold text-slate-900">¥99</span>
@@ -53,7 +53,7 @@ export default function VIPPage() {
                             </div>
                             <div className="flex items-start gap-3">
                                 <Check className="w-5 h-5 text-blue-600 shrink-0" />
-                                <span className="text-slate-600">支持主流网盘下载</span>
+                                <span className="text-slate-600">支持主流网盘</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <Check className="w-5 h-5 text-blue-600 shrink-0" />

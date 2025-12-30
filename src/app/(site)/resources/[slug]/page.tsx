@@ -180,15 +180,34 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
                             <div className="p-8">
                                 <div className="prose max-w-none whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: resource.content || '<p>暂无详细介绍</p>' }} />
 
-                                {(resource.is_vip || !resource.is_free || resource.download_url) && (
+                                {(resource.is_vip || !resource.is_free || resource.download_url || !session?.user) && (
                                     <div className="mt-8 pt-8 border-t border-gray-100">
                                         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
                                             <span className="w-1 h-5 bg-blue-500 rounded-full"></span>
                                             资源地址
                                         </h3>
                                         <div className="bg-gray-50 rounded-lg p-4 space-y-2">
-                                            {/* Logic: If we have download_url, it is unlocked (or free). If we don't, and it is VIP, then it is locked. */}
-                                            {resource.download_url ? (
+                                            {!session?.user ? (
+                                                <Link href="/register" className="block relative group overflow-hidden rounded-xl border border-gray-200 hover:border-blue-400 transition-all duration-300">
+                                                    <div className="absolute inset-0 bg-gray-50 p-6 select-none filter blur-sm opacity-50">
+                                                        <div className="space-y-4">
+                                                            {[1, 2, 3].map((i) => (
+                                                                <div key={i} className="h-4 bg-gray-200 rounded w-3/4"></div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className="relative z-10 flex flex-col items-center justify-center p-8 text-center bg-white/60 backdrop-blur-sm hover:bg-white/40 transition-colors">
+                                                        <div className="w-12 h-12 bg-blue-100 text-blue-900 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                                            <Lock className="w-6 h-6" />
+                                                        </div>
+                                                        <h3 className="text-lg font-bold text-gray-900 mb-1">请登录后查看</h3>
+                                                        <p className="text-sm text-gray-600 mb-4">登录后即可查看资源</p>
+                                                        <span className="inline-flex items-center px-6 py-2 bg-blue-600 text-white rounded-full font-medium shadow-lg hover:bg-blue-700 transition-all">
+                                                            登录 / 注册
+                                                        </span>
+                                                    </div>
+                                                </Link>
+                                            ) : resource.download_url ? (
                                                 <>
                                                     {resource.download_url.split('\n').map((line, index) => (
                                                         <div key={index} className="break-all">

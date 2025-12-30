@@ -30,21 +30,21 @@ export default function ResourceSidebar({ resource }: ResourceSidebarProps) {
                     <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 mb-4 space-y-2">
                         <div className="flex items-center gap-2 text-sm text-gray-700">
                             <div className="w-1.5 h-1.5 rounded-full bg-orange-400"></div>
-                            <span>海量优质资源免费下载</span>
+                            <span>精选优质原版资源</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-gray-700">
                             <div className="w-1.5 h-1.5 rounded-full bg-orange-400"></div>
-                            <span>持续更新，永久有效</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-700">
-                            <div className="w-1.5 h-1.5 rounded-full bg-orange-400"></div>
-                            <span>专属客服优先支持</span>
+                            <span>持续更新，原声原画</span>
                         </div>
                     </div>
 
-                    <Button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold shadow-md h-11 rounded-xl">
-                        立即开通VIP
-                    </Button>
+                    <div className="mb-0">
+                        <a href="/vip" className="block w-full">
+                            <Button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold shadow-md h-11 rounded-xl">
+                                立即开通VIP
+                            </Button>
+                        </a>
+                    </div>
                 </CardContent>
             </Card>
 

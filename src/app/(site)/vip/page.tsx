@@ -110,45 +110,7 @@ export default function VIPPage() {
                 </div>
             </section>
 
-            {/* 3. Social Proof / Trust Section */}
-            <section className="max-w-3xl mx-auto px-4 pb-24">
-                <div className="text-center mb-10">
-                    <h2 className="text-2xl font-bold text-slate-800 mb-2">常见问题</h2>
-                    <p className="text-slate-500">购买前请仔细阅读，如有疑问可联系客服</p>
-                </div>
 
-                <div className="space-y-4">
-                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
-                        <div className="flex gap-4">
-                            <HelpCircle className="w-6 h-6 text-blue-300 shrink-0 mt-0.5" />
-                            <div>
-                                <h4 className="font-bold text-slate-900 mb-2">付款后怎么使用？</h4>
-                                <p className="text-slate-600 leading-relaxed">
-                                    付款成功后，系统会自动为您当前的账号开通 VIP 权限。您只需刷新任意资源页，下载链接及其提取码就会自动解锁显示，无需等待人工审核。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
-                        <div className="flex gap-4">
-                            <HelpCircle className="w-6 h-6 text-blue-300 shrink-0 mt-0.5" />
-                            <div>
-                                <h4 className="font-bold text-slate-900 mb-2">资源会更新吗？</h4>
-                                <p className="text-slate-600 leading-relaxed">
-                                    会。网站保持每周定期更新，包括最新的热门绘本、动画和课程。终身会员无需额外付费即可享受网站未来更新的所有新资源。
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-
-                <div className="mt-12 text-center border-t border-slate-200 pt-8">
-                    如有其他问题，请联系客服微信：<span className="font-bold text-slate-600 select-all">k12shelf</span>
-                </div>
-            </section>
         </div>
     );
 }

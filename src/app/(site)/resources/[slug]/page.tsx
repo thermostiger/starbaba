@@ -6,7 +6,7 @@ import ResourceSidebar from '@/components/resource/ResourceSidebar';
 import NewResourcesGrid from '@/components/home/NewResourcesGrid';
 import { getResourcesByStage } from '@/lib/cms';
 import Link from 'next/link';
-import { Home, ChevronRight, FileText, HelpCircle } from 'lucide-react';
+import { Home, ChevronRight, FileText, HelpCircle, Lock } from 'lucide-react';
 import { Resource } from '@/types';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -220,12 +220,29 @@ export default async function ResourcePage({ params }: { params: Promise<{ slug:
                                                 </>
                                             ) : (
                                                 // Locked View
-                                                <div className="flex flex-col items-center justify-center p-8 bg-gray-100 rounded border border-gray-200 text-center">
-                                                    <div className="text-2xl mb-2">🔒</div>
-                                                    <p className="text-gray-600 font-medium mb-1">VIP 资源</p>
-                                                    <p className="text-gray-400 text-sm">************************************</p>
-                                                    <p className="text-xs text-gray-400 mt-2">（请购买或升级 VIP 会员查看）</p>
-                                                </div>
+                                                // Locked View
+                                                <Link href="/vip" className="block relative group overflow-hidden rounded-xl border border-gray-200 hover:border-blue-400 transition-all duration-300">
+                                                    {/* Simulated content background for blur effect */}
+                                                    <div className="absolute inset-0 bg-gray-50 p-6 select-none filter blur-sm opacity-50">
+                                                        <div className="space-y-4">
+                                                            {[1, 2, 3].map((i) => (
+                                                                <div key={i} className="h-4 bg-gray-200 rounded w-3/4"></div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Active CTA Overlay */}
+                                                    <div className="relative z-10 flex flex-col items-center justify-center p-12 text-center bg-white/60 backdrop-blur-sm hover:bg-white/40 transition-colors">
+                                                        <div className="w-16 h-16 bg-blue-100 text-blue-900 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                                            <Lock className="w-8 h-8" />
+                                                        </div>
+                                                        <h3 className="text-xl font-bold text-gray-900 mb-2">VIP 专享资源</h3>
+                                                        <p className="text-gray-600 mb-6">解锁K12Shelf全部精选资源</p>
+                                                        <span className="inline-flex items-center px-6 py-2.5 bg-blue-900 text-white rounded-full font-medium shadow-lg shadow-blue-900/20 group-hover:bg-blue-800 transition-all transform group-hover:-translate-y-0.5">
+                                                            立即解锁
+                                                        </span>
+                                                    </div>
+                                                </Link>
                                             )}
                                         </div>
                                     </div>

@@ -52,11 +52,11 @@ export default function ResourcesPage() {
         setCurrentSearch(searchQuery)
     }
 
-    async function handleDelete(id: string) {
-        if (!confirm('确定要删除这个资源吗？')) return
+    async function handleDelete(resource: Resource) {
+        if (!confirm(`确定要删除 [${resource.title}] 吗？`)) return
 
         try {
-            await resourcesAPI.delete(id)
+            await resourcesAPI.delete(resource.id)
             alert('删除成功')
             loadResources()
         } catch (error) {
@@ -249,7 +249,7 @@ export default function ResourcesPage() {
                                                     编辑
                                                 </Link>
                                                 <button
-                                                    onClick={() => handleDelete(resource.id)}
+                                                    onClick={() => handleDelete(resource)}
                                                     className="text-red-600 hover:text-red-900"
                                                 >
                                                     删除

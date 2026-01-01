@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Resource } from '@/types';
-import { Sparkles, Clock } from 'lucide-react';
+import { Sparkles, Clock, Info } from 'lucide-react';
 
 interface ResourceHeroProps {
     resource: Resource;
@@ -44,23 +44,23 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                         </h1>
 
                         {/* Info cards row */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             {/* Highlights Card - Glassmorphism style */}
-                            <div className="backdrop-blur-xl bg-white/70 rounded-xl p-4 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-7 h-7 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center">
-                                        <span className="text-white text-base">✨</span>
+                            <div className="h-full backdrop-blur-xl bg-white/60 rounded-2xl p-5 shadow-sm border border-white/40 hover:shadow-md hover:bg-white/80 transition-all duration-300 group/card">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-pink-500 rounded-lg flex items-center justify-center shadow-sm group-hover/card:scale-110 transition-transform duration-300">
+                                        <Sparkles className="w-4 h-4 text-white" />
                                     </div>
-                                    <span className="font-semibold text-gray-700 text-sm">资源亮点</span>
+                                    <span className="font-bold text-gray-800 text-base">资源亮点</span>
                                 </div>
-                                <div className="space-y-1.5">
+                                <div className="space-y-2.5">
                                     {(resource.highlights ? resource.highlights.split('\n').filter(h => h.trim()) : [
                                         '高清画质，流畅播放',
                                         '中英双语字幕可选',
                                         '永久有效，随时观看'
-                                    ]).map((highlight, index) => (
-                                        <div key={index} className="flex items-center gap-2 text-xs text-gray-700">
-                                            <div className="w-1 h-1 rounded-full bg-orange-400"></div>
+                                    ]).slice(0, 4).map((highlight, index) => (
+                                        <div key={index} className="flex items-start gap-2.5 text-sm text-gray-600/90 leading-relaxed">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 shrink-0"></div>
                                             <span>{highlight}</span>
                                         </div>
                                     ))}
@@ -68,18 +68,18 @@ export default function ResourceHero({ resource }: ResourceHeroProps) {
                             </div>
 
                             {/* Info Card - Glassmorphism style */}
-                            <div className="backdrop-blur-xl bg-white/70 rounded-xl p-4 shadow-lg border border-white/20 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <div className="w-7 h-7 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center">
-                                        <span className="text-white text-base">ℹ️</span>
+                            <div className="h-full backdrop-blur-xl bg-white/60 rounded-2xl p-5 shadow-sm border border-white/40 hover:shadow-md hover:bg-white/80 transition-all duration-300 group/card">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center shadow-sm group-hover/card:scale-110 transition-transform duration-300">
+                                        <Info className="w-4 h-4 text-white" />
                                     </div>
-                                    <span className="font-semibold text-gray-700 text-sm">资源信息</span>
+                                    <span className="font-bold text-gray-800 text-base">资源信息</span>
                                 </div>
-                                <div className="space-y-2">
-                                    {(resource.resource_info ? resource.resource_info.split('\n').filter(i => i.trim()) : ['永久有效 · 2-15岁']).map((info, index) => (
-                                        <div key={index} className="flex items-center gap-2">
-                                            <Clock className="w-3 h-3 text-blue-500 shrink-0" />
-                                            <span className="text-xs text-gray-600">{info}</span>
+                                <div className="space-y-2.5">
+                                    {(resource.resource_info ? resource.resource_info.split('\n').filter(i => i.trim()) : ['永久有效 · 2-15岁']).slice(0, 4).map((info, index) => (
+                                        <div key={index} className="flex items-center gap-2.5">
+                                            <Clock className="w-4 h-4 text-blue-500/80 shrink-0" />
+                                            <span className="text-sm text-gray-600/90 font-medium">{info}</span>
                                         </div>
                                     ))}
                                 </div>
